@@ -27,7 +27,7 @@ const Widget = ({type})=> {
                 icon: (<ShoppingCartOutlined className="icon" style={{color:"goldenrod", backgroundColor:"rgba(218, 165, 32, .2)"}}/>)
                 };
             break;    
-        case "earning":
+        case "earnings":
             data={
                 title:"EARNING",
                 isMoney: true,
