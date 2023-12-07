@@ -22,7 +22,7 @@ const [file, setFile] = useState('')
                     </div>
                     <div className="right">
                         <form action="">
-                            <div className="formInput">
+                            {/* <div className="formInput">
                                 <label htmlFor="file">
                                     Image: <DriveFolderUploadOutlined className="icon"/> 
                                 </label>
@@ -32,8 +32,8 @@ const [file, setFile] = useState('')
                             <div className="formInput" key={input.id}>
                             <label htmlFor="">{input.label}</label>
                             <input type={input.type} placeholder={input.placeholder} />
-                        </div>
-                            ))}
+                            </div>
+                            ))} */}
 
                             <div className="formInput">
                                 <label htmlFor="">Email</label>
@@ -41,11 +41,11 @@ const [file, setFile] = useState('')
                             </div>
                             <div className="formInput">
                                 <label htmlFor="">Phone</label>
-                                <input type="text" />
+                                <input type="text" placeholder="+1-222-333" />
                             </div>
                             <div className="formInput">
                                 <label htmlFor="">Password</label>
-                                <input type="password" />
+                                <input type="password" placeholder="password"/>
                             </div>
                             <div className="formInput">
                                 <label htmlFor="">Address</label>
