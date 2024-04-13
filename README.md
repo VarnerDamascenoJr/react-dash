@@ -1,4 +1,5 @@
-# Getting Started with Create React App
+# React Dash
+My first thought creating a project like this is practicing my ability of display informations on screen.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
