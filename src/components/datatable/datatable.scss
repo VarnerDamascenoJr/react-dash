@@ -1,78 +1,78 @@
 .datatable {
-    height: 600px;
-    padding: 20px;
+  min-height: 600px;
+  padding: 24px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(180deg, var(--surface-primary), rgba(255, 255, 255, 0.68));
+  box-shadow: var(--shadow-soft);
 
+  .datatableTitle {
+    width: 100%;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 700;
+  }
 
-    .datatableTitle{
-        width: 100%;
-        font-size: 24px;
-        color: grey;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+  .link {
+    height: 42px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(135deg, var(--accent-primary), #f2a65a);
+  }
+
+  .cellWithImg {
+    display: flex;
+    align-items: center;
+
+    .cellImg {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 14px;
     }
+  }
 
-    .link {
-        text-decoration: none;
-        color: green;
-        font-size: 16px;
-        font-weight: 400;
-        border: 1px solid green;
-        cursor: pointer;
+  .cellWithStatus {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.8rem;
+
+    &.active {
+      background-color: rgba(35, 197, 143, 0.14);
+      color: #11936a;
     }
-
-    .cellWithImg {
-        display: flex;
-        align-items: center;
-
-        .cellImg {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 20px;
-        }
+    &.pending {
+      background-color: rgba(242, 166, 90, 0.16);
+      color: #c37a10;
     }
-
-
-    .cellWithStatus {
-        padding: 5px;
-        border-radius: 5px;
-
-        &.active {
-            background-color: rgba(0, 128, 0, 0.05);
-            color: green;
-        }
-        &.pending {
-            background-color: rgba(255, 217, 0, 0.05);
-            color: goldenrod;
-        }
-        &.passive {
-            background-color: rgba(255, 0, 0, 0.05);
-            color: crimson;
-        }
+    &.passive {
+      background-color: rgba(240, 93, 94, 0.16);
+      color: #d85156;
     }
+  }
 
+  .cellAction {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-    .cellAction {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-
-        .viewButton {
-            padding: 2px 5px;
-            border-radius: 5px;
-            color:darkblue;
-            border: 1px dotted darkblue;
-            cursor: pointer;
-        }
-        .deleteButton {
-            padding: 2px 5px;
-            border-radius: 5px;
-            color:crimson;
-            border: 1px dotted crimson;
-            cursor: pointer;
-        }
+    .viewButton {
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+      color: var(--text-primary);
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.52);
     }
+  }
 }

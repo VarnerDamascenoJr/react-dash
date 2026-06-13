@@ -1,0 +1,30 @@
+.dashboardLayout {
+  min-height: 100vh;
+  display: flex;
+  background:
+    radial-gradient(circle at top left, rgba(180, 138, 255, 0.18), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(85, 180, 255, 0.12), transparent 24%),
+    var(--page-background);
+}
+
+.dashboardLayout__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboardLayout__content {
+  flex: 1;
+  padding: 24px;
+}
+
+@media (max-width: 960px) {
+  .dashboardLayout {
+    flex-direction: column;
+  }
+
+  .dashboardLayout__content {
+    padding: 16px;
+  }
+}

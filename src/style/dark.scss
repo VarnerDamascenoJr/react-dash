@@ -1,64 +1,28 @@
 .app.dark {
-    background-color: #111;
-    color: rgb(156, 156, 156);
-    
-    .chartGrid {
-        stroke:rgba(228, 228,228,0.219)
-    }
-    .table {
-        background-color: #111;
-        .tableCell {
-            color: gray;
-        }
-    }
-    .navbar {
-        color: #999;
-        border-color: #333;
+  --page-background: #09111f;
+  --surface-primary: rgba(15, 23, 42, 0.92);
+  --surface-secondary: rgba(15, 23, 42, 0.72);
+  --surface-strong: #dce5f8;
+  --border-soft: rgba(148, 163, 184, 0.18);
+  --text-primary: #ecf3ff;
+  --text-secondary: #9fb0cd;
+  --text-tertiary: #7184a7;
+  --accent-primary: #ff8d6b;
+  --accent-secondary: #5aa9ff;
+  --accent-soft: rgba(255, 141, 107, 0.12);
+  --success-soft: rgba(35, 197, 143, 0.22);
+  --shadow-soft: 0 24px 60px rgba(2, 6, 23, 0.42);
 
-        .search {
-            border-color: gray;
-        }
-    }
+  .chartGrid {
+    stroke: rgba(148, 163, 184, 0.22);
+  }
 
-    .sidebar {
-        background-color: #111;
-        border-color: #333;
+  .MuiDataGrid-root,
+  .MuiTable-root {
+    color: var(--text-primary);
+  }
 
-        .top {
-            .logo {
-                color: #999;
-            }
-        }
-        hr {
-            border-color: #333;
-        }
-
-        ul {
-            li{
-                &:hover {
-                    background-color: #333;
-                }
-                .icon {
-                    color: #999;
-                }
-            }
-        }
-    }
-
-    .datatable {
-        .datagrid {
-            color: gray;
-            border: none;
-
-            .editbutton,
-            .deleteButton,
-            .cellWithStatus {
-                color: gray;
-                border: none;
-            }
-        }
-    }
-    input {
-        background-color: transparent;
-    }
+  input {
+    color: var(--text-primary);
+  }
 }

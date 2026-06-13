@@ -1,7 +1,5 @@
 import { useState, type ChangeEvent } from 'react';
 import './new.scss';
-import Sidebar from '../../components/sidebar/Sidebar';
-import Navbar from '../../components/navbar/Navbar';
 import { DriveFolderUploadOutlined } from '@mui/icons-material';
 import type { NewPageProps } from '../../types';
 
@@ -16,45 +14,50 @@ const New = ({ inputs = [], title = 'Add New Item' }: NewPageProps) => {
   };
 
   return (
-    <div className="new">
-      <Sidebar />
-      <div className="newContainer">
-        <Navbar />
-        <div className="top">
-          <h1>{title}</h1>
+    <div className="newPage">
+      <section className="pageIntro">
+        <div>
+          <span className="pageIntro__eyebrow">Create record</span>
+          <h2>{title}</h2>
         </div>
-        <div className="bottom">
-          <div className="left">
-            <img
-              src={file ? URL.createObjectURL(file) : fallbackImage}
-              alt="Preview"
-            />
+        <p>Capture the essentials, attach a visual and publish a clean entry.</p>
+      </section>
+
+      <div className="editorPanel">
+        <div className="editorPanel__preview">
+          <img
+            src={file ? URL.createObjectURL(file) : fallbackImage}
+            alt="Preview"
+          />
+          <div className="previewCopy">
+            <strong>Visual preview</strong>
+            <span>Upload a cover image to personalize the record.</span>
           </div>
-          <div className="right">
-            <form action="">
-              <div className="formInput">
-                <label htmlFor="file">
-                  Image: <DriveFolderUploadOutlined className="icon" />
-                </label>
+        </div>
+        <div className="editorPanel__form">
+          <form action="">
+            <div className="formInput formInput--upload">
+              <label htmlFor="file">
+                Image asset <DriveFolderUploadOutlined className="icon" />
+              </label>
+              <input
+                type="file"
+                id="file"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+              />
+            </div>
+            {inputs.map((input) => (
+              <div className="formInput" key={input.id}>
+                <label>{input.label}</label>
                 <input
-                  type="file"
-                  id="file"
-                  onChange={handleFileChange}
-                  style={{ display: 'none' }}
+                  type={input.type}
+                  placeholder={input.placeholder ?? ''}
                 />
               </div>
-              {inputs.map((input) => (
-                <div className="formInput" key={input.id}>
-                  <label>{input.label}</label>
-                  <input
-                    type={input.type}
-                    placeholder={input.placeholder ?? ''}
-                  />
-                </div>
-              ))}
-              <button type="submit">Send</button>
-            </form>
-          </div>
+            ))}
+            <button type="submit">Save entry</button>
+          </form>
         </div>
       </div>
     </div>

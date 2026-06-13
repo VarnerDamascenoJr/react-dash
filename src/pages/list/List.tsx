@@ -1,16 +1,20 @@
 import './list.scss';
-import Navbar from "../../components/navbar/Navbar";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Datatable from "../../components/datatable/Datatable";
+import Datatable from '../../components/datatable/Datatable';
 
 const List = () => {
   return (
-    <div className="list">
-      <Sidebar />
-      <div className="listContainer">
-        <Navbar />
-        <Datatable />
-      </div>
+    <div className="listPage">
+      <section className="pageIntro">
+        <div>
+          <span className="pageIntro__eyebrow">Operations roster</span>
+          <h2>Manage users and monitor account health.</h2>
+        </div>
+        <p>
+          Review activity, inspect statuses and keep your team list organized
+          from one table.
+        </p>
+      </section>
+      <Datatable />
     </div>
   );
 };
