@@ -292,6 +292,14 @@ Validacoes:
 - `npm run typecheck`.
 - Smoke manual com API local quando o endpoint existir.
 
+Status:
+
+- Base tecnica implementada com configuracao `VITE_SALES_API_BASE_URL`, proxy
+  Vite `/api`, client HTTP testavel para `GET /analytics/export`, envio de
+  `X-API-Key`, validacao minima do schema e fallback para fixture local.
+- Wiring visual de filtros, API key em tela e estados de carregamento/erro deve
+  ser conectado durante o redesenho da UI.
+
 ### RD3 - Redesenho Do Dashboard Principal
 
 Objetivo: trocar a experiencia generica por uma visao operacional do Sales.

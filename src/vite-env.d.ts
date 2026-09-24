@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly VITE_DEMO_USER_NAME?: string;
   readonly VITE_DEMO_USER_ROLE?: string;
   readonly VITE_DEMO_USER_AVATAR?: string;
+  readonly VITE_SALES_API_BASE_URL?: string;
 }
 
 interface ImportMeta {

@@ -1,3 +1,15 @@
+export {
+  SalesAnalyticsApiError,
+  buildAnalyticsExportUrl,
+  fetchSalesAnalyticsExport,
+  loadSalesAnalyticsExport,
+} from './api';
+export type {
+  SalesAnalyticsClientOptions,
+  SalesAnalyticsExportFilters,
+  SalesAnalyticsLoadOptions,
+  SalesAnalyticsLoadResult,
+} from './api';
 export { localSalesAnalyticsFixture } from './fixtures';
 export {
   buildAnalyticsKpis,
