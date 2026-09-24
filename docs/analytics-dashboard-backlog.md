@@ -399,6 +399,12 @@ Validacoes:
 - `npm run typecheck`.
 - `npm run build`.
 
+Status:
+
+- Concluido com exportacao de JSON bruto, CSV de eventos, CSV de janelas e PNG
+  dos graficos principais da tela. A camada `src/analytics/exporters` cobre
+  serializacao CSV, nomes de arquivos deterministas e downloads browser-side.
+
 ### RD5 - Demo Local E Checklist De Portfolio
 
 Objetivo: deixar o projeto pronto para apresentacao e handoff.

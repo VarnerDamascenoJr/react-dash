@@ -4,12 +4,20 @@ export {
   fetchSalesAnalyticsExport,
   loadSalesAnalyticsExport,
 } from './api';
+export {
+  buildExportFileName,
+  downloadChartPng,
+  downloadCsv,
+  downloadJson,
+  serializeCsv,
+} from './exporters';
 export type {
   SalesAnalyticsClientOptions,
   SalesAnalyticsExportFilters,
   SalesAnalyticsLoadOptions,
   SalesAnalyticsLoadResult,
 } from './api';
+export type { CsvPrimitive, CsvRow } from './exporters';
 export { localSalesAnalyticsFixture } from './fixtures';
 export {
   buildAnalyticsKpis,
