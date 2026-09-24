@@ -1,17 +1,13 @@
 import './sidebar.scss';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import StoreOutlinedIcon from '@mui/icons-material/StoreOutlined';
-import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
-import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import MonitorHeartOutlinedIcon from '@mui/icons-material/MonitorHeartOutlined';
-import PsychologyOutlinedIcond from '@mui/icons-material/PsychologyOutlined';
+import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
-import AutoGraphOutlinedIcon from '@mui/icons-material/AutoGraphOutlined';
 import { NavLink } from 'react-router-dom';
 import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkModeContext';
@@ -28,7 +24,7 @@ const Sidebar = () => {
           <span className="brandMark">RD</span>
           <div className="brandText">
             <strong>React Dash</strong>
-            <span>Ops command center</span>
+            <span>Sales analytics</span>
           </div>
         </NavLink>
       </div>
@@ -46,57 +42,35 @@ const Sidebar = () => {
             className={({ isActive }) => `navItem${isActive ? ' active' : ''}`}
           >
             <DashboardIcon className="icon" />
-            <span>Dashboard</span>
-          </NavLink>
-          <NavLink
-            to="/users"
-            className={({ isActive }) => `navItem${isActive ? ' active' : ''}`}
-          >
-            <PersonOutlineOutlinedIcon className="icon" />
-            <span>Users</span>
-          </NavLink>
-          <NavLink
-            to="/products"
-            className={({ isActive }) => `navItem${isActive ? ' active' : ''}`}
-          >
-            <StoreOutlinedIcon className="icon" />
-            <span>Products</span>
+            <span>Overview</span>
           </NavLink>
 
-          <p className="title">Operations</p>
+          <p className="title">Analytics</p>
           <li className="navStatic">
-            <CreditCardOutlinedIcon className="icon" />
-            <span>Orders</span>
+            <EventNoteOutlinedIcon className="icon" />
+            <span>Eventos</span>
           </li>
           <li className="navStatic">
-            <LocalShippingOutlinedIcon className="icon" />
-            <span>Delivery</span>
+            <FilterAltOutlinedIcon className="icon" />
+            <span>Funil</span>
           </li>
           <li className="navStatic">
-            <AutoGraphOutlinedIcon className="icon" />
-            <span>Growth</span>
+            <TimelineOutlinedIcon className="icon" />
+            <span>Sobrevivencia</span>
           </li>
 
-          <p className="title">System</p>
+          <p className="title">Outputs</p>
           <li className="navStatic">
             <AssessmentIcon className="icon" />
-            <span>Reporting</span>
+            <span>Janelas</span>
           </li>
           <li className="navStatic">
-            <NotificationsOutlinedIcon className="icon" />
-            <span>Notifications</span>
-          </li>
-          <li className="navStatic">
-            <MonitorHeartOutlinedIcon className="icon" />
-            <span>Health</span>
-          </li>
-          <li className="navStatic">
-            <PsychologyOutlinedIcond className="icon" />
-            <span>Logs</span>
+            <FileDownloadOutlinedIcon className="icon" />
+            <span>Exportacoes</span>
           </li>
           <li className="navStatic">
             <SettingsApplicationsIcon className="icon" />
-            <span>Settings</span>
+            <span>Configuracao</span>
           </li>
 
           <p className="title">Account</p>
