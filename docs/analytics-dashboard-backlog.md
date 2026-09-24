@@ -243,6 +243,12 @@ Validacoes:
 - `npm test`.
 - `npm run typecheck`.
 
+Status:
+
+- Concluido com o modulo `src/analytics`, fixture local
+  `sales-analytics-export.v1`, tipos do contrato, transformadores puros e
+  testes unitarios cobrindo fixture e dataset vazio.
+
 ### RD2 - Integracao Com API Local Do Sales
 
 Objetivo: permitir que o dashboard busque dados reais quando o backend estiver
