@@ -44,9 +44,13 @@ Sobe localmente o build gerado para validacao rapida.
 - `src/pages`: paginas principais
 - `src/context`: estado global simples para tema
 - `src/types.ts`: tipos compartilhados
+- `docs/analytics-dashboard-backlog.md`: backlog e contrato de produto para
+  transformar o app em dashboard analitico do Sales Event
 
 ## Proximos passos sugeridos
 
-- Conectar os dados a uma API real
-- Melhorar a autenticacao e o controle de acesso
-- Separar melhor os chunks para reduzir o bundle inicial
+- Seguir `docs/analytics-dashboard-backlog.md` para evoluir o dashboard
+  analitico por etapas.
+- Comecar por fixture local e transformadores puros antes da API real.
+- Conectar o endpoint `GET /analytics/export` do `sales-event-project` quando
+  a dependencia cross-repo estiver pronta.
