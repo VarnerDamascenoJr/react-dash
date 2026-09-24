@@ -15,7 +15,7 @@ afterEach(() => {
   localStorage.clear();
 });
 
-test('renders the dashboard widgets on the home page', () => {
+test('renders the analytics overview on the home page', () => {
   render(
     <AuthContextProvider>
       <DarkModeContextProvider>
@@ -24,5 +24,6 @@ test('renders the dashboard widgets on the home page', () => {
     </AuthContextProvider>
   );
 
-  expect(screen.getByText(/total revenue/i)).toBeInTheDocument();
+  expect(screen.getByText(/sales event analytics/i)).toBeInTheDocument();
+  expect(screen.getByText(/eventos coletados/i)).toBeInTheDocument();
 });

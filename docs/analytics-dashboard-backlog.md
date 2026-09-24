@@ -355,6 +355,15 @@ Validacoes:
 - `npm run typecheck`.
 - `npm run build`.
 
+Status:
+
+- Concluido com a `Home` redesenhada como overview analitico, KPIs do contrato
+  `sales-analytics-export.v1`, graficos por janela/tipo de evento, blocos de
+  funil/sobrevivencia tolerantes a dados ausentes, tabela MUI Data Grid de
+  eventos e navegacao lateral reorientada para o dominio do Sales.
+- Rotas genericas de users/products foram removidas da navegacao principal e
+  redirecionadas para o Overview.
+
 ### RD4 - Exportacoes JSON, CSV E PNG
 
 Objetivo: permitir que os dados e graficos sejam usados em estudos,
