@@ -1,4 +1,11 @@
 import './sidebar.scss';
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Typography from '@mui/material/Typography';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
@@ -12,95 +19,132 @@ import { NavLink } from 'react-router-dom';
 import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { AuthContext } from '../../context/authContext';
+import { shellCopy } from '../layout/shellCopy';
+import SidebarNavSection from './SidebarNavSection';
 
 const Sidebar = () => {
-  const { dispatch } = useContext(DarkModeContext);
+  const { darkMode, dispatch } = useContext(DarkModeContext);
   const { user, logout } = useContext(AuthContext);
+  const navSections = [
+    {
+      title: shellCopy.sidebar.sections.overview,
+      items: [
+        {
+          end: true,
+          icon: <DashboardIcon className="icon" />,
+          label: shellCopy.sidebar.items.overview,
+          to: '/',
+        },
+      ],
+    },
+    {
+      title: shellCopy.sidebar.sections.analytics,
+      items: [
+        {
+          icon: <EventNoteOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.events,
+        },
+        {
+          icon: <FilterAltOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.funnel,
+        },
+        {
+          icon: <TimelineOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.survival,
+        },
+      ],
+    },
+    {
+      title: shellCopy.sidebar.sections.outputs,
+      items: [
+        {
+          icon: <AssessmentIcon className="icon" />,
+          label: shellCopy.sidebar.items.windows,
+        },
+        {
+          icon: <FileDownloadOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.exports,
+        },
+        {
+          icon: <SettingsApplicationsIcon className="icon" />,
+          label: shellCopy.sidebar.items.settings,
+        },
+      ],
+    },
+    {
+      title: shellCopy.sidebar.sections.account,
+      items: [
+        {
+          icon: <AccountCircleOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.profile,
+        },
+        {
+          className: 'logoutItem',
+          icon: <ExitToAppOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.logout,
+          onClick: logout,
+        },
+      ],
+    },
+  ];
 
   return (
-    <div className="sidebar">
-      <div className="top">
+    <Box className="sidebar" component="aside">
+      <Box className="top">
         <NavLink to="/" className="brand">
-          <span className="brandMark">RD</span>
-          <div className="brandText">
-            <strong>React Dash</strong>
-            <span>Sales analytics</span>
-          </div>
+          <Box className="brandMark">{shellCopy.brand.mark}</Box>
+          <Stack className="brandText">
+            <Typography component="strong">{shellCopy.brand.name}</Typography>
+            <Typography component="span">{shellCopy.brand.subtitle}</Typography>
+          </Stack>
         </NavLink>
-      </div>
-      <div className="center">
-        <div className="workspaceCard">
-          <span className="workspaceLabel">Signed in as</span>
-          <strong>{user?.name}</strong>
-          <span>{user?.role}</span>
-        </div>
-        <ul>
-          <p className="title">Overview</p>
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) => `navItem${isActive ? ' active' : ''}`}
+      </Box>
+      <Stack className="center">
+        <Paper className="workspaceCard" elevation={0}>
+          <Typography
+            className="workspaceLabel"
+            component="span"
+            variant="overline"
           >
-            <DashboardIcon className="icon" />
-            <span>Overview</span>
-          </NavLink>
-
-          <p className="title">Analytics</p>
-          <li className="navStatic">
-            <EventNoteOutlinedIcon className="icon" />
-            <span>Eventos</span>
-          </li>
-          <li className="navStatic">
-            <FilterAltOutlinedIcon className="icon" />
-            <span>Funil</span>
-          </li>
-          <li className="navStatic">
-            <TimelineOutlinedIcon className="icon" />
-            <span>Sobrevivencia</span>
-          </li>
-
-          <p className="title">Outputs</p>
-          <li className="navStatic">
-            <AssessmentIcon className="icon" />
-            <span>Janelas</span>
-          </li>
-          <li className="navStatic">
-            <FileDownloadOutlinedIcon className="icon" />
-            <span>Exportacoes</span>
-          </li>
-          <li className="navStatic">
-            <SettingsApplicationsIcon className="icon" />
-            <span>Configuracao</span>
-          </li>
-
-          <p className="title">Account</p>
-          <li className="navStatic">
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
-          </li>
-          <li className="navStatic logoutItem" onClick={logout}>
-            <ExitToAppOutlinedIcon className="icon" />
-            <span>Logout</span>
-          </li>
-        </ul>
-      </div>
-      <div className="bottom">
-        <button
-          type="button"
-          className="themeToggle"
-          onClick={() => dispatch({ type: 'LIGHT' })}
+            {shellCopy.sidebar.signedInAs}
+          </Typography>
+          <Typography component="strong">{user?.name}</Typography>
+          <Typography component="span">{user?.role}</Typography>
+        </Paper>
+        <List disablePadding>
+          {navSections.map((section) => (
+            <SidebarNavSection
+              items={section.items}
+              key={section.title}
+              title={section.title}
+            />
+          ))}
+        </List>
+      </Stack>
+      <Box className="bottom">
+        <ToggleButtonGroup
+          exclusive
+          fullWidth
+          size="small"
+          value={darkMode ? 'dark' : 'light'}
         >
-          Light
-        </button>
-        <button
-          type="button"
-          className="themeToggle"
-          onClick={() => dispatch({ type: 'DARK' })}
-        >
-          Dark
-        </button>
-      </div>
-    </div>
+          <ToggleButton
+            className="themeToggle"
+            value="light"
+            onClick={() => dispatch({ type: 'LIGHT' })}
+          >
+            {shellCopy.sidebar.theme.light}
+          </ToggleButton>
+          <ToggleButton
+            className="themeToggle"
+            value="dark"
+            onClick={() => dispatch({ type: 'DARK' })}
+          >
+            {shellCopy.sidebar.theme.dark}
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+    </Box>
   );
 };
 

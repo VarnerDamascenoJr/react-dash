@@ -1,19 +1,20 @@
 import { Outlet } from 'react-router-dom';
+import Box from '@mui/material/Box';
 import Navbar from '../navbar/Navbar';
 import Sidebar from '../sidebar/Sidebar';
 import './dashboardLayout.scss';
 
 const DashboardLayout = () => {
   return (
-    <div className="dashboardLayout">
+    <Box className="dashboardLayout">
       <Sidebar />
-      <div className="dashboardLayout__main">
+      <Box className="dashboardLayout__main" component="main">
         <Navbar />
-        <div className="dashboardLayout__content">
+        <Box className="dashboardLayout__content">
           <Outlet />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

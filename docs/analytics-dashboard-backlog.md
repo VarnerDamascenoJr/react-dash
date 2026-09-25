@@ -434,6 +434,13 @@ Validacoes:
 - `npm run typecheck`.
 - `npm run build`.
 
+Status:
+
+- Em andamento. A Home analitica ja usa dicionario de textos, componentes MUI
+  para paineis principais e graficos modularizados. O shell autenticado tambem
+  passou a usar componentes MUI em `DashboardLayout`, `Sidebar` e `Navbar`,
+  com textos centralizados em dicionario proprio.
+
 ### RD5 - Demo Local E Checklist De Portfolio
 
 Objetivo: deixar o projeto pronto para apresentacao e handoff.

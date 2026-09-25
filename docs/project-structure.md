@@ -66,10 +66,13 @@ Route guard components.
 Shell composition.
 
 - `DashboardLayout.tsx`
+- `shellCopy.ts`: display copy used by the authenticated shell, sidebar and navbar
 
 #### `src/components/sidebar/` and `src/components/navbar/`
 
 Shared authenticated navigation and actions.
+
+- `src/components/sidebar/SidebarNavSection.tsx`: reusable sidebar section and item renderer
 
 #### `src/components/widgets/`
 

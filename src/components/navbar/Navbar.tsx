@@ -1,3 +1,14 @@
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputBase from '@mui/material/InputBase';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
@@ -8,57 +19,88 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { AuthContext } from '../../context/authContext';
+import { shellCopy } from '../layout/shellCopy';
 
 const Navbar = () => {
   const { dispatch } = useContext(DarkModeContext);
   const { user, logout } = useContext(AuthContext);
 
   return (
-    <div className="navbar">
-      <div className="wrapper">
-        <div className="heading">
-          <span className="eyebrow">Executive snapshot</span>
-          <h1>Control room</h1>
-        </div>
-        <div className="items">
-          <div className="search">
-            <SearchOutlinedIcon />
-            <input type="text" placeholder="Search KPIs, people or products" />
-          </div>
-          <div className="pill">
-            <CalendarMonthOutlinedIcon className="icon" />
-            <span>May 31, 2026</span>
-          </div>
-          <button
+    <Box className="navbar" component="header">
+      <Paper className="wrapper" elevation={0}>
+        <Box className="heading">
+          <Typography className="eyebrow" component="span" variant="overline">
+            {shellCopy.navbar.eyebrow}
+          </Typography>
+          <Typography component="h1" variant="h4">
+            {shellCopy.navbar.title}
+          </Typography>
+        </Box>
+        <Stack className="items" direction="row">
+          <Box className="search">
+            <InputBase
+              fullWidth
+              placeholder={shellCopy.navbar.searchPlaceholder}
+              startAdornment={
+                <InputAdornment position="start">
+                  <SearchOutlinedIcon className="icon" />
+                </InputAdornment>
+              }
+            />
+          </Box>
+          <Chip
+            className="pill"
+            icon={<CalendarMonthOutlinedIcon className="icon" />}
+            label={shellCopy.navbar.demoWindow}
+          />
+          <Tooltip title={shellCopy.navbar.toggleTheme}>
+            <IconButton
+              aria-label={shellCopy.navbar.toggleTheme}
+              className="iconButton"
+              onClick={() => dispatch({ type: 'TOGGLE' })}
+            >
+              <DarkModeOutlinedIcon className="icon" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={shellCopy.navbar.notifications}>
+            <IconButton
+              aria-label={shellCopy.navbar.notifications}
+              className="iconButton"
+            >
+              <NotificationsNoneOutlinedIcon className="icon" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={shellCopy.navbar.messages}>
+            <IconButton
+              aria-label={shellCopy.navbar.messages}
+              className="iconButton"
+            >
+              <ChatBubbleOutlineOutlinedIcon className="icon" />
+            </IconButton>
+          </Tooltip>
+          <Paper className="profileCard" elevation={0}>
+            <Avatar
+              alt={user?.name}
+              className="avatar"
+              src={user?.avatar}
+            />
+            <Stack className="profileCopy">
+              <Typography component="strong">{user?.name}</Typography>
+              <Typography component="span">{user?.role}</Typography>
+            </Stack>
+          </Paper>
+          <Button
+            className="logoutButton"
+            onClick={logout}
+            startIcon={<LogoutOutlinedIcon className="icon" />}
             type="button"
-            className="iconButton"
-            onClick={() => dispatch({ type: 'TOGGLE' })}
-            aria-label="Toggle theme"
+            variant="outlined"
           >
-            <DarkModeOutlinedIcon className="icon" />
-          </button>
-          <div className="iconButton badgeButton">
-            <NotificationsNoneOutlinedIcon className="icon" />
-            <div className="counter">3</div>
-          </div>
-          <div className="iconButton badgeButton">
-            <ChatBubbleOutlineOutlinedIcon className="icon" />
-            <div className="counter">5</div>
-          </div>
-          <div className="profileCard">
-            <img src={user?.avatar} alt={user?.name} className="avatar" />
-            <div className="profileCopy">
-              <strong>{user?.name}</strong>
-              <span>{user?.role}</span>
-            </div>
-          </div>
-          <button type="button" className="logoutButton" onClick={logout}>
-            <LogoutOutlinedIcon className="icon" />
-            <span>Sign out</span>
-          </button>
-        </div>
-      </div>
-    </div>
+            {shellCopy.navbar.signOut}
+          </Button>
+        </Stack>
+      </Paper>
+    </Box>
   );
 };
 
