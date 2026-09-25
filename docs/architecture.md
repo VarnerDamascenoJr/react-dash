@@ -52,17 +52,12 @@
 
 ### Routing
 
-- [src/App.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.tsx:1) contains the entire route tree.
+- [src/App.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.tsx:1) mounts the browser router.
+- [src/routes/AppRoutes.tsx](/home/varner/aprendizagem/projetos/react-dash/src/routes/AppRoutes.tsx:1) contains the public/private route tree.
 - Public route:
   - `/login`
 - Protected routes:
   - `/`
-  - `/users`
-  - `/users/:userId`
-  - `/users/new`
-  - `/products`
-  - `/products/:productId`
-  - `/products/new`
 
 ### Layout composition
 
@@ -112,7 +107,7 @@
 
 ### Confirmed coupling
 
-- Route definitions are centralized in `App.tsx`.
+- Route definitions are centralized in `src/routes/AppRoutes.tsx`.
 - Demo authentication is coupled to environment-backed values in [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1).
 - Display data is tightly coupled to hardcoded mock arrays.
 - Theme state is coupled to CSS variable overrides in [src/style/dark.scss](/home/varner/aprendizagem/projetos/react-dash/src/style/dark.scss:1).

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Area,
   AreaChart,
@@ -11,7 +11,13 @@ import {
   YAxis,
 } from 'recharts';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
+import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 import {
   buildAnalyticsKpis,
   buildEventCsvRows,
@@ -29,6 +35,10 @@ import {
   type AnalyticsEventRow,
   type SalesAnalyticsDocument,
 } from '../../analytics';
+import {
+  loadSalesAnalyticsSettings,
+  saveSalesAnalyticsSettings,
+} from '../../config/salesApi';
 import './home.scss';
 
 const eventColumns: GridColDef<AnalyticsEventRow>[] = [
@@ -48,15 +58,23 @@ const eventColumns: GridColDef<AnalyticsEventRow>[] = [
 ];
 
 const Home = () => {
+  const initialSettings = useMemo(
+    () =>
+      loadSalesAnalyticsSettings(
+        localSalesAnalyticsFixture.source.salesEventId ?? ''
+      ),
+    []
+  );
   const [document, setDocument] = useState<SalesAnalyticsDocument>(
     localSalesAnalyticsFixture
   );
   const [source, setSource] = useState<'fixture' | 'api'>('fixture');
   const [apiKey, setApiKey] = useState('');
-  const [salesEventId, setSalesEventId] = useState(
-    localSalesAnalyticsFixture.source.salesEventId ?? ''
-  );
-  const [limit, setLimit] = useState(2000);
+  const [baseUrl, setBaseUrl] = useState(initialSettings.baseUrl);
+  const [salesEventId, setSalesEventId] = useState(initialSettings.salesEventId);
+  const [start, setStart] = useState(initialSettings.start);
+  const [end, setEnd] = useState(initialSettings.end);
+  const [limit, setLimit] = useState(initialSettings.limit);
   const [isLoading, setIsLoading] = useState(false);
   const [loadMessage, setLoadMessage] = useState(
     'Fixture local carregada para desenvolvimento reproduzivel.'
@@ -78,14 +96,26 @@ const Home = () => {
     ([name, total]) => ({ name, total })
   );
 
+  useEffect(() => {
+    saveSalesAnalyticsSettings({
+      baseUrl,
+      end,
+      limit,
+      salesEventId,
+      start,
+    });
+  }, [baseUrl, end, limit, salesEventId, start]);
+
   const handleLoadApi = async () => {
     setIsLoading(true);
     const result = await loadSalesAnalyticsExport(
       {
+        end,
         limit,
         salesEventId,
+        start,
       },
-      { apiKey }
+      { apiKey, baseUrl }
     );
     setDocument(result.document);
     setSource(result.source);
@@ -146,36 +176,59 @@ const Home = () => {
       </section>
 
       <section className="controlPanel" aria-label="Configurar fonte de dados">
-        <label>
-          <span>Sales event</span>
-          <input
-            value={salesEventId}
-            onChange={(event) => setSalesEventId(event.target.value)}
-            placeholder="salesEventId"
-          />
-        </label>
-        <label>
-          <span>Limit</span>
-          <input
-            min={1}
-            type="number"
-            value={limit}
-            onChange={(event) => setLimit(Number(event.target.value))}
-          />
-        </label>
-        <label>
-          <span>API key</span>
-          <input
-            value={apiKey}
-            onChange={(event) => setApiKey(event.target.value)}
-            placeholder="X-API-Key"
-            type="password"
-          />
-        </label>
-        <button type="button" onClick={handleLoadApi} disabled={isLoading}>
-          <RefreshOutlinedIcon fontSize="small" />
+        <TextField
+          label="Base URL"
+          placeholder="/api"
+          size="small"
+          value={baseUrl}
+          onChange={(event) => setBaseUrl(event.target.value)}
+        />
+        <TextField
+          label="Sales event"
+          placeholder="salesEventId"
+          size="small"
+          value={salesEventId}
+          onChange={(event) => setSalesEventId(event.target.value)}
+        />
+        <TextField
+          label="Start"
+          placeholder="2026-09-01T10:00:00Z"
+          size="small"
+          value={start}
+          onChange={(event) => setStart(event.target.value)}
+        />
+        <TextField
+          label="End"
+          placeholder="2026-09-02T00:00:00Z"
+          size="small"
+          value={end}
+          onChange={(event) => setEnd(event.target.value)}
+        />
+        <TextField
+          label="Limite"
+          inputProps={{ min: 1 }}
+          size="small"
+          type="number"
+          value={limit}
+          onChange={(event) => setLimit(Number(event.target.value))}
+        />
+        <TextField
+          label="API key"
+          placeholder="X-API-Key"
+          size="small"
+          type="password"
+          value={apiKey}
+          onChange={(event) => setApiKey(event.target.value)}
+        />
+        <Button
+          disabled={isLoading}
+          startIcon={<RefreshOutlinedIcon fontSize="small" />}
+          type="button"
+          variant="contained"
+          onClick={handleLoadApi}
+        >
           {isLoading ? 'Carregando' : 'Carregar API'}
-        </button>
+        </Button>
       </section>
 
       <section className="exportPanel" aria-label="Exportar dados analiticos">
@@ -185,37 +238,50 @@ const Home = () => {
           <small>{exportMessage || 'Baixe o documento bruto, CSVs ou os graficos visiveis.'}</small>
         </div>
         <div className="exportActions">
-          <button type="button" onClick={handleExportJson}>
-            JSON bruto
-          </button>
-          <button
+          <Button
+            startIcon={<DataObjectOutlinedIcon fontSize="small" />}
             type="button"
-            onClick={handleExportEventsCsv}
+            variant="outlined"
+            onClick={handleExportJson}
+          >
+            JSON bruto
+          </Button>
+          <Button
             disabled={eventCsvRows.length === 0}
+            startIcon={<TableChartOutlinedIcon fontSize="small" />}
+            type="button"
+            variant="outlined"
+            onClick={handleExportEventsCsv}
           >
             CSV eventos
-          </button>
-          <button
-            type="button"
-            onClick={handleExportWindowsCsv}
+          </Button>
+          <Button
             disabled={windowCsvRows.length === 0}
+            startIcon={<TableChartOutlinedIcon fontSize="small" />}
+            type="button"
+            variant="outlined"
+            onClick={handleExportWindowsCsv}
           >
             CSV janelas
-          </button>
-          <button
-            type="button"
-            onClick={() => handleExportPng('events-chart', eventsChartRef.current)}
+          </Button>
+          <Button
             disabled={windowSeries.length === 0}
+            startIcon={<ImageOutlinedIcon fontSize="small" />}
+            type="button"
+            variant="outlined"
+            onClick={() => handleExportPng('events-chart', eventsChartRef.current)}
           >
             PNG janelas
-          </button>
-          <button
-            type="button"
-            onClick={() => handleExportPng('event-types-chart', eventTypesChartRef.current)}
+          </Button>
+          <Button
             disabled={eventTypeData.length === 0}
+            startIcon={<FileDownloadOutlinedIcon fontSize="small" />}
+            type="button"
+            variant="outlined"
+            onClick={() => handleExportPng('event-types-chart', eventTypesChartRef.current)}
           >
             PNG tipos
-          </button>
+          </Button>
         </div>
       </section>
 

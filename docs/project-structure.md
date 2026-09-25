@@ -27,7 +27,13 @@ Application bootstrap. Mounts React and wraps providers.
 
 ### `src/App.tsx`
 
-Root router and top-level protected/public route composition.
+Application shell. Applies global theme class and mounts the browser router.
+
+### `src/routes/`
+
+Route tree composition for public and protected areas.
+
+- [src/routes/AppRoutes.tsx](/home/varner/aprendizagem/projetos/react-dash/src/routes/AppRoutes.tsx:1)
 
 ### `src/context/`
 
@@ -42,6 +48,7 @@ Global UI/application state providers.
 Environment-backed frontend configuration.
 
 - [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1)
+- [src/config/salesApi.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/salesApi.ts:1)
 
 ### `src/components/`
 

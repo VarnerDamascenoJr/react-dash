@@ -28,6 +28,7 @@ GET /analytics/export?salesEventId=&start=&end=&limit=
 - Authentication model:
   - browser client sends `X-API-Key` when provided in the dashboard UI
   - API key values must not be committed to repo files
+  - API key values are not persisted in `localStorage`
 - Expected backend roles:
   - `SUPPORT`
   - `ADMIN`
@@ -42,14 +43,20 @@ GET /analytics/export?salesEventId=&start=&end=&limit=
 
 ### `localStorage`
 
-- Purpose: persist demo authenticated user session
-- Module: [src/context/authContext.tsx](/home/varner/aprendizagem/projetos/react-dash/src/context/authContext.tsx:1)
+- Purpose: persist demo authenticated user session and non-secret analytics
+  source filters
+- Modules:
+  - [src/context/authContext.tsx](/home/varner/aprendizagem/projetos/react-dash/src/context/authContext.tsx:1)
+  - [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
 - Protocol/API: browser Web Storage API
 - Authentication model: not applicable
 - Failure handling:
-  - no explicit fallback if storage is unavailable
+  - analytics filters fall back to in-memory defaults if storage is unavailable
+  - demo auth may require a fresh login if storage is unavailable
 - Impact if unavailable:
   - login persistence would fail or become unreliable
+  - analytics `Base URL`, `Sales event`, `Start`, `End` and `Limite` would
+    reset to defaults between page loads
 
 ### `URL.createObjectURL`
 
@@ -76,11 +83,13 @@ GET /analytics/export?salesEventId=&start=&end=&limit=
 
 ### MUI Data Grid
 
-- Purpose: tabular grid rendering for user list
+- Purpose: tabular grid rendering for analytics events and legacy list
+  components
 - Module:
+  - [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
   - [src/components/datatable/Datatable.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/datatable/Datatable.tsx:1)
 - Impact if broken:
-  - `/users` and `/products` list experience breaks significantly
+  - analytics event exploration fails or degrades
 
 ### Recharts
 

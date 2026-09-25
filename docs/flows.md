@@ -76,6 +76,7 @@ flowchart TD
 ### Confirmed entry point
 
 - [src/App.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.tsx:1)
+- [src/routes/AppRoutes.tsx](/home/varner/aprendizagem/projetos/react-dash/src/routes/AppRoutes.tsx:1)
 
 ### Confirmed execution path
 
@@ -117,6 +118,7 @@ flowchart TD
 ### Files involved
 
 - [src/App.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.tsx:1)
+- [src/routes/AppRoutes.tsx](/home/varner/aprendizagem/projetos/react-dash/src/routes/AppRoutes.tsx:1)
 - [src/components/auth/ProtectedRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/ProtectedRoute.tsx:1)
 - [src/components/auth/PublicOnlyRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/PublicOnlyRoute.tsx:1)
 - [src/components/layout/DashboardLayout.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/layout/DashboardLayout.tsx:1)
@@ -165,9 +167,12 @@ flowchart TD
 
 - [src/pages/new/New.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.tsx:1)
 
+This is currently a legacy component and is not wired into the active
+analytics route tree.
+
 ### Confirmed execution path
 
-1. Route passes `inputs` and `title` from [src/App.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.tsx:1).
+1. A caller passes `inputs` and `title` props.
 2. `New` stores selected file in local component state.
 3. If a file is selected, preview uses `URL.createObjectURL(file)`.
 4. If no file is selected, preview uses a fallback image URL.

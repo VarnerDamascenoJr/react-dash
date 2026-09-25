@@ -101,12 +101,18 @@ npm start
 ```
 
 6. Informe no dashboard:
+   - `Base URL`: `/api` com proxy Vite ou a URL absoluta da API;
    - `Sales event`: UUID do evento local;
-   - `Limit`: limite de eventos;
+   - `Start`: limite inferior RFC3339, quando desejar filtrar periodo;
+   - `End`: limite superior RFC3339, quando desejar filtrar periodo;
+   - `Limite`: limite de eventos;
    - `API key`: chave com role `SUPPORT` ou `ADMIN`.
 7. Clique em `Carregar API`.
 8. Confirme que a fonte muda para `API local`.
 9. Repita as exportacoes JSON, CSV e PNG.
+
+O dashboard pode lembrar `Base URL`, `Sales event`, `Start`, `End` e `Limite`
+no navegador. A `API key` nao deve ser persistida.
 
 ## Fallback Esperado
 

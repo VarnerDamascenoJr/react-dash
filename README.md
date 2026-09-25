@@ -103,10 +103,15 @@ Execucao local recomendada:
 1. Suba a stack do `sales-event-project`, incluindo API, banco e workers.
 2. Gere eventos de venda, pagamento, email/ticket e check-in.
 3. Inicie o `react-dash` com `VITE_SALES_API_BASE_URL=/api`.
-4. Informe uma API key valida no campo `API key`.
-5. Clique em `Carregar API`.
-6. Se a API falhar ou ainda nao existir, o dashboard volta para a fixture local
+4. Confirme ou ajuste o campo `Base URL`; o valor padrao e `/api`.
+5. Informe `Sales event`, `Start`, `End` e `Limite` conforme a demo local.
+6. Informe uma API key valida no campo `API key`.
+7. Clique em `Carregar API`.
+8. Se a API falhar ou ainda nao existir, o dashboard volta para a fixture local
    e mostra a mensagem de fallback.
+
+O dashboard persiste apenas configuracoes nao secretas, como `Base URL` e
+filtros. O valor de `API key` fica somente em memoria da tela.
 
 ## Validacao
 
