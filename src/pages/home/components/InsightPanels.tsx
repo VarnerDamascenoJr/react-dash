@@ -1,3 +1,10 @@
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import type { FunnelStepRow, SurvivalSummaryRow } from '../../../analytics';
 import { homeCopy } from '../copy';
 import { formatPercent, formatSeconds } from '../formatters';
@@ -12,54 +19,80 @@ export default function InsightPanels({
   survivalRows,
 }: InsightPanelsProps) {
   return (
-    <section className="insightGrid">
-      <article className="panel">
-        <div className="panelHeader">
-          <div>
-            <span>{homeCopy.panels.funnel.eyebrow}</span>
-            <h3>{homeCopy.panels.funnel.title}</h3>
-          </div>
-        </div>
+    <Box className="insightGrid" component="section">
+      <Paper className="panel" component="article" elevation={0}>
+        <Stack className="panelHeader" direction="row">
+          <Box>
+            <Typography component="span" variant="overline">
+              {homeCopy.panels.funnel.eyebrow}
+            </Typography>
+            <Typography component="h3" variant="h6">
+              {homeCopy.panels.funnel.title}
+            </Typography>
+          </Box>
+        </Stack>
         {funnelRows.length === 0 ? (
           <EmptyState text={homeCopy.emptyStates.funnel} />
         ) : (
-          <ul className="metricList">
+          <List className="metricList" disablePadding>
             {funnelRows.slice(0, 5).map((row) => (
-              <li key={row.id}>
-                <span>
-                  {row.from} → {row.to}
-                </span>
-                <strong>{formatPercent(row.conversionProbability)}</strong>
-              </li>
+              <ListItem disableGutters key={row.id}>
+                <ListItemText
+                  primary={
+                    <Typography component="span" variant="body2">
+                      {row.from} -&gt; {row.to}
+                    </Typography>
+                  }
+                />
+                <Typography component="strong" variant="subtitle1">
+                  {formatPercent(row.conversionProbability)}
+                </Typography>
+              </ListItem>
             ))}
-          </ul>
+          </List>
         )}
-      </article>
+      </Paper>
 
-      <article className="panel">
-        <div className="panelHeader">
-          <div>
-            <span>{homeCopy.panels.survival.eyebrow}</span>
-            <h3>{homeCopy.panels.survival.title}</h3>
-          </div>
-        </div>
+      <Paper className="panel" component="article" elevation={0}>
+        <Stack className="panelHeader" direction="row">
+          <Box>
+            <Typography component="span" variant="overline">
+              {homeCopy.panels.survival.eyebrow}
+            </Typography>
+            <Typography component="h3" variant="h6">
+              {homeCopy.panels.survival.title}
+            </Typography>
+          </Box>
+        </Stack>
         {survivalRows.length === 0 ? (
           <EmptyState text={homeCopy.emptyStates.survival} />
         ) : (
-          <ul className="metricList">
+          <List className="metricList" disablePadding>
             {survivalRows.map((row) => (
-              <li key={row.id}>
-                <span>{row.eventName}</span>
-                <strong>{formatSeconds(row.p50Seconds)}</strong>
-              </li>
+              <ListItem disableGutters key={row.id}>
+                <ListItemText
+                  primary={
+                    <Typography component="span" variant="body2">
+                      {row.eventName}
+                    </Typography>
+                  }
+                />
+                <Typography component="strong" variant="subtitle1">
+                  {formatSeconds(row.p50Seconds)}
+                </Typography>
+              </ListItem>
             ))}
-          </ul>
+          </List>
         )}
-      </article>
-    </section>
+      </Paper>
+    </Box>
   );
 }
 
 function EmptyState({ text }: { text: string }) {
-  return <div className="emptyState">{text}</div>;
+  return (
+    <Box className="emptyState">
+      <Typography variant="body2">{text}</Typography>
+    </Box>
+  );
 }

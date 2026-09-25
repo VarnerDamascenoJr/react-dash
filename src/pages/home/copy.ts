@@ -56,6 +56,11 @@ export const homeCopy = {
       title: 'Tabela analitica',
       eyebrow: 'Eventos brutos',
     },
+    eventsTable: {
+      noRows: 'Sem eventos para o filtro atual',
+      toolbarColumns: 'Colunas',
+      toolbarFilters: 'Filtros',
+    },
     funnel: {
       title: 'Conversao com incerteza',
       eyebrow: 'Funil',

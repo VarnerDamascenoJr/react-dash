@@ -1,3 +1,7 @@
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+
 interface KpiGridProps {
   items: Array<{
     label: string;
@@ -7,13 +11,22 @@ interface KpiGridProps {
 
 export default function KpiGrid({ items }: KpiGridProps) {
   return (
-    <section className="kpiGrid">
+    <Box className="kpiGrid" component="section">
       {items.map((item) => (
-        <article className="kpiCard" key={item.label}>
-          <span>{item.label}</span>
-          <strong>{item.value}</strong>
-        </article>
+        <Paper
+          className="kpiCard"
+          component="article"
+          elevation={0}
+          key={item.label}
+        >
+          <Typography component="span" variant="overline">
+            {item.label}
+          </Typography>
+          <Typography component="strong" variant="h4">
+            {item.value}
+          </Typography>
+        </Paper>
       ))}
-    </section>
+    </Box>
   );
 }

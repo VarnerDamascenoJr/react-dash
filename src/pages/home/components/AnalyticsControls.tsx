@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
@@ -37,7 +38,11 @@ export default function AnalyticsControls({
   onStartChange,
 }: AnalyticsControlsProps) {
   return (
-    <section className="controlPanel" aria-label="Configurar fonte de dados">
+    <Box
+      aria-label="Configurar fonte de dados"
+      className="controlPanel"
+      component="section"
+    >
       <TextField
         label={homeCopy.controls.baseUrl}
         placeholder={homeCopy.placeholders.baseUrl}
@@ -91,6 +96,6 @@ export default function AnalyticsControls({
       >
         {isLoading ? homeCopy.controls.loading : homeCopy.controls.loadApi}
       </Button>
-    </section>
+    </Box>
   );
 }

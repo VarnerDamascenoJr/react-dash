@@ -1,4 +1,7 @@
 import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
@@ -31,15 +34,24 @@ export default function ExportPanel({
   onExportWindowsPng,
 }: ExportPanelProps) {
   return (
-    <section className="exportPanel" aria-label={homeCopy.exportPanel.ariaLabel}>
-      <div>
-        <span>{homeCopy.exportPanel.title}</span>
-        <strong>{homeCopy.exportPanel.subtitle}</strong>
-        <small>
+    <Paper
+      className="exportPanel"
+      aria-label={homeCopy.exportPanel.ariaLabel}
+      component="section"
+      elevation={0}
+    >
+      <Stack className="exportPanel__copy">
+        <Typography component="span" variant="overline">
+          {homeCopy.exportPanel.title}
+        </Typography>
+        <Typography component="strong" variant="subtitle1">
+          {homeCopy.exportPanel.subtitle}
+        </Typography>
+        <Typography component="small" variant="caption">
           {exportMessage || homeCopy.exportPanel.defaultMessage}
-        </small>
-      </div>
-      <div className="exportActions">
+        </Typography>
+      </Stack>
+      <Stack className="exportActions" direction="row">
         <Button
           startIcon={<DataObjectOutlinedIcon fontSize="small" />}
           type="button"
@@ -84,7 +96,7 @@ export default function ExportPanel({
         >
           {homeCopy.exportPanel.pngEventTypes}
         </Button>
-      </div>
-    </section>
+      </Stack>
+    </Paper>
   );
 }
