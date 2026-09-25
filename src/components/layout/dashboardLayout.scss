@@ -16,15 +16,15 @@
 
 .dashboardLayout__content {
   flex: 1;
-  padding: 24px;
+  padding: 1.5rem;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
   .dashboardLayout {
     flex-direction: column;
   }
 
   .dashboardLayout__content {
-    padding: 16px;
+    padding: 1rem;
   }
 }

@@ -72,6 +72,8 @@ Shell composition.
 
 Shared authenticated navigation and actions.
 
+- `src/components/sidebar/SidebarNavSection.tsx`: reusable sidebar section and item renderer
+
 #### `src/components/widgets/`
 
 KPI cards for home dashboard.

@@ -1,10 +1,6 @@
 import './sidebar.scss';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -24,10 +20,73 @@ import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { AuthContext } from '../../context/authContext';
 import { shellCopy } from '../layout/shellCopy';
+import SidebarNavSection from './SidebarNavSection';
 
 const Sidebar = () => {
   const { darkMode, dispatch } = useContext(DarkModeContext);
   const { user, logout } = useContext(AuthContext);
+  const navSections = [
+    {
+      title: shellCopy.sidebar.sections.overview,
+      items: [
+        {
+          end: true,
+          icon: <DashboardIcon className="icon" />,
+          label: shellCopy.sidebar.items.overview,
+          to: '/',
+        },
+      ],
+    },
+    {
+      title: shellCopy.sidebar.sections.analytics,
+      items: [
+        {
+          icon: <EventNoteOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.events,
+        },
+        {
+          icon: <FilterAltOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.funnel,
+        },
+        {
+          icon: <TimelineOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.survival,
+        },
+      ],
+    },
+    {
+      title: shellCopy.sidebar.sections.outputs,
+      items: [
+        {
+          icon: <AssessmentIcon className="icon" />,
+          label: shellCopy.sidebar.items.windows,
+        },
+        {
+          icon: <FileDownloadOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.exports,
+        },
+        {
+          icon: <SettingsApplicationsIcon className="icon" />,
+          label: shellCopy.sidebar.items.settings,
+        },
+      ],
+    },
+    {
+      title: shellCopy.sidebar.sections.account,
+      items: [
+        {
+          icon: <AccountCircleOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.profile,
+        },
+        {
+          className: 'logoutItem',
+          icon: <ExitToAppOutlinedIcon className="icon" />,
+          label: shellCopy.sidebar.items.logout,
+          onClick: logout,
+        },
+      ],
+    },
+  ];
 
   return (
     <Box className="sidebar" component="aside">
@@ -53,81 +112,13 @@ const Sidebar = () => {
           <Typography component="span">{user?.role}</Typography>
         </Paper>
         <List disablePadding>
-          <ListSubheader className="title" component="div" disableSticky>
-            {shellCopy.sidebar.sections.overview}
-          </ListSubheader>
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) => `navItem${isActive ? ' active' : ''}`}
-          >
-            <ListItemButton className="navItemButton" component="span">
-              <ListItemIcon>
-                <DashboardIcon className="icon" />
-              </ListItemIcon>
-              <ListItemText primary={shellCopy.sidebar.items.overview} />
-            </ListItemButton>
-          </NavLink>
-
-          <ListSubheader className="title" component="div" disableSticky>
-            {shellCopy.sidebar.sections.analytics}
-          </ListSubheader>
-          <ListItemButton className="navStatic" component="div">
-            <ListItemIcon>
-              <EventNoteOutlinedIcon className="icon" />
-            </ListItemIcon>
-            <ListItemText primary={shellCopy.sidebar.items.events} />
-          </ListItemButton>
-          <ListItemButton className="navStatic" component="div">
-            <ListItemIcon>
-              <FilterAltOutlinedIcon className="icon" />
-            </ListItemIcon>
-            <ListItemText primary={shellCopy.sidebar.items.funnel} />
-          </ListItemButton>
-          <ListItemButton className="navStatic" component="div">
-            <ListItemIcon>
-              <TimelineOutlinedIcon className="icon" />
-            </ListItemIcon>
-            <ListItemText primary={shellCopy.sidebar.items.survival} />
-          </ListItemButton>
-
-          <ListSubheader className="title" component="div" disableSticky>
-            {shellCopy.sidebar.sections.outputs}
-          </ListSubheader>
-          <ListItemButton className="navStatic" component="div">
-            <ListItemIcon>
-              <AssessmentIcon className="icon" />
-            </ListItemIcon>
-            <ListItemText primary={shellCopy.sidebar.items.windows} />
-          </ListItemButton>
-          <ListItemButton className="navStatic" component="div">
-            <ListItemIcon>
-              <FileDownloadOutlinedIcon className="icon" />
-            </ListItemIcon>
-            <ListItemText primary={shellCopy.sidebar.items.exports} />
-          </ListItemButton>
-          <ListItemButton className="navStatic" component="div">
-            <ListItemIcon>
-              <SettingsApplicationsIcon className="icon" />
-            </ListItemIcon>
-            <ListItemText primary={shellCopy.sidebar.items.settings} />
-          </ListItemButton>
-
-          <ListSubheader className="title" component="div" disableSticky>
-            {shellCopy.sidebar.sections.account}
-          </ListSubheader>
-          <ListItemButton className="navStatic" component="div">
-            <ListItemIcon>
-              <AccountCircleOutlinedIcon className="icon" />
-            </ListItemIcon>
-            <ListItemText primary={shellCopy.sidebar.items.profile} />
-          </ListItemButton>
-          <ListItemButton className="navStatic logoutItem" onClick={logout}>
-            <ListItemIcon>
-              <ExitToAppOutlinedIcon className="icon" />
-            </ListItemIcon>
-            <ListItemText primary={shellCopy.sidebar.items.logout} />
-          </ListItemButton>
+          {navSections.map((section) => (
+            <SidebarNavSection
+              items={section.items}
+              key={section.title}
+              title={section.title}
+            />
+          ))}
         </List>
       </Stack>
       <Box className="bottom">
