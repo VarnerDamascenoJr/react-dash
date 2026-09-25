@@ -82,26 +82,12 @@
 
   .iconButton {
     width: 48px;
+    min-width: 48px;
     display: inline-grid;
     place-items: center;
     color: var(--text-secondary);
     position: relative;
     cursor: pointer;
-  }
-
-  .badgeButton .counter {
-    position: absolute;
-    top: -2px;
-    right: -1px;
-    width: 20px;
-    height: 20px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: var(--accent-primary);
-    color: white;
-    font-size: 0.68rem;
-    font-weight: 700;
   }
 
   .profileCard .avatar {
@@ -129,6 +115,7 @@
   .logoutButton {
     color: var(--text-primary);
     cursor: pointer;
+    text-transform: none;
   }
 }
 

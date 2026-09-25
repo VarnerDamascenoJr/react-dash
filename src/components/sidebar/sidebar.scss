@@ -79,10 +79,7 @@
     font-weight: 700;
   }
 
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .MuiList-root {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -90,6 +87,8 @@
 
   .title {
     margin: 14px 0 4px;
+    padding: 0;
+    background: transparent;
     color: var(--text-tertiary);
     font-size: 0.72rem;
     font-weight: 700;
@@ -97,7 +96,12 @@
     letter-spacing: 0.08em;
   }
 
-  .navItem,
+  .navItem {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .navItemButton,
   .navStatic {
     display: flex;
     align-items: center;
@@ -108,6 +112,11 @@
     color: var(--text-secondary);
     text-decoration: none;
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+    .MuiListItemIcon-root {
+      min-width: 0;
+      color: inherit;
+    }
 
     .icon {
       font-size: 1.1rem;
@@ -121,9 +130,12 @@
   }
 
   .navItem.active {
-    background: linear-gradient(135deg, rgba(240, 93, 94, 0.18), rgba(44, 123, 229, 0.12));
     color: var(--text-primary);
     font-weight: 700;
+
+    .navItemButton {
+      background: linear-gradient(135deg, rgba(240, 93, 94, 0.18), rgba(44, 123, 229, 0.12));
+    }
   }
 
   .logoutItem {
@@ -143,6 +155,13 @@
     background: rgba(255, 255, 255, 0.46);
     color: var(--text-secondary);
     cursor: pointer;
+    text-transform: none;
+
+    &.Mui-selected {
+      background: rgba(44, 123, 229, 0.14);
+      color: var(--text-primary);
+      font-weight: 700;
+    }
   }
 }
 
