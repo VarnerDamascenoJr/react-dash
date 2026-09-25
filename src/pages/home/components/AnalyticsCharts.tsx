@@ -29,6 +29,7 @@ export default function AnalyticsCharts({
     <Box className="analyticsGrid" component="section">
       <ChartPanel
         containerRef={eventsChartRef}
+        emptyMetricLabel={homeCopy.emptyStates.chartMetric}
         eyebrow={homeCopy.panels.windows.eyebrow}
         metric={latestWindow ? formatInteger(latestWindow.totalEvents) : '0'}
         title={homeCopy.panels.windows.title}
@@ -49,6 +50,7 @@ export default function AnalyticsCharts({
       <ChartPanel
         compact
         containerRef={eventTypesChartRef}
+        emptyMetricLabel={homeCopy.emptyStates.chartMetric}
         eyebrow={homeCopy.panels.eventTypes.eyebrow}
         title={homeCopy.panels.eventTypes.title}
       >

@@ -229,6 +229,12 @@
   }
 }
 
+.panelHeader__emptyMetric {
+  border-color: var(--border-soft);
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
 .chartFrame {
   width: 100%;
   height: 320px;

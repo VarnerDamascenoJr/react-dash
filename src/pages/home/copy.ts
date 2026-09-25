@@ -10,6 +10,7 @@ export const homeCopy = {
     limit: 'Limite',
   },
   emptyStates: {
+    chartMetric: 'Sem dado agregado',
     funnel: 'Sem segmentos de funil neste export.',
     survival: 'Sem analises de sobrevivencia neste export.',
   },
