@@ -47,15 +47,15 @@
   justify-content: flex-end;
   gap: 10px;
 
-  button {
+  .MuiButton-root {
     min-height: 40px;
     padding: 0 14px;
     border: 1px solid var(--border-soft);
     border-radius: 12px;
     background: var(--surface-secondary);
     color: var(--text-primary);
-    cursor: pointer;
     font-weight: 700;
+    text-transform: none;
 
     &:disabled {
       cursor: not-allowed;
@@ -124,35 +124,38 @@
   padding: 20px;
   border-radius: var(--radius-lg);
 
-  label {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  .MuiTextField-root {
+    min-width: 0;
   }
 
-  input {
-    width: 100%;
-    height: 44px;
-    padding: 0 14px;
-    border: 1px solid var(--border-soft);
+  .MuiInputLabel-root {
+    color: var(--text-tertiary);
+    font-weight: 700;
+  }
+
+  .MuiOutlinedInput-root {
     border-radius: 12px;
     background: var(--surface-secondary);
     color: var(--text-primary);
+
+    fieldset {
+      border-color: var(--border-soft);
+    }
+
+    &:hover fieldset,
+    &.Mui-focused fieldset {
+      border-color: var(--accent-secondary);
+    }
   }
 
-  button {
+  .MuiButton-root {
     height: 44px;
     min-width: 148px;
-    border: 0;
     border-radius: 12px;
     background: var(--accent-secondary);
     color: white;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
     font-weight: 700;
+    text-transform: none;
 
     &:disabled {
       cursor: wait;
@@ -273,7 +276,7 @@
   .controlPanel {
     grid-template-columns: repeat(2, minmax(220px, 1fr));
 
-    button {
+    .MuiButton-root {
       width: 100%;
     }
   }
@@ -301,7 +304,7 @@
   .exportActions {
     justify-content: stretch;
 
-    button {
+    .MuiButton-root {
       flex: 1;
     }
   }
@@ -313,7 +316,7 @@
   }
 
   .controlPanel {
-    button {
+    .MuiButton-root {
       width: 100%;
     }
   }

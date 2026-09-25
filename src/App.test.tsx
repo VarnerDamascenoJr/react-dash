@@ -3,6 +3,7 @@ import App from './App';
 import { DarkModeContextProvider } from './context/darkModeContext';
 import { AuthContextProvider } from './context/authContext';
 import { demoUser } from './config/auth';
+import { salesAnalyticsSettingsStorageKey } from './config/salesApi';
 
 beforeEach(() => {
   localStorage.setItem(
@@ -48,11 +49,11 @@ test('persists analytics filters without storing the API key', async () => {
   });
 
   await waitFor(() => {
-    expect(localStorage.getItem('react-dash.analytics.settings')).toContain(
+    expect(localStorage.getItem(salesAnalyticsSettingsStorageKey)).toContain(
       'http://localhost:8080'
     );
   });
-  expect(localStorage.getItem('react-dash.analytics.settings')).not.toContain(
+  expect(localStorage.getItem(salesAnalyticsSettingsStorageKey)).not.toContain(
     'support-key'
   );
 });

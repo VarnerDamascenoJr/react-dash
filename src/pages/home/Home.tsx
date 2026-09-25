@@ -11,7 +11,13 @@ import {
   YAxis,
 } from 'recharts';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
+import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 import {
   buildAnalyticsKpis,
   buildEventCsvRows,
@@ -29,10 +35,11 @@ import {
   type AnalyticsEventRow,
   type SalesAnalyticsDocument,
 } from '../../analytics';
-import { salesApiBaseUrl } from '../../config/salesApi';
+import {
+  loadSalesAnalyticsSettings,
+  saveSalesAnalyticsSettings,
+} from '../../config/salesApi';
 import './home.scss';
-
-const ANALYTICS_SETTINGS_STORAGE_KEY = 'react-dash.analytics.settings';
 
 const eventColumns: GridColDef<AnalyticsEventRow>[] = [
   { field: 'occurredAt', headerName: 'Timestamp', flex: 1.3, minWidth: 180 },
@@ -51,7 +58,13 @@ const eventColumns: GridColDef<AnalyticsEventRow>[] = [
 ];
 
 const Home = () => {
-  const initialSettings = useMemo(loadAnalyticsSettings, []);
+  const initialSettings = useMemo(
+    () =>
+      loadSalesAnalyticsSettings(
+        localSalesAnalyticsFixture.source.salesEventId ?? ''
+      ),
+    []
+  );
   const [document, setDocument] = useState<SalesAnalyticsDocument>(
     localSalesAnalyticsFixture
   );
@@ -84,7 +97,7 @@ const Home = () => {
   );
 
   useEffect(() => {
-    saveAnalyticsSettings({
+    saveSalesAnalyticsSettings({
       baseUrl,
       end,
       limit,
@@ -163,66 +176,59 @@ const Home = () => {
       </section>
 
       <section className="controlPanel" aria-label="Configurar fonte de dados">
-        <label>
-          <span>Base URL</span>
-          <input
-            aria-label="Base URL"
-            value={baseUrl}
-            onChange={(event) => setBaseUrl(event.target.value)}
-            placeholder="/api"
-          />
-        </label>
-        <label>
-          <span>Sales event</span>
-          <input
-            aria-label="Sales event"
-            value={salesEventId}
-            onChange={(event) => setSalesEventId(event.target.value)}
-            placeholder="salesEventId"
-          />
-        </label>
-        <label>
-          <span>Start</span>
-          <input
-            aria-label="Start"
-            value={start}
-            onChange={(event) => setStart(event.target.value)}
-            placeholder="2026-09-01T10:00:00Z"
-          />
-        </label>
-        <label>
-          <span>End</span>
-          <input
-            aria-label="End"
-            value={end}
-            onChange={(event) => setEnd(event.target.value)}
-            placeholder="2026-09-02T00:00:00Z"
-          />
-        </label>
-        <label>
-          <span>Limite</span>
-          <input
-            aria-label="Limite"
-            min={1}
-            type="number"
-            value={limit}
-            onChange={(event) => setLimit(Number(event.target.value))}
-          />
-        </label>
-        <label>
-          <span>API key</span>
-          <input
-            aria-label="API key"
-            value={apiKey}
-            onChange={(event) => setApiKey(event.target.value)}
-            placeholder="X-API-Key"
-            type="password"
-          />
-        </label>
-        <button type="button" onClick={handleLoadApi} disabled={isLoading}>
-          <RefreshOutlinedIcon fontSize="small" />
+        <TextField
+          label="Base URL"
+          placeholder="/api"
+          size="small"
+          value={baseUrl}
+          onChange={(event) => setBaseUrl(event.target.value)}
+        />
+        <TextField
+          label="Sales event"
+          placeholder="salesEventId"
+          size="small"
+          value={salesEventId}
+          onChange={(event) => setSalesEventId(event.target.value)}
+        />
+        <TextField
+          label="Start"
+          placeholder="2026-09-01T10:00:00Z"
+          size="small"
+          value={start}
+          onChange={(event) => setStart(event.target.value)}
+        />
+        <TextField
+          label="End"
+          placeholder="2026-09-02T00:00:00Z"
+          size="small"
+          value={end}
+          onChange={(event) => setEnd(event.target.value)}
+        />
+        <TextField
+          label="Limite"
+          inputProps={{ min: 1 }}
+          size="small"
+          type="number"
+          value={limit}
+          onChange={(event) => setLimit(Number(event.target.value))}
+        />
+        <TextField
+          label="API key"
+          placeholder="X-API-Key"
+          size="small"
+          type="password"
+          value={apiKey}
+          onChange={(event) => setApiKey(event.target.value)}
+        />
+        <Button
+          disabled={isLoading}
+          startIcon={<RefreshOutlinedIcon fontSize="small" />}
+          type="button"
+          variant="contained"
+          onClick={handleLoadApi}
+        >
           {isLoading ? 'Carregando' : 'Carregar API'}
-        </button>
+        </Button>
       </section>
 
       <section className="exportPanel" aria-label="Exportar dados analiticos">
@@ -232,37 +238,50 @@ const Home = () => {
           <small>{exportMessage || 'Baixe o documento bruto, CSVs ou os graficos visiveis.'}</small>
         </div>
         <div className="exportActions">
-          <button type="button" onClick={handleExportJson}>
-            JSON bruto
-          </button>
-          <button
+          <Button
+            startIcon={<DataObjectOutlinedIcon fontSize="small" />}
             type="button"
-            onClick={handleExportEventsCsv}
+            variant="outlined"
+            onClick={handleExportJson}
+          >
+            JSON bruto
+          </Button>
+          <Button
             disabled={eventCsvRows.length === 0}
+            startIcon={<TableChartOutlinedIcon fontSize="small" />}
+            type="button"
+            variant="outlined"
+            onClick={handleExportEventsCsv}
           >
             CSV eventos
-          </button>
-          <button
-            type="button"
-            onClick={handleExportWindowsCsv}
+          </Button>
+          <Button
             disabled={windowCsvRows.length === 0}
+            startIcon={<TableChartOutlinedIcon fontSize="small" />}
+            type="button"
+            variant="outlined"
+            onClick={handleExportWindowsCsv}
           >
             CSV janelas
-          </button>
-          <button
-            type="button"
-            onClick={() => handleExportPng('events-chart', eventsChartRef.current)}
+          </Button>
+          <Button
             disabled={windowSeries.length === 0}
+            startIcon={<ImageOutlinedIcon fontSize="small" />}
+            type="button"
+            variant="outlined"
+            onClick={() => handleExportPng('events-chart', eventsChartRef.current)}
           >
             PNG janelas
-          </button>
-          <button
-            type="button"
-            onClick={() => handleExportPng('event-types-chart', eventTypesChartRef.current)}
+          </Button>
+          <Button
             disabled={eventTypeData.length === 0}
+            startIcon={<FileDownloadOutlinedIcon fontSize="small" />}
+            type="button"
+            variant="outlined"
+            onClick={() => handleExportPng('event-types-chart', eventTypesChartRef.current)}
           >
             PNG tipos
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -464,82 +483,6 @@ function formatSeconds(value: number | null) {
   }
 
   return `${formatInteger(value)}s`;
-}
-
-interface AnalyticsSettings {
-  baseUrl: string;
-  salesEventId: string;
-  start: string;
-  end: string;
-  limit: number;
-}
-
-function defaultAnalyticsSettings(): AnalyticsSettings {
-  return {
-    baseUrl: salesApiBaseUrl,
-    end: '',
-    limit: 2000,
-    salesEventId: localSalesAnalyticsFixture.source.salesEventId ?? '',
-    start: '',
-  };
-}
-
-function loadAnalyticsSettings(): AnalyticsSettings {
-  const defaults = defaultAnalyticsSettings();
-
-  if (typeof window === 'undefined') {
-    return defaults;
-  }
-
-  try {
-    const rawSettings = window.localStorage.getItem(ANALYTICS_SETTINGS_STORAGE_KEY);
-    if (!rawSettings) {
-      return defaults;
-    }
-
-    const parsed = JSON.parse(rawSettings) as Partial<AnalyticsSettings>;
-    return {
-      baseUrl: typeof parsed.baseUrl === 'string' ? parsed.baseUrl : defaults.baseUrl,
-      end: typeof parsed.end === 'string' ? parsed.end : defaults.end,
-      limit: normalizeLimit(parsed.limit, defaults.limit),
-      salesEventId:
-        typeof parsed.salesEventId === 'string'
-          ? parsed.salesEventId
-          : defaults.salesEventId,
-      start: typeof parsed.start === 'string' ? parsed.start : defaults.start,
-    };
-  } catch (_error) {
-    return defaults;
-  }
-}
-
-function saveAnalyticsSettings(settings: AnalyticsSettings) {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  try {
-    window.localStorage.setItem(
-      ANALYTICS_SETTINGS_STORAGE_KEY,
-      JSON.stringify({
-        baseUrl: settings.baseUrl,
-        end: settings.end,
-        limit: settings.limit,
-        salesEventId: settings.salesEventId,
-        start: settings.start,
-      })
-    );
-  } catch (_error) {
-    // Storage can be unavailable in restricted browser modes; the UI still works in memory.
-  }
-}
-
-function normalizeLimit(value: unknown, fallback: number) {
-  if (typeof value !== 'number' || !Number.isFinite(value) || value < 1) {
-    return fallback;
-  }
-
-  return Math.floor(value);
 }
 
 export default Home;

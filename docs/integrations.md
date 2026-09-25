@@ -83,11 +83,13 @@ GET /analytics/export?salesEventId=&start=&end=&limit=
 
 ### MUI Data Grid
 
-- Purpose: tabular grid rendering for user list
+- Purpose: tabular grid rendering for analytics events and legacy list
+  components
 - Module:
+  - [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
   - [src/components/datatable/Datatable.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/datatable/Datatable.tsx:1)
 - Impact if broken:
-  - `/users` and `/products` list experience breaks significantly
+  - analytics event exploration fails or degrades
 
 ### Recharts
 
