@@ -116,6 +116,13 @@
   }
 }
 
+.sourceBadge__chip {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.16);
+  color: white;
+  font-weight: 700;
+}
+
 .controlPanel {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -220,6 +227,12 @@
     color: var(--accent-secondary);
     font-size: 1.6rem;
   }
+}
+
+.panelHeader__emptyMetric {
+  border-color: var(--border-soft);
+  color: var(--text-secondary);
+  font-weight: 700;
 }
 
 .chartFrame {

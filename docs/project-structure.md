@@ -96,6 +96,8 @@ Static transaction table.
 Route-level screens.
 
 - `home/`: dashboard landing page
+  - `components/`: sections used only by the analytics overview
+  - `formatters.ts`: display formatters for currency, dates, percentages and counts
 - `login/`: sign-in page
 - `list/`: generic list page used by `/users` and `/products`
 - `new/`: generic entry form page
