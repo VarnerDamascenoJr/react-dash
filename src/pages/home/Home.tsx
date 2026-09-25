@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Area,
   AreaChart,
@@ -29,7 +29,10 @@ import {
   type AnalyticsEventRow,
   type SalesAnalyticsDocument,
 } from '../../analytics';
+import { salesApiBaseUrl } from '../../config/salesApi';
 import './home.scss';
+
+const ANALYTICS_SETTINGS_STORAGE_KEY = 'react-dash.analytics.settings';
 
 const eventColumns: GridColDef<AnalyticsEventRow>[] = [
   { field: 'occurredAt', headerName: 'Timestamp', flex: 1.3, minWidth: 180 },
@@ -48,15 +51,17 @@ const eventColumns: GridColDef<AnalyticsEventRow>[] = [
 ];
 
 const Home = () => {
+  const initialSettings = useMemo(loadAnalyticsSettings, []);
   const [document, setDocument] = useState<SalesAnalyticsDocument>(
     localSalesAnalyticsFixture
   );
   const [source, setSource] = useState<'fixture' | 'api'>('fixture');
   const [apiKey, setApiKey] = useState('');
-  const [salesEventId, setSalesEventId] = useState(
-    localSalesAnalyticsFixture.source.salesEventId ?? ''
-  );
-  const [limit, setLimit] = useState(2000);
+  const [baseUrl, setBaseUrl] = useState(initialSettings.baseUrl);
+  const [salesEventId, setSalesEventId] = useState(initialSettings.salesEventId);
+  const [start, setStart] = useState(initialSettings.start);
+  const [end, setEnd] = useState(initialSettings.end);
+  const [limit, setLimit] = useState(initialSettings.limit);
   const [isLoading, setIsLoading] = useState(false);
   const [loadMessage, setLoadMessage] = useState(
     'Fixture local carregada para desenvolvimento reproduzivel.'
@@ -78,14 +83,26 @@ const Home = () => {
     ([name, total]) => ({ name, total })
   );
 
+  useEffect(() => {
+    saveAnalyticsSettings({
+      baseUrl,
+      end,
+      limit,
+      salesEventId,
+      start,
+    });
+  }, [baseUrl, end, limit, salesEventId, start]);
+
   const handleLoadApi = async () => {
     setIsLoading(true);
     const result = await loadSalesAnalyticsExport(
       {
+        end,
         limit,
         salesEventId,
+        start,
       },
-      { apiKey }
+      { apiKey, baseUrl }
     );
     setDocument(result.document);
     setSource(result.source);
@@ -147,16 +164,45 @@ const Home = () => {
 
       <section className="controlPanel" aria-label="Configurar fonte de dados">
         <label>
+          <span>Base URL</span>
+          <input
+            aria-label="Base URL"
+            value={baseUrl}
+            onChange={(event) => setBaseUrl(event.target.value)}
+            placeholder="/api"
+          />
+        </label>
+        <label>
           <span>Sales event</span>
           <input
+            aria-label="Sales event"
             value={salesEventId}
             onChange={(event) => setSalesEventId(event.target.value)}
             placeholder="salesEventId"
           />
         </label>
         <label>
-          <span>Limit</span>
+          <span>Start</span>
           <input
+            aria-label="Start"
+            value={start}
+            onChange={(event) => setStart(event.target.value)}
+            placeholder="2026-09-01T10:00:00Z"
+          />
+        </label>
+        <label>
+          <span>End</span>
+          <input
+            aria-label="End"
+            value={end}
+            onChange={(event) => setEnd(event.target.value)}
+            placeholder="2026-09-02T00:00:00Z"
+          />
+        </label>
+        <label>
+          <span>Limite</span>
+          <input
+            aria-label="Limite"
             min={1}
             type="number"
             value={limit}
@@ -166,6 +212,7 @@ const Home = () => {
         <label>
           <span>API key</span>
           <input
+            aria-label="API key"
             value={apiKey}
             onChange={(event) => setApiKey(event.target.value)}
             placeholder="X-API-Key"
@@ -417,6 +464,82 @@ function formatSeconds(value: number | null) {
   }
 
   return `${formatInteger(value)}s`;
+}
+
+interface AnalyticsSettings {
+  baseUrl: string;
+  salesEventId: string;
+  start: string;
+  end: string;
+  limit: number;
+}
+
+function defaultAnalyticsSettings(): AnalyticsSettings {
+  return {
+    baseUrl: salesApiBaseUrl,
+    end: '',
+    limit: 2000,
+    salesEventId: localSalesAnalyticsFixture.source.salesEventId ?? '',
+    start: '',
+  };
+}
+
+function loadAnalyticsSettings(): AnalyticsSettings {
+  const defaults = defaultAnalyticsSettings();
+
+  if (typeof window === 'undefined') {
+    return defaults;
+  }
+
+  try {
+    const rawSettings = window.localStorage.getItem(ANALYTICS_SETTINGS_STORAGE_KEY);
+    if (!rawSettings) {
+      return defaults;
+    }
+
+    const parsed = JSON.parse(rawSettings) as Partial<AnalyticsSettings>;
+    return {
+      baseUrl: typeof parsed.baseUrl === 'string' ? parsed.baseUrl : defaults.baseUrl,
+      end: typeof parsed.end === 'string' ? parsed.end : defaults.end,
+      limit: normalizeLimit(parsed.limit, defaults.limit),
+      salesEventId:
+        typeof parsed.salesEventId === 'string'
+          ? parsed.salesEventId
+          : defaults.salesEventId,
+      start: typeof parsed.start === 'string' ? parsed.start : defaults.start,
+    };
+  } catch (_error) {
+    return defaults;
+  }
+}
+
+function saveAnalyticsSettings(settings: AnalyticsSettings) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(
+      ANALYTICS_SETTINGS_STORAGE_KEY,
+      JSON.stringify({
+        baseUrl: settings.baseUrl,
+        end: settings.end,
+        limit: settings.limit,
+        salesEventId: settings.salesEventId,
+        start: settings.start,
+      })
+    );
+  } catch (_error) {
+    // Storage can be unavailable in restricted browser modes; the UI still works in memory.
+  }
+}
+
+function normalizeLimit(value: unknown, fallback: number) {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 1) {
+    return fallback;
+  }
+
+  return Math.floor(value);
 }
 
 export default Home;
