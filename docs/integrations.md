@@ -4,9 +4,39 @@
 
 ## Confirmed external integrations
 
-The project has no real backend API or infrastructure integration in the application source.
+The project has an optional local HTTP integration with the
+`sales-event-project` analytics export API. The dashboard still works without
+that API by using a versioned local fixture.
 
 What it does integrate with are frontend libraries and browser/platform capabilities.
+
+## HTTP integrations
+
+### Sales analytics export API
+
+- Purpose: load operational analytics data from `sales-event-project`
+- Client module: [src/analytics/api.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.ts:1)
+- Configuration module: [src/config/salesApi.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/salesApi.ts:1)
+- Default frontend base URL: `/api`
+- Vite proxy target: `http://localhost:8080`
+- Endpoint path:
+
+```text
+GET /analytics/export?salesEventId=&start=&end=&limit=
+```
+
+- Authentication model:
+  - browser client sends `X-API-Key` when provided in the dashboard UI
+  - API key values must not be committed to repo files
+- Expected backend roles:
+  - `SUPPORT`
+  - `ADMIN`
+- Expected schema:
+  - `sales-analytics-export.v1`
+- Failure handling:
+  - invalid filters, missing API key, forbidden role and network failures become user-facing messages
+  - the dashboard falls back to `src/analytics/fixtures/sales-analytics-export.v1.json`
+  - invalid response schema is rejected before updating the document
 
 ## Browser/platform integrations
 
@@ -23,13 +53,16 @@ What it does integrate with are frontend libraries and browser/platform capabili
 
 ### `URL.createObjectURL`
 
-- Purpose: preview uploaded file on the “new” page
+- Purpose: preview uploaded file on the “new” page and download generated
+  JSON/CSV/PNG exports
 - Module: [src/pages/new/New.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.tsx:1)
+  and [src/analytics/exporters.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.ts:1)
 - Protocol/API: browser File/Object URL API
 - Failure handling:
-  - no explicit try/catch
+  - upload preview has no explicit try/catch
+  - chart PNG export surfaces an error message when an SVG/canvas step fails
 - Impact if unavailable:
-  - image preview would not function
+  - image preview and browser-side export downloads would not function
 
 ## UI library integrations
 
@@ -74,15 +107,17 @@ What it does integrate with are frontend libraries and browser/platform capabili
 - `VITE_DEMO_USER_NAME`
 - `VITE_DEMO_USER_ROLE`
 - `VITE_DEMO_USER_AVATAR`
+- `VITE_SALES_API_BASE_URL`
 
 ### Source
 
 - [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1)
+- [src/config/salesApi.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/salesApi.ts:1)
 - [src/vite-env.d.ts](/home/varner/aprendizagem/projetos/react-dash/src/vite-env.d.ts:1)
 
 ### Purpose
 
-- Configure demo login identity and demo profile display.
+- Configure demo login identity, demo profile display and Sales API base URL.
 
 ### Important note
 
@@ -92,7 +127,7 @@ What it does integrate with are frontend libraries and browser/platform capabili
 ## Confirmed non-integrations
 
 - No HTTP client library usage was identified.
-- No REST, GraphQL or gRPC API integration was identified.
+- No GraphQL or gRPC API integration was identified.
 - No message broker or queue integration was identified.
 - No observability vendor integration was identified.
 - No payment, email, notification or storage service SDK usage was identified.

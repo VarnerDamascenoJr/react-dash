@@ -444,6 +444,12 @@ Validacoes:
 - `npm run build`.
 - Smoke manual documentado.
 
+Status:
+
+- Concluido com README atualizado, checklist de demo em
+  `docs/demo-checklist.md`, integracoes documentadas e caminho de fixture/API
+  descrito para handoff de portfolio.
+
 ## Dependencia Cross-Repo
 
 O `react-dash` depende de um endpoint futuro no `sales-event-project` para
