@@ -3,6 +3,7 @@ import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+import { homeCopy } from '../copy';
 
 interface ExportPanelProps {
   canExportEventTypesPng: boolean;
@@ -30,13 +31,12 @@ export default function ExportPanel({
   onExportWindowsPng,
 }: ExportPanelProps) {
   return (
-    <section className="exportPanel" aria-label="Exportar dados analiticos">
+    <section className="exportPanel" aria-label={homeCopy.exportPanel.ariaLabel}>
       <div>
-        <span>Exportacoes</span>
-        <strong>Dados e graficos</strong>
+        <span>{homeCopy.exportPanel.title}</span>
+        <strong>{homeCopy.exportPanel.subtitle}</strong>
         <small>
-          {exportMessage ||
-            'Baixe o documento bruto, CSVs ou os graficos visiveis.'}
+          {exportMessage || homeCopy.exportPanel.defaultMessage}
         </small>
       </div>
       <div className="exportActions">
@@ -46,7 +46,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportJson}
         >
-          JSON bruto
+          {homeCopy.exportPanel.json}
         </Button>
         <Button
           disabled={!canExportEventsCsv}
@@ -55,7 +55,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportEventsCsv}
         >
-          CSV eventos
+          {homeCopy.exportPanel.csvEvents}
         </Button>
         <Button
           disabled={!canExportWindowsCsv}
@@ -64,7 +64,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportWindowsCsv}
         >
-          CSV janelas
+          {homeCopy.exportPanel.csvWindows}
         </Button>
         <Button
           disabled={!canExportWindowsPng}
@@ -73,7 +73,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportWindowsPng}
         >
-          PNG janelas
+          {homeCopy.exportPanel.pngWindows}
         </Button>
         <Button
           disabled={!canExportEventTypesPng}
@@ -82,7 +82,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportEventTypesPng}
         >
-          PNG tipos
+          {homeCopy.exportPanel.pngEventTypes}
         </Button>
       </div>
     </section>

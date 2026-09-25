@@ -26,6 +26,7 @@ import EventsTable from './components/EventsTable';
 import ExportPanel from './components/ExportPanel';
 import InsightPanels from './components/InsightPanels';
 import KpiGrid from './components/KpiGrid';
+import { homeCopy } from './copy';
 import { formatCurrency, formatInteger } from './formatters';
 import './home.scss';
 
@@ -48,8 +49,8 @@ const Home = () => {
   const [end, setEnd] = useState(initialSettings.end);
   const [limit, setLimit] = useState(initialSettings.limit);
   const [isLoading, setIsLoading] = useState(false);
-  const [loadMessage, setLoadMessage] = useState(
-    'Fixture local carregada para desenvolvimento reproduzivel.'
+  const [loadMessage, setLoadMessage] = useState<string>(
+    homeCopy.loadStatus.fixture
   );
   const [exportMessage, setExportMessage] = useState('');
   const eventsChartRef = useRef<HTMLDivElement>(null);
@@ -92,8 +93,8 @@ const Home = () => {
     setSource(result.source);
     setLoadMessage(
       result.source === 'api'
-        ? 'Dados carregados da API local do Sales.'
-        : result.error?.message ?? 'API indisponivel; usando fixture local.'
+        ? homeCopy.loadStatus.api
+        : result.error?.message ?? homeCopy.loadStatus.fallback
     );
     setIsLoading(false);
   };
@@ -103,17 +104,17 @@ const Home = () => {
 
   const handleExportJson = () => {
     downloadJson(exportFileName('export', 'json'), document);
-    setExportMessage('JSON exportado com o documento bruto.');
+    setExportMessage(homeCopy.exportStatus.json);
   };
 
   const handleExportEventsCsv = () => {
     downloadCsv(exportFileName('events', 'csv'), eventCsvRows);
-    setExportMessage('CSV de eventos exportado.');
+    setExportMessage(homeCopy.exportStatus.csvEvents);
   };
 
   const handleExportWindowsCsv = () => {
     downloadCsv(exportFileName('windows', 'csv'), windowCsvRows);
-    setExportMessage('CSV de janelas exportado.');
+    setExportMessage(homeCopy.exportStatus.csvWindows);
   };
 
   const handleExportPng = async (
@@ -122,7 +123,7 @@ const Home = () => {
   ) => {
     try {
       await downloadChartPng(exportFileName(suffix, 'png'), container);
-      setExportMessage('PNG do grafico exportado.');
+      setExportMessage(homeCopy.exportStatus.png);
     } catch (error) {
       setExportMessage(error instanceof Error ? error.message : 'Falha ao exportar PNG.');
     }
@@ -173,20 +174,20 @@ const Home = () => {
 
       <KpiGrid
         items={[
-          { label: 'Eventos coletados', value: formatInteger(kpis.eventCount) },
+          { label: homeCopy.kpis.eventCount, value: formatInteger(kpis.eventCount) },
           {
-            label: 'Vendas concluidas',
+            label: homeCopy.kpis.completedSales,
             value: formatInteger(kpis.completedSales),
           },
           {
-            label: 'Receita observada',
+            label: homeCopy.kpis.observedRevenue,
             value: formatCurrency(kpis.observedRevenueCents),
           },
           {
-            label: 'Tickets emitidos',
+            label: homeCopy.kpis.issuedTickets,
             value: formatInteger(kpis.issuedTickets),
           },
-          { label: 'Check-ins', value: formatInteger(kpis.checkIns) },
+          { label: homeCopy.kpis.checkIns, value: formatInteger(kpis.checkIns) },
         ]}
       />
 

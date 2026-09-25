@@ -405,6 +405,35 @@ Status:
   dos graficos principais da tela. A camada `src/analytics/exporters` cobre
   serializacao CSV, nomes de arquivos deterministas e downloads browser-side.
 
+### RD4.1 - Refatoracao Frontend Com Material UI E Dicionario De Textos
+
+Objetivo: padronizar a camada visual depois da primeira entrega funcional,
+reduzindo HTML estrutural manual e facilitando manutencao dos textos.
+
+Tarefas:
+
+- Revisar componentes do dashboard e substituir HTML estrutural por componentes
+  MUI quando houver equivalente claro.
+- Manter MUI X Data Grid como padrao para tabelas analiticas.
+- Consolidar textos por pagina em dicionarios locais ou compartilhados,
+  evitando labels soltos nos componentes.
+- Revisar responsividade de cards, paineis, formularios, graficos e tabelas.
+- Modularizar padroes de painel/grafico para reuso em novas telas de Eventos,
+  Funil, Sobrevivencia, Exportacoes e Configuracao.
+
+Criterios de aceite:
+
+- Componentes de UI seguem Material UI de forma consistente.
+- Textos da Home analitica ficam centralizados em dicionario.
+- Layout mobile e desktop nao apresenta sobreposicao de textos ou controles.
+- Mudancas de design nao alteram o contrato analitico nem o client de API.
+
+Validacoes:
+
+- `npm test`.
+- `npm run typecheck`.
+- `npm run build`.
+
 ### RD5 - Demo Local E Checklist De Portfolio
 
 Objetivo: deixar o projeto pronto para apresentacao e handoff.

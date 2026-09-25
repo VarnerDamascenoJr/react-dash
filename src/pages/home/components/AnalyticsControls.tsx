@@ -1,6 +1,7 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
+import { homeCopy } from '../copy';
 
 interface AnalyticsControlsProps {
   apiKey: string;
@@ -38,35 +39,35 @@ export default function AnalyticsControls({
   return (
     <section className="controlPanel" aria-label="Configurar fonte de dados">
       <TextField
-        label="Base URL"
-        placeholder="/api"
+        label={homeCopy.controls.baseUrl}
+        placeholder={homeCopy.placeholders.baseUrl}
         size="small"
         value={baseUrl}
         onChange={(event) => onBaseUrlChange(event.target.value)}
       />
       <TextField
-        label="Sales event"
-        placeholder="salesEventId"
+        label={homeCopy.controls.salesEvent}
+        placeholder={homeCopy.placeholders.salesEvent}
         size="small"
         value={salesEventId}
         onChange={(event) => onSalesEventIdChange(event.target.value)}
       />
       <TextField
-        label="Start"
-        placeholder="2026-09-01T10:00:00Z"
+        label={homeCopy.controls.start}
+        placeholder={homeCopy.placeholders.start}
         size="small"
         value={start}
         onChange={(event) => onStartChange(event.target.value)}
       />
       <TextField
-        label="End"
-        placeholder="2026-09-02T00:00:00Z"
+        label={homeCopy.controls.end}
+        placeholder={homeCopy.placeholders.end}
         size="small"
         value={end}
         onChange={(event) => onEndChange(event.target.value)}
       />
       <TextField
-        label="Limite"
+        label={homeCopy.controls.limit}
         inputProps={{ min: 1 }}
         size="small"
         type="number"
@@ -74,8 +75,8 @@ export default function AnalyticsControls({
         onChange={(event) => onLimitChange(Number(event.target.value))}
       />
       <TextField
-        label="API key"
-        placeholder="X-API-Key"
+        label={homeCopy.controls.apiKey}
+        placeholder={homeCopy.placeholders.apiKey}
         size="small"
         type="password"
         value={apiKey}
@@ -88,7 +89,7 @@ export default function AnalyticsControls({
         variant="contained"
         onClick={onLoadApi}
       >
-        {isLoading ? 'Carregando' : 'Carregar API'}
+        {isLoading ? homeCopy.controls.loading : homeCopy.controls.loadApi}
       </Button>
     </section>
   );

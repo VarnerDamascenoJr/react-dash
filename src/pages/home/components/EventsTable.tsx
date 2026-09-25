@@ -1,5 +1,6 @@
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import type { AnalyticsEventRow } from '../../../analytics';
+import { homeCopy } from '../copy';
 import { formatCurrency, formatInteger } from '../formatters';
 
 const eventColumns: GridColDef<AnalyticsEventRow>[] = [
@@ -27,8 +28,8 @@ export default function EventsTable({ rows }: EventsTableProps) {
     <section className="panel eventPanel">
       <div className="panelHeader">
         <div>
-          <span>Eventos brutos</span>
-          <h3>Tabela analitica</h3>
+          <span>{homeCopy.panels.events.eyebrow}</span>
+          <h3>{homeCopy.panels.events.title}</h3>
         </div>
         <strong>{formatInteger(rows.length)}</strong>
       </div>

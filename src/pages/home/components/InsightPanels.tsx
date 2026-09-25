@@ -1,4 +1,5 @@
 import type { FunnelStepRow, SurvivalSummaryRow } from '../../../analytics';
+import { homeCopy } from '../copy';
 import { formatPercent, formatSeconds } from '../formatters';
 
 interface InsightPanelsProps {
@@ -15,12 +16,12 @@ export default function InsightPanels({
       <article className="panel">
         <div className="panelHeader">
           <div>
-            <span>Funil</span>
-            <h3>Conversao com incerteza</h3>
+            <span>{homeCopy.panels.funnel.eyebrow}</span>
+            <h3>{homeCopy.panels.funnel.title}</h3>
           </div>
         </div>
         {funnelRows.length === 0 ? (
-          <EmptyState text="Sem segmentos de funil neste export." />
+          <EmptyState text={homeCopy.emptyStates.funnel} />
         ) : (
           <ul className="metricList">
             {funnelRows.slice(0, 5).map((row) => (
@@ -38,12 +39,12 @@ export default function InsightPanels({
       <article className="panel">
         <div className="panelHeader">
           <div>
-            <span>Sobrevivencia</span>
-            <h3>Tempo ate evento</h3>
+            <span>{homeCopy.panels.survival.eyebrow}</span>
+            <h3>{homeCopy.panels.survival.title}</h3>
           </div>
         </div>
         {survivalRows.length === 0 ? (
-          <EmptyState text="Sem analises de sobrevivencia neste export." />
+          <EmptyState text={homeCopy.emptyStates.survival} />
         ) : (
           <ul className="metricList">
             {survivalRows.map((row) => (

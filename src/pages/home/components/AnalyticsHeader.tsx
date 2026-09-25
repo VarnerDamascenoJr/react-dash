@@ -1,3 +1,4 @@
+import { homeCopy } from '../copy';
 import { formatDateTime } from '../formatters';
 
 interface AnalyticsHeaderProps {
@@ -16,15 +17,17 @@ export default function AnalyticsHeader({
   return (
     <section className="analyticsHeader">
       <div className="analyticsHeader__copy">
-        <span className="analyticsHeader__eyebrow">Sales Event Analytics</span>
-        <h2>Coleta operacional pronta para analise.</h2>
+        <span className="analyticsHeader__eyebrow">{homeCopy.header.eyebrow}</span>
+        <h2>{homeCopy.header.title}</h2>
         <p>
           {service} · gerado em {formatDateTime(generatedAt)}
         </p>
       </div>
       <div className={`sourceBadge ${source}`}>
-        <span>Fonte</span>
-        <strong>{source === 'api' ? 'API local' : 'Fixture local'}</strong>
+        <span>{homeCopy.header.source}</span>
+        <strong>
+          {source === 'api' ? homeCopy.source.api : homeCopy.source.fixture}
+        </strong>
         <small>{loadMessage}</small>
       </div>
     </section>

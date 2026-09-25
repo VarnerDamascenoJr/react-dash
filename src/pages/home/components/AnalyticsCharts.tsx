@@ -11,6 +11,7 @@ import {
   YAxis,
 } from 'recharts';
 import type { WindowSeriesPoint } from '../../../analytics';
+import { homeCopy } from '../copy';
 import { formatDateTime, formatInteger, formatShortTime } from '../formatters';
 
 interface AnalyticsChartsProps {
@@ -36,8 +37,8 @@ export default function AnalyticsCharts({
       <article className="panel panelLarge">
         <div className="panelHeader">
           <div>
-            <span>Janelas 5m</span>
-            <h3>Eventos por janela</h3>
+            <span>{homeCopy.panels.windows.eyebrow}</span>
+            <h3>{homeCopy.panels.windows.title}</h3>
           </div>
           <strong>
             {latestWindow ? formatInteger(latestWindow.totalEvents) : '0'}
@@ -62,7 +63,7 @@ export default function AnalyticsCharts({
               <Area
                 dataKey="totalEvents"
                 fill="url(#eventsGradient)"
-                name="Eventos"
+                name={homeCopy.kpis.eventCount}
                 stroke="#2c7be5"
                 type="monotone"
               />
@@ -74,8 +75,8 @@ export default function AnalyticsCharts({
       <article className="panel">
         <div className="panelHeader">
           <div>
-            <span>Tipos de evento</span>
-            <h3>Distribuicao coletada</h3>
+            <span>{homeCopy.panels.eventTypes.eyebrow}</span>
+            <h3>{homeCopy.panels.eventTypes.title}</h3>
           </div>
         </div>
         <div className="chartFrame compact" ref={eventTypesChartRef}>
@@ -92,7 +93,7 @@ export default function AnalyticsCharts({
               <Bar
                 dataKey="total"
                 fill="#f05d5e"
-                name="Eventos"
+                name={homeCopy.kpis.eventCount}
                 radius={[0, 6, 6, 0]}
               />
             </BarChart>
