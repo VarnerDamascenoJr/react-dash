@@ -5,7 +5,7 @@ import {
   ListItemText,
   ListSubheader,
 } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 interface SidebarNavItem {
   className?: string;
@@ -38,6 +38,7 @@ export default function SidebarNavSection({
 }
 
 function SidebarNavEntry({ item }: { item: SidebarNavItem }) {
+  const location = useLocation();
   const button = (
     <ListItemButton
       className={item.to ? 'navItemButton' : navStaticClassName(item.className)}
@@ -55,7 +56,13 @@ function SidebarNavEntry({ item }: { item: SidebarNavItem }) {
 
   return (
     <NavLink
-      className={({ isActive }) => `navItem${isActive ? ' active' : ''}`}
+      className={({ isActive }) =>
+        `navItem${
+          isNavItemActive(item, location.pathname, location.hash, isActive)
+            ? ' active'
+            : ''
+        }`
+      }
       end={item.end}
       to={item.to}
     >
@@ -66,4 +73,29 @@ function SidebarNavEntry({ item }: { item: SidebarNavItem }) {
 
 function navStaticClassName(className: string | undefined) {
   return className ? `navStatic ${className}` : 'navStatic';
+}
+
+function isNavItemActive(
+  item: SidebarNavItem,
+  pathname: string,
+  hash: string,
+  routerIsActive: boolean
+) {
+  const targetHash = getHashFromTo(item.to);
+
+  if (targetHash) {
+    return pathname === '/' && hash === targetHash;
+  }
+
+  if (item.end && hash) {
+    return false;
+  }
+
+  return routerIsActive;
+}
+
+function getHashFromTo(to: string | undefined) {
+  const hashStart = to?.indexOf('#') ?? -1;
+
+  return hashStart >= 0 ? to?.slice(hashStart) : undefined;
 }

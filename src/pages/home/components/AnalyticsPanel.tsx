@@ -7,6 +7,7 @@ interface AnalyticsPanelProps {
   component?: 'article' | 'section';
   emptyMetricLabel?: string;
   eyebrow: string;
+  id?: string;
   metric?: string;
   title: string;
 }
@@ -17,13 +18,14 @@ export default function AnalyticsPanel({
   component = 'article',
   emptyMetricLabel,
   eyebrow,
+  id,
   metric,
   title,
 }: AnalyticsPanelProps) {
   const panelClassName = className ? `panel ${className}` : 'panel';
 
   return (
-    <Paper className={panelClassName} component={component} elevation={0}>
+    <Paper className={panelClassName} component={component} elevation={0} id={id}>
       <Stack className="panelHeader" direction="row">
         <Box className="panelHeader__copy">
           <Typography component="span" variant="overline">

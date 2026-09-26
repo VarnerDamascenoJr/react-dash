@@ -11,6 +11,7 @@ interface ExportPanelProps {
   canExportWindowsCsv: boolean;
   canExportWindowsPng: boolean;
   exportMessage: string;
+  id?: string;
   onExportEventTypesPng: () => void;
   onExportEventsCsv: () => void;
   onExportJson: () => void;
@@ -24,6 +25,7 @@ export default function ExportPanel({
   canExportWindowsCsv,
   canExportWindowsPng,
   exportMessage,
+  id,
   onExportEventTypesPng,
   onExportEventsCsv,
   onExportJson,
@@ -36,6 +38,7 @@ export default function ExportPanel({
       aria-label={homeCopy.exportPanel.ariaLabel}
       component="section"
       elevation={0}
+      id={id}
     >
       <Stack className="exportPanel__copy">
         <Typography component="span" variant="overline">

@@ -11,18 +11,23 @@ import { formatPercent, formatSeconds } from '../formatters';
 import AnalyticsPanel from './AnalyticsPanel';
 
 interface InsightPanelsProps {
+  funnelId?: string;
   funnelRows: FunnelStepRow[];
+  survivalId?: string;
   survivalRows: SurvivalSummaryRow[];
 }
 
 export default function InsightPanels({
+  funnelId,
   funnelRows,
+  survivalId,
   survivalRows,
 }: InsightPanelsProps) {
   return (
     <Box className="insightGrid" component="section">
       <AnalyticsPanel
         eyebrow={homeCopy.panels.funnel.eyebrow}
+        id={funnelId}
         title={homeCopy.panels.funnel.title}
       >
         {funnelRows.length === 0 ? (
@@ -49,6 +54,7 @@ export default function InsightPanels({
 
       <AnalyticsPanel
         eyebrow={homeCopy.panels.survival.eyebrow}
+        id={survivalId}
         title={homeCopy.panels.survival.title}
       >
         {survivalRows.length === 0 ? (
