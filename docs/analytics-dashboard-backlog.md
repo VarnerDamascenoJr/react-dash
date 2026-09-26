@@ -2,9 +2,10 @@
 
 Este documento e o handoff oficial para agents que forem evoluir o
 `react-dash` de dashboard administrativo demonstrativo para dashboard analitico
-do portfolio. A etapa atual e apenas planejamento documentado; implementacoes de
-componentes, clientes HTTP, backend ou exportacoes devem ser feitas em tarefas
-separadas.
+do portfolio. A implementacao principal do dashboard analitico ja esta presente
+no `react-dash`: fixture versionada, tipos, transformadores, client HTTP,
+overview operacional, exportacoes e documentacao de demo. A etapa atual e
+refinamento de UI/documentacao e preparacao de demo integrada.
 
 ## Contexto
 
@@ -44,26 +45,35 @@ O dashboard deve permitir que uma pessoa acompanhe:
 ## Estado Atual
 
 O `react-dash` atualmente e um SPA frontend-only com React 18, TypeScript,
-Vite, MUI, MUI Data Grid, Recharts e Sass.
+Vite, MUI, MUI Data Grid, Recharts e Sass. A tela principal ja foi convertida
+para um overview analitico do Sales Event e opera com fixture local ou com a API
+local do `sales-event-project`.
 
 Caracteristicas atuais:
 
 - rotas protegidas com autenticacao demo client-side;
 - estado de tema claro/escuro via React Context;
-- layout de dashboard reutilizavel com sidebar e navbar;
-- paginas genericas para `users` e `products`;
-- widgets e graficos com dados mockados;
-- nenhuma integracao real com backend;
-- nenhuma persistencia server-side;
+- layout de dashboard reutilizavel com sidebar e navbar em MUI;
+- `Home` redesenhada como overview analitico;
+- fixture local versionada do contrato `sales-analytics-export.v1`;
+- modulo `src/analytics` com tipos, client HTTP, transformadores puros e
+  exportadores;
+- integracao opcional com `GET /analytics/export` via `VITE_SALES_API_BASE_URL`
+  e header `X-API-Key`;
+- fallback para fixture local quando a API falha ou ainda nao esta disponivel;
+- exportacoes JSON, CSV e PNG browser-side;
+- persistencia apenas de filtros/configuracoes nao secretas em `localStorage`;
 - testes e scripts existentes: `npm test`, `npm run typecheck`,
   `npm run build`.
 
 Riscos atuais:
 
 - a autenticacao e apenas demonstrativa e pode ser alterada no client;
-- varias telas ainda usam linguagem generica de administracao;
-- dados atuais nao representam regras de negocio reais;
-- algumas rotas e componentes ainda assumem entidades como usuario/produto.
+- `Home` concentra carregamento, transformacao, persistencia e exportacao;
+- a sidebar lista secoes de dominio que ainda nao sao rotas dedicadas;
+- componentes legados de users/products/formulario ainda existem no codigo,
+  embora tenham sido removidos da navegacao principal;
+- o bundle de producao pode emitir warning de chunk grande.
 
 ## Fora De Escopo Inicial
 
