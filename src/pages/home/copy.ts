@@ -58,6 +58,15 @@ export const homeCopy = {
       eyebrow: 'Eventos brutos',
     },
     eventsTable: {
+      columns: {
+        amountCents: 'Valor',
+        eventType: 'Evento',
+        occurredAt: 'Timestamp',
+        provider: 'Provider',
+        quantity: 'Qtd',
+        saleId: 'Sale ID',
+        status: 'Status',
+      },
       noRows: 'Sem eventos para o filtro atual',
       toolbarColumns: 'Colunas',
       toolbarFilters: 'Filtros',
