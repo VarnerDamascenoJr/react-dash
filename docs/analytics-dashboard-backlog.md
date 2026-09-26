@@ -450,6 +450,10 @@ Status:
   para paineis principais e graficos modularizados. O shell autenticado tambem
   passou a usar componentes MUI em `DashboardLayout`, `Sidebar` e `Navbar`,
   com textos centralizados em dicionario proprio.
+- Avanco adicional: paineis analiticos de graficos, insights e tabela passaram
+  a compartilhar um componente `AnalyticsPanel`; a Data Grid passou a rolar
+  dentro do proprio painel em telas estreitas; e o smoke Playwright valida que a
+  pagina nao cria overflow horizontal em desktop e mobile.
 
 ### RD5 - Demo Local E Checklist De Portfolio
 
