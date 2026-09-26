@@ -3,13 +3,12 @@ import {
   List,
   ListItem,
   ListItemText,
-  Paper,
-  Stack,
   Typography,
 } from '@mui/material';
 import type { FunnelStepRow, SurvivalSummaryRow } from '../../../analytics';
 import { homeCopy } from '../copy';
 import { formatPercent, formatSeconds } from '../formatters';
+import AnalyticsPanel from './AnalyticsPanel';
 
 interface InsightPanelsProps {
   funnelRows: FunnelStepRow[];
@@ -22,17 +21,10 @@ export default function InsightPanels({
 }: InsightPanelsProps) {
   return (
     <Box className="insightGrid" component="section">
-      <Paper className="panel" component="article" elevation={0}>
-        <Stack className="panelHeader" direction="row">
-          <Box>
-            <Typography component="span" variant="overline">
-              {homeCopy.panels.funnel.eyebrow}
-            </Typography>
-            <Typography component="h3" variant="h6">
-              {homeCopy.panels.funnel.title}
-            </Typography>
-          </Box>
-        </Stack>
+      <AnalyticsPanel
+        eyebrow={homeCopy.panels.funnel.eyebrow}
+        title={homeCopy.panels.funnel.title}
+      >
         {funnelRows.length === 0 ? (
           <EmptyState text={homeCopy.emptyStates.funnel} />
         ) : (
@@ -53,19 +45,12 @@ export default function InsightPanels({
             ))}
           </List>
         )}
-      </Paper>
+      </AnalyticsPanel>
 
-      <Paper className="panel" component="article" elevation={0}>
-        <Stack className="panelHeader" direction="row">
-          <Box>
-            <Typography component="span" variant="overline">
-              {homeCopy.panels.survival.eyebrow}
-            </Typography>
-            <Typography component="h3" variant="h6">
-              {homeCopy.panels.survival.title}
-            </Typography>
-          </Box>
-        </Stack>
+      <AnalyticsPanel
+        eyebrow={homeCopy.panels.survival.eyebrow}
+        title={homeCopy.panels.survival.title}
+      >
         {survivalRows.length === 0 ? (
           <EmptyState text={homeCopy.emptyStates.survival} />
         ) : (
@@ -86,7 +71,7 @@ export default function InsightPanels({
             ))}
           </List>
         )}
-      </Paper>
+      </AnalyticsPanel>
     </Box>
   );
 }
