@@ -1,5 +1,5 @@
 import type { RefObject } from 'react';
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 import type { WindowSeriesPoint } from '../../../analytics';
 import { homeCopy } from '../copy';
 import { formatDateTime, formatInteger, formatShortTime } from '../formatters';

@@ -1,7 +1,4 @@
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Box, Paper, Stack, Typography } from '@mui/material';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import type { AnalyticsEventRow } from '../../../analytics';
 import { homeCopy } from '../copy';

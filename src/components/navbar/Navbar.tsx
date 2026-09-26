@@ -1,14 +1,16 @@
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputBase from '@mui/material/InputBase';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  InputAdornment,
+  InputBase,
+  Paper,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';

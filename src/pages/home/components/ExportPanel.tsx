@@ -1,7 +1,4 @@
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Button, Paper, Stack, Typography } from '@mui/material';
 import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';

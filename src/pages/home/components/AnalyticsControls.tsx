@@ -1,6 +1,4 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { Box, Button, TextField } from '@mui/material';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
 import { homeCopy } from '../copy';
 

@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
+import {
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+} from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
 interface SidebarNavItem {
