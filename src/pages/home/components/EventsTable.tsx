@@ -1,8 +1,9 @@
-import { Box, Paper, Stack, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import type { AnalyticsEventRow } from '../../../analytics';
 import { homeCopy } from '../copy';
 import { formatCurrency, formatInteger } from '../formatters';
+import AnalyticsPanel from './AnalyticsPanel';
 
 const eventColumns: GridColDef<AnalyticsEventRow>[] = [
   { field: 'occurredAt', headerName: 'Timestamp', flex: 1.3, minWidth: 180 },
@@ -26,38 +27,33 @@ interface EventsTableProps {
 
 export default function EventsTable({ rows }: EventsTableProps) {
   return (
-    <Paper className="panel eventPanel" component="section" elevation={0}>
-      <Stack className="panelHeader" direction="row">
-        <Box>
-          <Typography component="span" variant="overline">
-            {homeCopy.panels.events.eyebrow}
-          </Typography>
-          <Typography component="h3" variant="h6">
-            {homeCopy.panels.events.title}
-          </Typography>
-        </Box>
-        <Typography component="strong" variant="h5">
-          {formatInteger(rows.length)}
-        </Typography>
-      </Stack>
-      <DataGrid
-        autoHeight
-        columns={eventColumns}
-        density="compact"
-        disableRowSelectionOnClick
-        localeText={{
-          noRowsLabel: homeCopy.panels.eventsTable.noRows,
-          toolbarColumns: homeCopy.panels.eventsTable.toolbarColumns,
-          toolbarFilters: homeCopy.panels.eventsTable.toolbarFilters,
-        }}
-        pageSizeOptions={[5, 10, 25]}
-        rows={rows}
-        initialState={{
-          pagination: {
-            paginationModel: { pageSize: 5 },
-          },
-        }}
-      />
-    </Paper>
+    <AnalyticsPanel
+      className="eventPanel"
+      component="section"
+      eyebrow={homeCopy.panels.events.eyebrow}
+      metric={formatInteger(rows.length)}
+      title={homeCopy.panels.events.title}
+    >
+      <Box className="eventPanel__grid">
+        <DataGrid
+          autoHeight
+          columns={eventColumns}
+          density="compact"
+          disableRowSelectionOnClick
+          localeText={{
+            noRowsLabel: homeCopy.panels.eventsTable.noRows,
+            toolbarColumns: homeCopy.panels.eventsTable.toolbarColumns,
+            toolbarFilters: homeCopy.panels.eventsTable.toolbarFilters,
+          }}
+          pageSizeOptions={[5, 10, 25]}
+          rows={rows}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 5 },
+            },
+          }}
+        />
+      </Box>
+    </AnalyticsPanel>
   );
 }

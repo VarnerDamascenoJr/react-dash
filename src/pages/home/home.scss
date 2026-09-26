@@ -179,7 +179,7 @@
 }
 
 .kpiGrid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
 }
 
 .kpiCard {
@@ -217,6 +217,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
+  min-width: 0;
 
   h3 {
     margin: 6px 0 0;
@@ -226,7 +227,12 @@
   strong {
     color: var(--accent-secondary);
     font-size: 1.6rem;
+    white-space: nowrap;
   }
+}
+
+.panelHeader__copy {
+  min-width: 0;
 }
 
 .panelHeader__emptyMetric {
@@ -275,7 +281,15 @@
 }
 
 .eventPanel {
+  overflow: hidden;
+
+  .eventPanel__grid {
+    width: 100%;
+    overflow-x: auto;
+  }
+
   .MuiDataGrid-root {
+    min-width: 760px;
     border-color: var(--border-soft);
     color: var(--text-primary);
   }
@@ -283,7 +297,7 @@
 
 @media (max-width: 1200px) {
   .kpiGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
 
   .controlPanel {
@@ -314,6 +328,10 @@
     padding: 22px;
   }
 
+  .sourceBadge {
+    min-width: 0;
+  }
+
   .exportActions {
     justify-content: stretch;
 
@@ -325,12 +343,43 @@
 
 @media (max-width: 720px) {
   .kpiGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
   .controlPanel {
+    grid-template-columns: 1fr;
+
     .MuiButton-root {
       width: 100%;
+    }
+  }
+
+  .panel {
+    padding: 18px;
+  }
+
+  .panelHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+
+    strong,
+    .panelHeader__emptyMetric {
+      align-self: flex-start;
+    }
+  }
+
+  .exportActions {
+    .MuiButton-root {
+      flex-basis: 100%;
+    }
+  }
+
+  .chartFrame {
+    height: 260px;
+
+    &.compact {
+      height: 240px;
     }
   }
 }

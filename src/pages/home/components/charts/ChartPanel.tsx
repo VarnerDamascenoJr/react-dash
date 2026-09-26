@@ -1,5 +1,6 @@
 import type { ReactNode, RefObject } from 'react';
-import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
+import { Box } from '@mui/material';
+import AnalyticsPanel from '../AnalyticsPanel';
 
 interface ChartPanelProps {
   children: ReactNode;
@@ -23,39 +24,19 @@ export default function ChartPanel({
   wide = false,
 }: ChartPanelProps) {
   return (
-    <Paper
-      className={wide ? 'panel panelLarge' : 'panel'}
-      component="article"
-      elevation={0}
+    <AnalyticsPanel
+      className={wide ? 'panelLarge' : ''}
+      emptyMetricLabel={emptyMetricLabel}
+      eyebrow={eyebrow}
+      metric={metric}
+      title={title}
     >
-      <Stack className="panelHeader" direction="row">
-        <Box>
-          <Typography component="span" variant="overline">
-            {eyebrow}
-          </Typography>
-          <Typography component="h3" variant="h6">
-            {title}
-          </Typography>
-        </Box>
-        {metric ? (
-          <Typography component="strong" variant="h5">
-            {metric}
-          </Typography>
-        ) : (
-          <Chip
-            className="panelHeader__emptyMetric"
-            label={emptyMetricLabel}
-            size="small"
-            variant="outlined"
-          />
-        )}
-      </Stack>
       <Box
         className={compact ? 'chartFrame compact' : 'chartFrame'}
         ref={containerRef}
       >
         {children}
       </Box>
-    </Paper>
+    </AnalyticsPanel>
   );
 }

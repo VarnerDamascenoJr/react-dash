@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
 
 test('loads the protected analytics dashboard with fixture data', async ({ page }) => {
   await page.goto('/');
@@ -17,4 +17,14 @@ test('loads the protected analytics dashboard with fixture data', async ({ page 
   await expect(page.getByText('Vendas concluidas')).toBeVisible();
   await expect(page.getByRole('button', { name: /json bruto/i })).toBeEnabled();
   await expect(page.getByRole('button', { name: /csv eventos/i })).toBeEnabled();
+  await expectNoPageHorizontalOverflow(page);
 });
+
+async function expectNoPageHorizontalOverflow(page: Page) {
+  const dimensions = await page.evaluate(() => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+
+  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
+}
