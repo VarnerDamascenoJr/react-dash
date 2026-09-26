@@ -454,6 +454,8 @@ Status:
   a compartilhar um componente `AnalyticsPanel`; a Data Grid passou a rolar
   dentro do proprio painel em telas estreitas; e o smoke Playwright valida que a
   pagina nao cria overflow horizontal em desktop e mobile.
+- Avanco adicional: os headers e mensagens da tabela de eventos estao
+  centralizados no dicionario `homeCopy`, reduzindo labels soltos na UI da Home.
 
 ### RD5 - Demo Local E Checklist De Portfolio
 
