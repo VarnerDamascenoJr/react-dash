@@ -33,7 +33,8 @@
 - State management is intentionally lightweight:
   - `AuthContext` for authentication session
   - `DarkModeContext` for theme state
-- Page components orchestrate reusable presentational components and mock data sources.
+- Page components orchestrate reusable presentational components, local analytics
+  fixtures and the optional Sales analytics API client.
 
 ### Inference
 
@@ -85,7 +86,26 @@
 ### Pages
 
 - Pages are responsible for arranging sections and selecting reusable components.
-- They do not currently encapsulate real API orchestration.
+- [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
+  orchestrates the analytics overview: it loads the local fixture by default,
+  calls the Sales analytics API on demand, persists non-secret filters, derives
+  UI data through pure transformers and triggers browser-side exports.
+
+### Analytics module
+
+- [src/analytics/types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/types.ts:1)
+  defines the `sales-analytics-export.v1` TypeScript contract.
+- [src/analytics/fixtures.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/fixtures.ts:1)
+  exposes the versioned local fixture used for reproducible demos and fallback.
+- [src/analytics/transformers.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.ts:1)
+  converts the document into KPIs, chart series, table rows, funnel rows,
+  survival summaries and CSV rows.
+- [src/analytics/api.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.ts:1)
+  builds `GET /analytics/export` requests, sends `X-API-Key` when provided,
+  validates the response schema and falls back to the fixture through
+  `loadSalesAnalyticsExport`.
+- [src/analytics/exporters.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.ts:1)
+  handles JSON, CSV and chart PNG downloads in the browser.
 
 ### Reusable components
 
@@ -109,20 +129,32 @@
 
 - Route definitions are centralized in `src/routes/AppRoutes.tsx`.
 - Demo authentication is coupled to environment-backed values in [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1).
-- Display data is tightly coupled to hardcoded mock arrays.
+- The active overview display data is coupled to the
+  `sales-analytics-export.v1` document shape; legacy user/product mock arrays
+  still exist in non-routed components.
+- Analytics source configuration is coupled to environment-backed defaults and
+  browser storage in [src/config/salesApi.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/salesApi.ts:1).
 - Theme state is coupled to CSS variable overrides in [src/style/dark.scss](/home/varner/aprendizagem/projetos/react-dash/src/style/dark.scss:1).
 
 ### Risks from current coupling
 
-- Replacing mock data with real API data will require changes in multiple components.
+- Changing the analytics export contract affects `src/analytics`, the Home
+  dashboard components and their tests.
+- `Home` is currently the main orchestration hub for loading, transformation,
+  persistence and export actions; dedicated analytics routes or deeper
+  interactivity will likely require extracting that stateful orchestration.
 - Auth behavior is not abstracted behind a service layer; swapping demo auth for real auth will affect context and login page.
 
 ## Asynchrony
 
 ### Confirmed
 
-- The only explicit async behavior in the app code is the delayed login promise in `AuthContext.login`.
-- No network calls are present.
+- `AuthContext.login` uses a delayed promise for demo sign-in.
+- `fetchSalesAnalyticsExport` performs an HTTP request through `fetch`.
+- `loadSalesAnalyticsExport` catches API failures and returns the local fixture
+  with a user-facing error message.
+- Chart PNG export performs asynchronous SVG image loading and canvas blob
+  generation in the browser.
 - No message queues, event buses or background jobs are present.
 
 ## Cloud / Infrastructure

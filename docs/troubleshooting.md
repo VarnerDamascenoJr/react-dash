@@ -2,7 +2,10 @@
 
 ## General
 
-This project is a frontend-only React/Vite dashboard with demo auth and mock data. Many apparent “business problems” can actually be mock-data or client-state limitations rather than server bugs.
+This project is a frontend-only React/Vite analytics dashboard with demo auth,
+a versioned local `sales-analytics-export.v1` fixture and an optional local
+Sales API integration. Many apparent “business problems” can still be fixture,
+client-state or API availability limitations rather than server bugs.
 
 ## Common situations
 

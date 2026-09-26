@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 import Navbar from '../navbar/Navbar';
 import Sidebar from '../sidebar/Sidebar';
 import './dashboardLayout.scss';

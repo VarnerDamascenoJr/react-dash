@@ -3,6 +3,17 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  optimizeDeps: {
+    include: [
+      '@emotion/react',
+      '@emotion/styled',
+      '@mui/icons-material',
+      '@mui/material',
+      '@mui/material/Box',
+      '@mui/material/styles',
+      '@mui/x-data-grid',
+    ],
+  },
   server: {
     proxy: {
       '/api': {
@@ -14,6 +25,7 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    exclude: ['node_modules/**', 'dist/**', 'tests/e2e/**'],
     globals: true,
     setupFiles: './src/setupTests.ts',
   },

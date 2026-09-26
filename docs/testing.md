@@ -1,106 +1,127 @@
 # Testing
 
+## Strategy
+
+The project uses two complementary test layers:
+
+- Vitest for pure analytics logic, API-client behavior and React component
+  smoke tests in JSDOM.
+- Playwright for browser-level flows that demonstrate the portfolio app as a
+  user would experience it.
+
+The baseline E2E path must stay deterministic and use the local fixture. The
+Sales API can be covered by separate integration smoke checks, but ordinary E2E
+tests should not require external services.
+
 ## Tooling
 
 ### Confirmed
 
-- Test runner: Vitest
+- Unit/component runner: Vitest
 - DOM environment: JSDOM
 - Assertion helpers: `@testing-library/jest-dom`
 - Rendering utilities: `@testing-library/react`
+- Browser E2E runner: Playwright
+- E2E local server: Playwright `webServer` starts Vite automatically
 
 ### Evidence
 
 - [package.json](/home/varner/aprendizagem/projetos/react-dash/package.json:1)
 - [vite.config.js](/home/varner/aprendizagem/projetos/react-dash/vite.config.js:1)
+- [playwright.config.ts](/home/varner/aprendizagem/projetos/react-dash/playwright.config.ts:1)
 - [src/setupTests.ts](/home/varner/aprendizagem/projetos/react-dash/src/setupTests.ts:1)
 
-## Test organization
+## Test Organization
 
 ### Confirmed files
 
 - [src/App.test.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.test.tsx:1)
+- [src/analytics/api.test.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.test.ts:1)
+- [src/analytics/exporters.test.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.test.ts:1)
+- [src/analytics/transformers.test.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.test.ts:1)
 - [src/pages/new/New.test.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.test.tsx:1)
+- [tests/e2e/analytics-dashboard.spec.ts](/home/varner/aprendizagem/projetos/react-dash/tests/e2e/analytics-dashboard.spec.ts:1)
 
 ### Pattern
 
-- Tests live next to or near source under `src/`.
-- Current test style is component-level rendering assertions.
+- Tests for pure analytics behavior stay near `src/analytics`.
+- Component smoke tests stay near app/page code under `src`.
+- Browser E2E tests live under `tests/e2e`.
+- Playwright tests prefer role, label and accessible-name locators over CSS
+  selectors.
 
-## Current coverage shape
+## Current Coverage Shape
 
-### Confirmed covered areas
+### Covered areas
 
-- Root app render under authenticated state
-- `New` page form field rendering
+- Root app render under authenticated state.
+- Analytics API URL building, API-key header behavior and fallback behavior.
+- Analytics transformers for KPIs, windows, rows and empty documents.
+- CSV serialization and export filename generation.
+- Legacy `New` page form field rendering.
+- Protected login-to-dashboard flow with fixture data in a real browser.
 
-### Confirmed uncovered or weakly covered areas
+### Recommended next targets
 
-- Login success and failure behavior
-- Route guard redirect behavior
-- Logout behavior
-- Theme switching behavior
-- Datatable delete interaction
-- Layout responsiveness
-- Product flow behavior
-- Single page content behavior
-- Accessibility behavior
+- Login failure behavior.
+- Route guard redirect behavior.
+- Logout flow.
+- Theme switching behavior.
+- API-load failure state in browser.
+- Export download behavior in browser.
+- Mobile dashboard smoke viewport.
 
-## Mocks and setup
+## Playwright Configuration
 
-### Confirmed
+The project follows current Playwright practices:
 
-- `ResizeObserver` is mocked globally for test environment compatibility.
-- `App.test.tsx` seeds `localStorage` with a serialized demo user before rendering.
-- `New.test.tsx` uses `MemoryRouter` only where routing support is required.
+- `baseURL` is set globally, so tests can navigate with relative paths.
+- `webServer` starts the Vite dev server automatically.
+- retries are enabled only in CI.
+- traces are collected on first retry.
+- screenshots are retained only on failure.
+- videos are retained only on failure.
+- HTML reporting is enabled in CI, with list output for terminal readability.
+- the browser matrix is intentionally scoped to Chromium desktop and mobile
+  Chrome as a fast portfolio baseline.
 
-### Evidence
+Install browsers when setting up a fresh machine:
 
-- [src/setupTests.ts](/home/varner/aprendizagem/projetos/react-dash/src/setupTests.ts:1)
-- [src/App.test.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.test.tsx:1)
-- [src/pages/new/New.test.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.test.tsx:1)
+```bash
+npx playwright install
+```
+
+For the configured baseline only:
+
+```bash
+npm run test:e2e:install
+```
 
 ## Commands
 
-### Confirmed
+```bash
+npm test
+npm run test:e2e
+npm run test:e2e:ui
+npm run typecheck
+npm run build
+```
 
-- Full suite: `npm test`
-- Type checking: `npm run typecheck`
-- Build validation: `npm run build`
+Single E2E target:
 
-### Not configured in repository
+```bash
+npx playwright test tests/e2e/analytics-dashboard.spec.ts
+```
 
-- No lint script is present in `package.json`.
-- No coverage script is present in `package.json`.
-- No per-file helper script is defined for running a single test target.
+## Known Warnings
 
-## Executed validation for this analysis
+- `App.test.tsx` can produce a Recharts warning in JSDOM because chart
+  container width and height resolve to 0 in the artificial DOM.
+- `npm run build` can warn about large chunks because MUI, MUI Data Grid and
+  Recharts are bundled into the app.
 
-### Confirmed results during analysis
+## Sources
 
-- `npm run typecheck`: passed
-- `npm run build`: passed
-- `npm test`: passed
-
-### Observed warning
-
-- `App.test.tsx` produces a Recharts warning in JSDOM:
-  - chart container width and height resolve to 0 in test environment
-  - tests still pass
-
-## Guidance for future tests
-
-### Follow observed patterns
-
-- Wrap components with the same providers used at runtime when the component depends on context.
-- Seed `localStorage` when auth state must exist.
-- Use `MemoryRouter` for route-aware component rendering when full `App` render is unnecessary.
-
-### Recommended future targets based on current risk
-
-- Login error messaging
-- Protected route redirects
-- Logout flow
-- Datatable local deletion
-- Dark mode toggling
-- Form image upload preview
+- Official Playwright best practices: https://playwright.dev/docs/best-practices
+- Official Playwright web server configuration: https://playwright.dev/docs/test-webserver
+- Official Playwright trace guidance: https://playwright.dev/docs/trace-viewer

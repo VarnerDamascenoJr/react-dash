@@ -84,7 +84,8 @@ Summary card with circular progress and comparison values.
 
 #### `src/components/chart/`
 
-Revenue chart using Recharts.
+Legacy revenue chart using Recharts. The active analytics overview uses chart
+components under `src/pages/home/components/charts/`.
 
 #### `src/components/datatable/`
 
@@ -102,14 +103,15 @@ Route-level screens.
   - `components/`: sections used only by the analytics overview
   - `formatters.ts`: display formatters for currency, dates, percentages and counts
 - `login/`: sign-in page
-- `list/`: generic list page used by `/users` and `/products`
-- `new/`: generic entry form page
-- `single/`: entity profile/detail page
+- `list/`: legacy generic list page, not wired into the current route tree
+- `new/`: legacy generic entry form page, not wired into the current route tree
+- `single/`: legacy entity profile/detail page, not wired into the current route tree
 - `users/`: currently only a placeholder component, not wired into routes
 
 ### `src/datatablesource.tsx`
 
-Mock table metadata and mocked user rows.
+Legacy mock table metadata and mocked user rows for non-routed user/product
+components.
 
 ### `src/formSource.ts`
 

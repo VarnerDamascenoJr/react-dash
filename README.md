@@ -15,6 +15,7 @@ esta preparado para consumir a API local do Sales quando o endpoint
 - TypeScript
 - Vite
 - Vitest
+- Playwright
 - MUI
 - Recharts
 - Sass
@@ -36,6 +37,15 @@ Gera o build de producao na pasta `dist/`.
 ### `npm test`
 
 Executa a suite de testes com Vitest.
+
+### `npm run test:e2e`
+
+Executa os testes E2E com Playwright. O Playwright sobe o servidor Vite
+automaticamente e valida o fluxo protegido do dashboard em navegador real.
+
+### `npm run test:e2e:install`
+
+Instala o navegador Chromium usado pelo baseline E2E local/CI.
 
 ### `npm run typecheck`
 
@@ -121,6 +131,7 @@ Antes de abrir PR ou usar a demo em portfolio:
 npm test
 npm run typecheck
 npm run build
+npm run test:e2e
 git diff --check
 ```
 
@@ -135,6 +146,8 @@ git diff --check
 - `docs/analytics-dashboard-backlog.md`: backlog e contrato de produto para
   transformar o app em dashboard analitico do Sales Event
 - `docs/demo-checklist.md`: checklist de smoke para demo local e portfolio
+- `docs/agentic`: capacidades agnosticas para agentes, React expert skills e
+  fluxo Graphify local
 
 ## Proximos passos sugeridos
 

@@ -1,0 +1,125 @@
+{
+  "purpose": "Machine-readable source map for agentic external documentation retrieval. Do not store fetched documentation in this repository.",
+  "project": "react-dash",
+  "sourcePriority": [
+    "repository docs and source",
+    "Graphify local code graph",
+    "official documentation for the exact library or platform",
+    "official changelog or release notes",
+    "maintainer GitHub issue/discussion when official docs do not answer",
+    "community sources only as secondary evidence"
+  ],
+  "libraries": [
+    {
+      "name": "React",
+      "package": "react",
+      "currentRange": "^18.2.0",
+      "officialDocs": [
+        "https://react.dev/"
+      ],
+      "useFor": ["components", "hooks", "rendering behavior", "state patterns"]
+    },
+    {
+      "name": "React Router",
+      "package": "react-router-dom",
+      "currentRange": "^6.17.0",
+      "officialDocs": [
+        "https://reactrouter.com/"
+      ],
+      "useFor": ["routing", "route guards", "navigation", "redirect behavior"]
+    },
+    {
+      "name": "Vite",
+      "package": "vite",
+      "currentRange": "transitive via @vitejs/plugin-react / lockfile",
+      "officialDocs": [
+        "https://vite.dev/"
+      ],
+      "useFor": ["dev server", "build", "proxy", "dependency optimization", "env variables"]
+    },
+    {
+      "name": "TypeScript",
+      "package": "typescript",
+      "currentRange": "^5.9.3",
+      "officialDocs": [
+        "https://www.typescriptlang.org/docs/"
+      ],
+      "useFor": ["compiler behavior", "type narrowing", "module resolution"]
+    },
+    {
+      "name": "Material UI",
+      "package": "@mui/material",
+      "currentRange": "^5.14.18",
+      "officialDocs": [
+        "https://mui.com/material-ui/"
+      ],
+      "useFor": ["MUI components", "theme behavior", "layout primitives", "component imports"]
+    },
+    {
+      "name": "MUI X Data Grid",
+      "package": "@mui/x-data-grid",
+      "currentRange": "^6.18.2",
+      "officialDocs": [
+        "https://mui.com/x/react-data-grid/"
+      ],
+      "useFor": ["analytics tables", "grid columns", "pagination", "locale text"]
+    },
+    {
+      "name": "Recharts",
+      "package": "recharts",
+      "currentRange": "^2.9.2",
+      "officialDocs": [
+        "https://recharts.org/"
+      ],
+      "useFor": ["charts", "responsive containers", "SVG rendering", "chart export assumptions"]
+    },
+    {
+      "name": "Playwright",
+      "package": "@playwright/test",
+      "currentRange": "^1.63.0",
+      "officialDocs": [
+        "https://playwright.dev/docs/intro",
+        "https://playwright.dev/docs/best-practices",
+        "https://playwright.dev/docs/test-webserver",
+        "https://playwright.dev/docs/trace-viewer"
+      ],
+      "useFor": ["E2E tests", "locators", "web server", "browser projects", "traces"]
+    },
+    {
+      "name": "Vitest",
+      "package": "vitest",
+      "currentRange": "^3.2.4",
+      "officialDocs": [
+        "https://vitest.dev/"
+      ],
+      "useFor": ["unit tests", "JSDOM behavior", "test discovery", "mocking"]
+    },
+    {
+      "name": "Testing Library",
+      "package": "@testing-library/react",
+      "currentRange": "^13.4.0",
+      "officialDocs": [
+        "https://testing-library.com/docs/react-testing-library/intro/"
+      ],
+      "useFor": ["component tests", "accessible queries", "user-centric assertions"]
+    },
+    {
+      "name": "Sass",
+      "package": "sass",
+      "currentRange": "^1.69.4",
+      "officialDocs": [
+        "https://sass-lang.com/documentation/"
+      ],
+      "useFor": ["SCSS syntax", "style organization", "deprecations"]
+    },
+    {
+      "name": "Browser APIs",
+      "package": "web-platform",
+      "currentRange": "browser runtime",
+      "officialDocs": [
+        "https://developer.mozilla.org/"
+      ],
+      "useFor": ["localStorage", "Blob", "URL.createObjectURL", "canvas", "downloads"]
+    }
+  ]
+}

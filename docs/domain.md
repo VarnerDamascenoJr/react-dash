@@ -4,19 +4,31 @@
 
 ### Confirmed facts
 
-- The application presents itself as an operations/admin dashboard.
-- The main visible domain concepts in the UI are:
-  - users
-  - products
-  - orders
-  - balance/earnings
-  - transactions
-  - profile details
-- These concepts are currently represented through mock data and mock UI states.
+- The application presents itself as a Sales Event analytics dashboard.
+- The main active route is the analytics overview at `/`.
+- The main visible domain concepts in the active UI are:
+  - collected operational events
+  - completed sales
+  - observed revenue
+  - issued tickets
+  - completed check-ins
+  - event windows
+  - event type distribution
+  - conversion funnel summaries
+  - survival/time-to-stage summaries
+  - raw analytics event rows
+  - JSON, CSV and PNG exports
+- The active dashboard uses the `sales-analytics-export.v1` contract through a
+  local fixture and an optional Sales API integration.
+- Legacy users/products/admin concepts still exist in non-routed components and
+  source files, but they are not the primary active product domain.
 
 ### Important limitation
 
-The repository does not contain a backend or a formal business domain model. Because of that, many business meanings remain only partially observable through labels and mocked content.
+The repository does not contain its own backend or database model. Its active
+business contract is the external `sales-analytics-export.v1` document produced
+by `sales-event-project`, plus client-side transformations for display and
+export.
 
 ## Observable Domain Concepts
 
@@ -44,6 +56,61 @@ The repository does not contain a backend or a formal business domain model. Bec
 
 - [src/context/darkModeReducer.ts](/home/varner/aprendizagem/projetos/react-dash/src/context/darkModeReducer.ts:1)
 - [src/style/dark.scss](/home/varner/aprendizagem/projetos/react-dash/src/style/dark.scss:1)
+
+### Sales analytics document
+
+**Confirmed**
+
+- The active analytics document uses `schemaVersion:
+  sales-analytics-export.v1`.
+- It contains source metadata, summary counts, raw events, window aggregates,
+  funnel segments and survival analyses.
+- The dashboard can load this document from:
+  - the local fixture
+  - `GET /analytics/export` from `sales-event-project`
+
+**Evidence**
+
+- [src/analytics/types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/types.ts:1)
+- [src/analytics/fixtures.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/fixtures.ts:1)
+- [src/analytics/api.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.ts:1)
+
+### Analytics KPIs
+
+**Confirmed**
+
+- KPI values are derived from the active analytics document:
+  - total events
+  - completed sales
+  - observed approved payment revenue
+  - issued tickets
+  - completed check-ins
+- The transformer tolerates an empty document by returning zero values.
+
+**Evidence**
+
+- [src/analytics/transformers.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.ts:1)
+- [src/pages/home/components/KpiGrid.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/KpiGrid.tsx:1)
+
+### Analytics exports
+
+**Confirmed**
+
+- The active document can be exported as raw JSON.
+- Event rows and window rows can be exported as CSV.
+- Visible charts can be exported as PNG.
+- Export filenames are deterministic from the analytics document date when
+  `generatedAt` is available.
+
+**Evidence**
+
+- [src/analytics/exporters.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.ts:1)
+- [src/pages/home/components/ExportPanel.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/ExportPanel.tsx:1)
+
+## Legacy Admin Concepts
+
+These concepts remain in source files for compatibility and possible future
+cleanup, but they are not wired into the current analytics route tree.
 
 ### Users
 
@@ -80,7 +147,7 @@ The repository does not contain a backend or a formal business domain model. Bec
 - [src/formSource.ts](/home/varner/aprendizagem/projetos/react-dash/src/formSource.ts:1)
 - [src/pages/new/New.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.tsx:1)
 
-### Dashboard KPIs
+### Legacy dashboard KPIs
 
 **Confirmed**
 
@@ -99,7 +166,7 @@ The repository does not contain a backend or a formal business domain model. Bec
 
 - All widget values are hardcoded (`amount = 100`, `diff = 20`).
 
-### Revenue / spending visualization
+### Legacy revenue / spending visualization
 
 **Confirmed**
 

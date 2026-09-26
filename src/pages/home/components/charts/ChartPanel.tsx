@@ -1,9 +1,5 @@
 import type { ReactNode, RefObject } from 'react';
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
 
 interface ChartPanelProps {
   children: ReactNode;

@@ -1,11 +1,13 @@
 import './sidebar.scss';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Typography from '@mui/material/Typography';
+import {
+  Box,
+  List,
+  Paper,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
