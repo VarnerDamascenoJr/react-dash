@@ -456,6 +456,10 @@ Status:
   pagina nao cria overflow horizontal em desktop e mobile.
 - Avanco adicional: os headers e mensagens da tabela de eventos estao
   centralizados no dicionario `homeCopy`, reduzindo labels soltos na UI da Home.
+- Avanco adicional: a sidebar passou a navegar para secoes reais da Home por
+  ancoras versionadas em codigo (`overview`, `events`, `funnel`, `survival`,
+  `windows`, `exports` e `settings`), preservando a rota unica enquanto as telas
+  dedicadas ainda nao forem necessarias.
 
 ### RD5 - Demo Local E Checklist De Portfolio
 
