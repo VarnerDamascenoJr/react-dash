@@ -69,7 +69,8 @@ Expert rules:
 - Use stable dimensions for charts, controls and tables to reduce layout shift.
 - Use `rem` as the default frontend unit for new spacing, sizing, borders,
   radii and breakpoints; avoid introducing `px` unless a browser/library API
-  explicitly requires pixel values.
+  explicitly requires pixel values. Run `npm run check:style-units` when
+  changing frontend styles.
 - Prefer MUI controls for forms, buttons, panels and table surfaces.
 
 Validation:
@@ -77,6 +78,7 @@ Validation:
 ```bash
 npm test
 npm run typecheck
+npm run check:style-units
 npm run test:e2e
 ```
 

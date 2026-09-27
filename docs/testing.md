@@ -101,11 +101,23 @@ npm run test:e2e:install
 
 ```bash
 npm test
+npm run check:style-units
 npm run test:e2e
 npm run test:e2e:ui
 npm run typecheck
 npm run build
 ```
+
+## Frontend Style Units
+
+New frontend style changes should use `rem` instead of `px` for spacing,
+sizing, borders, radii and breakpoints. `npm run check:style-units` checks added
+lines in `src` against the merge base with `origin/main`, plus staged and
+unstaged local changes.
+
+Use `STYLE_UNITS_BASE=<ref> npm run check:style-units` to compare against a
+different base ref. If a browser or library API explicitly requires pixels, keep
+the exception local and add `px-ok` with a short reason.
 
 Single E2E target:
 
