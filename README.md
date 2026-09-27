@@ -51,6 +51,12 @@ Instala o navegador Chromium usado pelo baseline E2E local/CI.
 
 Executa a verificacao de tipos com TypeScript sem gerar arquivos.
 
+### `npm run check:style-units`
+
+Valida que novas linhas de frontend em `src` nao introduzem unidades `px`.
+Novas estilizacoes devem usar `rem` por padrao; excecoes explicitas podem usar
+o marcador `px-ok` quando uma API de browser ou biblioteca exigir pixels.
+
 ### `npm run preview`
 
 Sobe localmente o build gerado para validacao rapida.
@@ -130,6 +136,7 @@ Antes de abrir PR ou usar a demo em portfolio:
 ```bash
 npm test
 npm run typecheck
+npm run check:style-units
 npm run build
 npm run test:e2e
 git diff --check

@@ -442,6 +442,7 @@ Validacoes:
 
 - `npm test`.
 - `npm run typecheck`.
+- `npm run check:style-units`.
 - `npm run build`.
 
 Status:
@@ -460,6 +461,9 @@ Status:
   ancoras versionadas em codigo (`overview`, `events`, `funnel`, `survival`,
   `windows`, `exports` e `settings`), preservando a rota unica enquanto as telas
   dedicadas ainda nao forem necessarias.
+- Avanco adicional: novas mudancas de estilo de frontend passaram a ter
+  validacao incremental para evitar introducao de `px`, mantendo `rem` como
+  unidade padrao documentada para a camada visual.
 
 ### RD5 - Demo Local E Checklist De Portfolio
 
