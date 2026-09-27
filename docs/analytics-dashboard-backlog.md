@@ -467,6 +467,9 @@ Status:
 - Avanco adicional: `src/pages/home/home.scss` passou a usar `rem` para
   espacamentos, tamanhos, bordas, raios e breakpoints da Home analitica,
   reduzindo a divida visual ativa sem alterar o contrato de dados.
+- Avanco adicional: tokens e estruturas globais em `src/index.css` e
+  `src/style/dark.scss` tambem passaram a usar `rem`, alinhando raios, sombras,
+  hero generico e breakpoint base ao padrao visual do frontend.
 
 ### RD5 - Demo Local E Checklist De Portfolio
 
