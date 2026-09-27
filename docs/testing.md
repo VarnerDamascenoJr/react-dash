@@ -60,12 +60,11 @@ tests should not require external services.
 - CSV serialization and export filename generation.
 - Legacy `New` page form field rendering.
 - Protected login-to-dashboard flow with fixture data in a real browser.
+- Browser-level auth behavior for invalid login, protected-route redirects,
+  public-login redirects for authenticated users and logout/session cleanup.
 
 ### Recommended next targets
 
-- Login failure behavior.
-- Route guard redirect behavior.
-- Logout flow.
 - Theme switching behavior.
 - API-load failure state in browser.
 - Export download behavior in browser.
