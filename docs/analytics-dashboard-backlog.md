@@ -464,6 +464,9 @@ Status:
 - Avanco adicional: novas mudancas de estilo de frontend passaram a ter
   validacao incremental para evitar introducao de `px`, mantendo `rem` como
   unidade padrao documentada para a camada visual.
+- Avanco adicional: `src/pages/home/home.scss` passou a usar `rem` para
+  espacamentos, tamanhos, bordas, raios e breakpoints da Home analitica,
+  reduzindo a divida visual ativa sem alterar o contrato de dados.
 
 ### RD5 - Demo Local E Checklist De Portfolio
 
