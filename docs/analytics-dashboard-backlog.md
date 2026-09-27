@@ -475,6 +475,8 @@ Status:
 - Avanco adicional: componentes reutilizaveis e legados em `src/components`
   (`chart`, `datatable`, `featured`, `table` e `widgets`) passaram a usar
   `rem`, reduzindo a divida visual antes de migrar paginas legadas.
+- Avanco adicional: paginas legadas em `src/pages` (`list`, `new` e `single`)
+  passaram a usar `rem`, eliminando `px` dos estilos de pagina.
 
 ### RD5 - Demo Local E Checklist De Portfolio
 
