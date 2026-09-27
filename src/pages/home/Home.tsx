@@ -28,6 +28,7 @@ import InsightPanels from './components/InsightPanels';
 import KpiGrid from './components/KpiGrid';
 import { homeCopy } from './copy';
 import { formatCurrency, formatInteger } from './formatters';
+import { homeSectionIds } from './sections';
 import './home.scss';
 
 const Home = () => {
@@ -130,7 +131,7 @@ const Home = () => {
   };
 
   return (
-    <div className="homePage">
+    <div className="homePage" id={homeSectionIds.overview}>
       <AnalyticsHeader
         generatedAt={document.generatedAt}
         loadMessage={loadMessage}
@@ -142,6 +143,7 @@ const Home = () => {
         apiKey={apiKey}
         baseUrl={baseUrl}
         end={end}
+        id={homeSectionIds.settings}
         isLoading={isLoading}
         limit={limit}
         salesEventId={salesEventId}
@@ -161,6 +163,7 @@ const Home = () => {
         canExportWindowsCsv={windowCsvRows.length > 0}
         canExportWindowsPng={windowSeries.length > 0}
         exportMessage={exportMessage}
+        id={homeSectionIds.exports}
         onExportEventTypesPng={() =>
           handleExportPng('event-types-chart', eventTypesChartRef.current)
         }
@@ -195,12 +198,18 @@ const Home = () => {
         eventTypeData={eventTypeData}
         eventTypesChartRef={eventTypesChartRef}
         eventsChartRef={eventsChartRef}
+        id={homeSectionIds.windows}
         windowSeries={windowSeries}
       />
 
-      <InsightPanels funnelRows={funnelRows} survivalRows={survivalRows} />
+      <InsightPanels
+        funnelId={homeSectionIds.funnel}
+        funnelRows={funnelRows}
+        survivalId={homeSectionIds.survival}
+        survivalRows={survivalRows}
+      />
 
-      <EventsTable rows={eventRows} />
+      <EventsTable id={homeSectionIds.events} rows={eventRows} />
     </div>
   );
 };

@@ -23,6 +23,7 @@ import { DarkModeContext } from '../../context/darkModeContext';
 import { AuthContext } from '../../context/authContext';
 import { shellCopy } from '../layout/shellCopy';
 import SidebarNavSection from './SidebarNavSection';
+import { homeSectionHrefs } from '../../pages/home/sections';
 
 const Sidebar = () => {
   const { darkMode, dispatch } = useContext(DarkModeContext);
@@ -35,7 +36,7 @@ const Sidebar = () => {
           end: true,
           icon: <DashboardIcon className="icon" />,
           label: shellCopy.sidebar.items.overview,
-          to: '/',
+          to: homeSectionHrefs.overview,
         },
       ],
     },
@@ -45,14 +46,17 @@ const Sidebar = () => {
         {
           icon: <EventNoteOutlinedIcon className="icon" />,
           label: shellCopy.sidebar.items.events,
+          to: homeSectionHrefs.events,
         },
         {
           icon: <FilterAltOutlinedIcon className="icon" />,
           label: shellCopy.sidebar.items.funnel,
+          to: homeSectionHrefs.funnel,
         },
         {
           icon: <TimelineOutlinedIcon className="icon" />,
           label: shellCopy.sidebar.items.survival,
+          to: homeSectionHrefs.survival,
         },
       ],
     },
@@ -62,14 +66,17 @@ const Sidebar = () => {
         {
           icon: <AssessmentIcon className="icon" />,
           label: shellCopy.sidebar.items.windows,
+          to: homeSectionHrefs.windows,
         },
         {
           icon: <FileDownloadOutlinedIcon className="icon" />,
           label: shellCopy.sidebar.items.exports,
+          to: homeSectionHrefs.exports,
         },
         {
           icon: <SettingsApplicationsIcon className="icon" />,
           label: shellCopy.sidebar.items.settings,
+          to: homeSectionHrefs.settings,
         },
       ],
     },

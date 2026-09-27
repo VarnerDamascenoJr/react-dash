@@ -53,15 +53,17 @@ const eventColumns: GridColDef<AnalyticsEventRow>[] = [
 ];
 
 interface EventsTableProps {
+  id?: string;
   rows: AnalyticsEventRow[];
 }
 
-export default function EventsTable({ rows }: EventsTableProps) {
+export default function EventsTable({ id, rows }: EventsTableProps) {
   return (
     <AnalyticsPanel
       className="eventPanel"
       component="section"
       eyebrow={homeCopy.panels.events.eyebrow}
+      id={id}
       metric={formatInteger(rows.length)}
       title={homeCopy.panels.events.title}
     >

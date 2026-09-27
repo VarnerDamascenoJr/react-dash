@@ -17,6 +17,23 @@ test('loads the protected analytics dashboard with fixture data', async ({ page 
   await expect(page.getByText('Vendas concluidas')).toBeVisible();
   await expect(page.getByRole('button', { name: /json bruto/i })).toBeEnabled();
   await expect(page.getByRole('button', { name: /csv eventos/i })).toBeEnabled();
+
+  await page.getByRole('link', { name: 'Eventos' }).click();
+  await expect(page).toHaveURL(/#events$/);
+  await expect(
+    page.getByRole('heading', { name: /tabela analitica/i })
+  ).toBeVisible();
+
+  await page.getByRole('link', { name: 'Funil' }).click();
+  await expect(page).toHaveURL(/#funnel$/);
+  await expect(
+    page.getByRole('heading', { name: /conversao com incerteza/i })
+  ).toBeVisible();
+
+  await page.getByRole('link', { name: 'Configuracao' }).click();
+  await expect(page).toHaveURL(/#settings$/);
+  await expect(page.getByLabel('Configurar fonte de dados')).toBeVisible();
+
   await expectNoPageHorizontalOverflow(page);
 });
 

@@ -6,6 +6,7 @@ interface AnalyticsControlsProps {
   apiKey: string;
   baseUrl: string;
   end: string;
+  id?: string;
   isLoading: boolean;
   limit: number;
   salesEventId: string;
@@ -23,6 +24,7 @@ export default function AnalyticsControls({
   apiKey,
   baseUrl,
   end,
+  id,
   isLoading,
   limit,
   salesEventId,
@@ -40,6 +42,7 @@ export default function AnalyticsControls({
       aria-label="Configurar fonte de dados"
       className="controlPanel"
       component="section"
+      id={id}
     >
       <TextField
         label={homeCopy.controls.baseUrl}

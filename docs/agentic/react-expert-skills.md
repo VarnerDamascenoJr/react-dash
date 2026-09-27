@@ -67,6 +67,9 @@ Expert rules:
 - Make loading, API failure and empty analytics states visible without breaking
   the page.
 - Use stable dimensions for charts, controls and tables to reduce layout shift.
+- Use `rem` as the default frontend unit for new spacing, sizing, borders,
+  radii and breakpoints; avoid introducing `px` unless a browser/library API
+  explicitly requires pixel values.
 - Prefer MUI controls for forms, buttons, panels and table surfaces.
 
 Validation:

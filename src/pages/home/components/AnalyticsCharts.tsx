@@ -14,6 +14,7 @@ interface AnalyticsChartsProps {
   }>;
   eventTypesChartRef: RefObject<HTMLDivElement>;
   eventsChartRef: RefObject<HTMLDivElement>;
+  id?: string;
   windowSeries: WindowSeriesPoint[];
 }
 
@@ -21,12 +22,13 @@ export default function AnalyticsCharts({
   eventTypeData,
   eventTypesChartRef,
   eventsChartRef,
+  id,
   windowSeries,
 }: AnalyticsChartsProps) {
   const latestWindow = windowSeries[windowSeries.length - 1];
 
   return (
-    <Box className="analyticsGrid" component="section">
+    <Box className="analyticsGrid" component="section" id={id}>
       <ChartPanel
         containerRef={eventsChartRef}
         emptyMetricLabel={homeCopy.emptyStates.chartMetric}
