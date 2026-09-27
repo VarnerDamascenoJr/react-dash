@@ -62,10 +62,11 @@ tests should not require external services.
 - Protected login-to-dashboard flow with fixture data in a real browser.
 - Browser-level auth behavior for invalid login, protected-route redirects,
   public-login redirects for authenticated users and logout/session cleanup.
+- Browser-level theme switching from the navbar action and sidebar segmented
+  controls.
 
 ### Recommended next targets
 
-- Theme switching behavior.
 - API-load failure state in browser.
 - Export download behavior in browser.
 - Mobile dashboard smoke viewport.
