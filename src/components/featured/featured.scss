@@ -1,6 +1,6 @@
 .featured {
-  padding: 24px;
-  border: 1px solid var(--border-soft);
+  padding: 1.5rem;
+  border: 0.0625rem solid var(--border-soft);
   border-radius: var(--radius-xl);
   background: linear-gradient(180deg, var(--surface-primary), rgba(255, 255, 255, 0.68));
   box-shadow: var(--shadow-soft);
@@ -18,16 +18,16 @@
   }
 
   .bottom {
-    padding-top: 24px;
+    padding-top: 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 1rem;
   }
 
   .featuredChart {
-    width: 118px;
-    height: 118px;
+    width: 7.375rem;
+    height: 7.375rem;
   }
 
   .title,
@@ -49,12 +49,12 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 0.75rem;
   }
 
   .item {
-    padding: 14px;
-    border-radius: 18px;
+    padding: 0.875rem;
+    border-radius: 1.125rem;
     background: rgba(255, 255, 255, 0.52);
     text-align: center;
   }
@@ -67,10 +67,10 @@
   }
 
   .itemResult {
-    margin-top: 10px;
+    margin-top: 0.625rem;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 0.25rem;
 
     &.positive {
       color: #11936a;
@@ -82,7 +82,7 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 45rem) {
   .featured .summary {
     grid-template-columns: 1fr;
   }

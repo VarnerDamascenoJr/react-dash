@@ -4,17 +4,17 @@
     align-items: center;
 
     .image {
-      width: 36px;
-      height: 36px;
-      border-radius: 12px;
-      margin-right: 12px;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.75rem;
+      margin-right: 0.75rem;
       object-fit: cover;
     }
   }
 
   .status {
-    padding: 6px 10px;
-    border-radius: 999px;
+    padding: 0.375rem 0.625rem;
+    border-radius: 999rem;
     font-weight: 700;
 
     &.Approved {

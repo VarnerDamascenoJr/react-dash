@@ -472,6 +472,9 @@ Status:
   hero generico e breakpoint base ao padrao visual do frontend.
 - Avanco adicional: `src/pages/login/login.scss` passou a usar `rem` no layout
   de autenticacao demo, cobrindo o primeiro ponto visivel do fluxo protegido.
+- Avanco adicional: componentes reutilizaveis e legados em `src/components`
+  (`chart`, `datatable`, `featured`, `table` e `widgets`) passaram a usar
+  `rem`, reduzindo a divida visual antes de migrar paginas legadas.
 
 ### RD5 - Demo Local E Checklist De Portfolio
 
