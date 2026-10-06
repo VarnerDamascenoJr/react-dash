@@ -523,6 +523,514 @@ Status:
   `docs/demo-checklist.md`, integracoes documentadas e caminho de fixture/API
   descrito para handoff de portfolio.
 
+## Backlog De Correcoes Descobertas No Ensaio Integrado De 2026-10-06
+
+Este bloco registra problemas reais encontrados ao subir o
+`sales-event-project`, carregar o `react-dash` com API local e gerar evidencias
+visuais com uma massa grande de operacoes. As evidencias desse ensaio ficam em:
+
+```text
+/Users/varnerdamasceno/github-varner/evidence/react-dash-sales-api-simulation-2026-10-06/
+```
+
+### CFX1 - Corrigir NaN No Export Analitico Grande Do Sales
+
+Projeto principal: `sales-event-project`.
+
+Problema observado:
+
+- Depois de gerar dezenas de vendas, pagamentos, emails, tickets e check-ins,
+  `GET /analytics/export?salesEventId=...&limit=10000` retornou `200 OK` com
+  corpo vazio.
+- O CLI equivalente `cmd/analytics-export` mostrou o erro real:
+  `json: unsupported value: NaN`.
+- A causa provavel esta na estatistica de risco de stockout, quando a
+  aproximacao Poisson recebe demanda esperada alta e/ou estoque alto o
+  suficiente para gerar `NaN` ou `Inf` durante a soma da CDF.
+
+O que deve ser feito:
+
+- Tornar todos os valores numericos do contrato `sales-analytics-export.v1`
+  seguros para JSON.
+- Saturar probabilidades em `[0, 1]` quando calculos numericos produzirem
+  `NaN`, `+Inf` ou `-Inf`.
+- Corrigir especificamente `poissonStockoutProbability` para:
+  - retornar `0` para demanda invalida/nao observada;
+  - retornar `1` quando o calculo estourar para demanda extrema;
+  - nunca propagar `NaN` para `StockoutRisk`, `StockoutProbabilityPoint` ou
+    `SimulationPriors`.
+- Revisar `clampProbability` para tratar `NaN` e infinitos de forma
+  deterministica.
+- Verificar outros calculos estatisticos que entram no JSON:
+  - funil Wilson;
+  - sobrevivencia/hazard;
+  - forecast de demanda;
+  - priors de simulacao.
+
+Como implementar:
+
+- Adicionar guards com `math.IsNaN` e `math.IsInf` nos pontos de fronteira
+  numerica, preferindo helpers pequenos e testaveis.
+- Evitar esconder erro de modelagem silenciosamente fora dos helpers: se um
+  valor for sanitizado, a regra deve ser clara no nome ou comentario curto do
+  helper.
+- Rodar o export com dataset pequeno e com dataset volumoso antes/depois da
+  alteracao.
+
+Testes a implementar:
+
+- Unitario em `internal/analytics/stockout_risk_test.go` cobrindo demanda
+  extrema, por exemplo `poissonStockoutProbability(1_000_000, 1_000) == 1`.
+- Unitario para `clampProbability` com `math.NaN()`, `math.Inf(1)` e
+  `math.Inf(-1)`.
+- Teste de serializacao JSON para `BuildDocumentWithInventory` com estoque e
+  demanda suficientes para reproduzir o caso extremo.
+- Teste do CLI ou pacote `analyticsdb` garantindo que `json.Marshal` do
+  documento completo nao falha.
+
+Validacoes esperadas:
+
+```bash
+docker run --rm -v "$PWD":/app -w /app golang:1.22-alpine go test ./internal/analytics
+docker run --rm --network sales-event-project_default \
+  -v "$PWD":/app -w /app \
+  -e DATABASE_URL='postgres://sales:sales@postgres:5432/sales_event?sslmode=disable' \
+  golang:1.22-alpine \
+  go run ./cmd/analytics-export \
+    -sales-event-id 11111111-1111-1111-1111-111111111111 \
+    -limit 10000 \
+    -pretty=false
+```
+
+Criterios de aceite:
+
+- O endpoint nao retorna mais `200` com corpo vazio para massa grande.
+- O CLI nao falha com `json: unsupported value: NaN`.
+- O payload final continua no schema `sales-analytics-export.v1`.
+- O `react-dash` consegue carregar `limit=10000` com fonte `API local`.
+
+### CFX2 - Fazer A API Nao Responder 200 Vazio Em Falha De JSON
+
+Projeto principal: `sales-event-project`.
+
+Problema observado:
+
+- Quando a serializacao JSON falhou, o endpoint de analytics respondeu
+  `HTTP/1.1 200 OK` e `Content-Length: 0`.
+- Isso mascara o erro no frontend: o problema real nao aparece como `500`, e a
+  UI so ve uma resposta vazia/invalida.
+
+O que deve ser feito:
+
+- Garantir que rotas que retornam documentos grandes validem a serializacao
+  antes de enviar status `200`.
+- Retornar erro HTTP apropriado quando o payload nao puder ser serializado.
+- Logar o erro com contexto suficiente:
+  - rota;
+  - `salesEventId`;
+  - `limit`;
+  - causa de serializacao.
+
+Como implementar:
+
+- No handler `GET /analytics/export`, substituir o envio direto via `c.JSON`
+  por um fluxo que:
+  - chama o exporter;
+  - faz `json.Marshal` ou `json.MarshalIndent` antes de escrever headers;
+  - em caso de erro, retorna `500` com mensagem segura;
+  - em sucesso, escreve `Content-Type: application/json` e o payload.
+- Se houver helper HTTP comum no projeto, centralizar esse padrao para evitar
+  divergencia entre rotas.
+
+Testes a implementar:
+
+- Teste de rota com exporter fake que retorna documento contendo `math.NaN()`
+  em campo numerico e espera `500`, nao `200`.
+- Teste de rota feliz garantindo que o corpo nao fica vazio.
+- Teste de client no `react-dash` para resposta `200` com corpo vazio, exibindo
+  fallback legivel em vez de quebrar parse.
+
+Validacoes esperadas:
+
+```bash
+docker run --rm -v "$PWD":/app -w /app golang:1.22-alpine go test ./internal/httpapi ./internal/analytics
+npm test
+```
+
+Criterios de aceite:
+
+- Falha de serializacao vira erro HTTP observavel.
+- O frontend mostra mensagem de falha/fallback quando a resposta e vazia.
+- Logs da API explicam a causa sem vazar segredo.
+
+### CFX3 - Unificar Chaves Demo Documentadas E Seeds Locais
+
+Projetos: `sales-event-project` e `react-dash`.
+
+Problema observado:
+
+- A documentacao do dashboard orienta usar `support-key`.
+- O seed local atual do `sales-event-project` aceita `dev-support-key`.
+- Durante o ensaio, `support-key` retornou `api key is invalid`; somente
+  `dev-support-key` carregou a API local.
+
+O que deve ser feito:
+
+- Escolher um padrao canonico para chaves locais de desenvolvimento.
+- Atualizar a documentacao dos dois repositorios para refletir o mesmo padrao.
+- Atualizar exemplos de curl, checklist de demo e scripts de smoke.
+- Garantir que fixtures/testes nao usem nomes que confundam chave fake de teste
+  com chave seedada local.
+
+Como implementar:
+
+- Conferir `migrations/00003_create_api_keys.sql` e mapear as chaves reais:
+  - `dev-admin-key`;
+  - `dev-support-key`;
+  - `dev-check-in-key`;
+  - `dev-payment-provider-key`.
+- Atualizar em `react-dash`:
+  - `docs/demo-checklist.md`;
+  - `docs/integrations.md`;
+  - qualquer README ou troubleshooting que cite `support-key`.
+- Atualizar em `sales-event-project`:
+  - `docs/analytics-export.md`;
+  - exemplos de API key em docs de suporte/admin.
+- Decidir se testes unitarios continuam com `support-key` como chave fake
+  isolada; se sim, deixar claro que e fake de teste e nao chave local.
+
+Testes a implementar:
+
+- Teste ou smoke script que consulta:
+  `GET /analytics/export?...` com `dev-support-key` e espera `200`.
+- Teste/smoke que consulta com chave invalida e espera `401`.
+- Se houver script de demo, parametrizar `SALES_SUPPORT_API_KEY` com default
+  `dev-support-key`.
+
+Validacoes esperadas:
+
+```bash
+curl -sS -H 'X-API-Key: dev-support-key' \
+  'http://localhost:8080/analytics/export?salesEventId=11111111-1111-1111-1111-111111111111&limit=10'
+
+npm test
+```
+
+Criterios de aceite:
+
+- Um agent novo segue a documentacao e consegue carregar `API local` no
+  dashboard sem descobrir a chave por tentativa e erro.
+- Docs dos dois repositorios usam a mesma chave local.
+- Nenhuma API key real/secreta e versionada.
+
+### CFX4 - Criar Script Versionado Para Massa De Dados De Demo
+
+Projetos: `sales-event-project` e `react-dash`.
+
+Problema observado:
+
+- A massa grande usada na evidencia foi gerada por script ad hoc fora do repo.
+- O ensaio precisou lidar manualmente com:
+  - estoque demo zerado por execucoes anteriores;
+  - rate limit do `POST /sales`;
+  - mistura de tickets General/VIP;
+  - pagamentos aprovados/falhos;
+  - eventos de email;
+  - check-ins usando QR codes lidos no banco.
+
+O que deve ser feito:
+
+- Criar um script versionado e reproduzivel para gerar dados analiticos ricos
+  para o dashboard.
+- O script deve aceitar parametros para volume e comportamento, por exemplo:
+  - quantidade de vendas;
+  - taxa de falha de pagamento;
+  - quantidade de check-ins;
+  - envio de eventos de email;
+  - reset opcional do estoque demo;
+  - base URL e chaves locais.
+- O script deve imprimir um resumo JSON final com contagens geradas.
+
+Como implementar:
+
+- Preferir script em Go ou Bash/Python versionado no
+  `sales-event-project/scripts/`.
+- Usar endpoints publicos sempre que possivel.
+- Para QR code de check-in, escolher uma das abordagens:
+  - expor endpoint de suporte para listar tickets emitidos em ambiente local;
+  - ou documentar que o script local usa Postgres via `docker compose exec`.
+- Implementar backoff para `429 rate limit exceeded`, preservando o
+  comportamento real da API.
+- Evitar apagar dados por padrao; qualquer reset deve exigir flag explicita,
+  por exemplo `--reset-demo-inventory`.
+
+Testes a implementar:
+
+- Teste de unidade para geracao de payloads de venda, pagamento e email.
+- Smoke manual documentado:
+  - subir compose;
+  - rodar script com `--sales 50`;
+  - consultar analytics export;
+  - abrir `react-dash` e confirmar KPIs.
+- Se o script for Go, adicionar testes para parser de flags e resumo.
+
+Validacoes esperadas:
+
+```bash
+scripts/generate-analytics-demo-data.sh --sales 50 --reset-demo-inventory
+curl -sS -H 'X-API-Key: dev-support-key' \
+  'http://localhost:8080/analytics/export?salesEventId=11111111-1111-1111-1111-111111111111&limit=10000'
+```
+
+Criterios de aceite:
+
+- A massa de demo pode ser recriada sem copiar codigo de uma sessao antiga.
+- O resumo mostra vendas, pagamentos aprovados, pagamentos falhos, emails,
+  tickets e check-ins.
+- O dashboard mostra volume substancial de dados com fonte `API local`.
+
+### CFX5 - Automatizar Evidencias Visuais Da API Local
+
+Projeto principal: `react-dash`.
+
+Problema observado:
+
+- As evidencias visuais foram geradas com um script temporario fora do repo.
+- Os E2E existentes cobrem fixture e autenticacao, mas nao validam o caminho
+  integrado pesado com API local do Sales.
+
+O que deve ser feito:
+
+- Versionar uma automacao opcional para capturar screenshots completos do
+  dashboard com API local.
+- A automacao deve gerar:
+  - screenshot desktop full-page;
+  - viewport da tabela de eventos;
+  - viewport do funil;
+  - full-page em tema escuro;
+  - full-page mobile.
+- O script deve salvar saida em pasta parametrizavel, preferencialmente fora do
+  fluxo normal de build, para nao poluir commits acidentais.
+
+Como implementar:
+
+- Criar um teste E2E ou script Playwright em `tests/e2e/` ou `scripts/`.
+- Usar variaveis de ambiente:
+  - `REACT_DASH_BASE_URL`;
+  - `SALES_EVENT_ID`;
+  - `SALES_SUPPORT_API_KEY`;
+  - `EVIDENCE_OUTPUT_DIR`.
+- Limpar a API key do input antes de capturar screenshots.
+- Nao depender de um caminho absoluto de Chromium. Usar Playwright instalado
+  pelo projeto ou documentar `npm run test:e2e:install`.
+
+Testes a implementar:
+
+- E2E que carrega API local e valida textos/numeros principais sem depender de
+  screenshots.
+- Script de screenshot separado, executado manualmente, com checagem de que os
+  PNGs existem e nao estao vazios.
+- Opcional: teste que verifica ausencia de overflow horizontal no dashboard
+  carregado com API local.
+
+Validacoes esperadas:
+
+```bash
+npm run test:e2e
+SALES_SUPPORT_API_KEY=dev-support-key npm run evidence:sales-api
+```
+
+Criterios de aceite:
+
+- O caminho API local e testado por E2E, nao apenas por smoke manual.
+- Screenshots podem ser regenerados de forma documentada.
+- A API key nao aparece nos prints finais.
+
+### CFX6 - Tornar Playwright Local Reprodutivel
+
+Projeto principal: `react-dash`.
+
+Problema observado:
+
+- Depois de restaurar dependencias com `npm ci`, o pacote Playwright esperava
+  uma versao de browser diferente da que estava em cache local.
+- Foi necessario apontar manualmente para um Chromium antigo em cache para
+  capturar evidencias e rodar E2E.
+
+O que deve ser feito:
+
+- Padronizar a instalacao e execucao local do Playwright.
+- Garantir que um agent novo consiga rodar E2E sem descobrir paths de cache.
+
+Como implementar:
+
+- Manter script documentado:
+  `npm run test:e2e:install`.
+- Considerar adicionar um script de pre-check, por exemplo:
+  `npm run test:e2e:doctor`, que valida se o browser esperado existe.
+- Documentar no `docs/testing.md` e `docs/demo-checklist.md`:
+  - quando rodar `npm run test:e2e:install`;
+  - como usar `PLAYWRIGHT_BROWSERS_PATH`, se necessario;
+  - como reaproveitar servidor Vite existente.
+- Evitar configs temporarias com caminho absoluto em comandos oficiais.
+
+Testes a implementar:
+
+- Rodar `npm run test:e2e` em ambiente limpo depois de
+  `npm run test:e2e:install`.
+- Validar que os E2E existentes continuam passando com Chromium instalado pelo
+  projeto.
+
+Validacoes esperadas:
+
+```bash
+npm ci
+npm run test:e2e:install
+npm run test:e2e
+```
+
+Criterios de aceite:
+
+- E2E local nao depende de cache antigo.
+- Documentacao explica o setup completo.
+- Nenhum path absoluto de maquina local entra no repo.
+
+### CFX7 - Reduzir Ruido De Recharts Nos Testes Unitarios
+
+Projeto principal: `react-dash`.
+
+Problema observado:
+
+- `npm test` passa, mas emite avisos repetidos de Recharts:
+  `The width(0) and height(0) of chart should be greater than 0`.
+- O ruido dificulta identificar erros reais em testes de UI.
+
+O que deve ser feito:
+
+- Ajustar ambiente de teste para fornecer dimensoes estaveis aos containers de
+  graficos ou mockar componentes de chart em testes unitarios.
+- Preservar testes E2E para validar renderizacao real dos graficos no browser.
+
+Como implementar:
+
+- Revisar `src/setupTests.ts` e mocks de `ResizeObserver`.
+- Definir `getBoundingClientRect`, `offsetWidth` e `offsetHeight` consistentes
+  para containers de chart em JSDOM, se necessario.
+- Alternativamente, mockar Recharts nos testes unitarios de App/Home e deixar
+  cobertura visual para Playwright.
+
+Testes a implementar:
+
+- Manter `src/App.test.tsx` cobrindo renderizacao do overview.
+- Adicionar teste especifico para estados com dados vazios sem gerar warning.
+- Rodar `npm test` e confirmar que stderr nao tem warnings de dimensao.
+
+Validacoes esperadas:
+
+```bash
+npm test
+npm run test:e2e
+```
+
+Criterios de aceite:
+
+- Testes unitarios passam sem warnings repetitivos.
+- Graficos continuam renderizando no browser real.
+
+### CFX8 - Mostrar Dados Mais Recentes Na Tabela Analitica Por Padrao
+
+Projeto principal: `react-dash`.
+
+Problema observado:
+
+- Depois de gerar dados novos, a tabela do dashboard mostrou primeiro eventos
+  antigos porque o payload vem ordenado em ordem crescente por timestamp.
+- Para demo, isso esconde as operacoes recem-geradas e obriga a pessoa a
+  navegar/sortear manualmente.
+
+O que deve ser feito:
+
+- Definir ordenacao inicial da tabela analitica para eventos mais recentes
+  primeiro.
+- Preservar a possibilidade de ordenar por outras colunas via Data Grid.
+- Garantir que export CSV/JSON nao seja alterado indevidamente pela ordenacao
+  visual.
+
+Como implementar:
+
+- Ajustar `EventsTable` ou o transformador de linhas para separar:
+  - ordem do documento bruto;
+  - ordem visual default.
+- Configurar `initialState.sorting.sortModel` da MUI Data Grid para
+  `Timestamp desc`, se a coluna estiver tipada corretamente.
+- Se o timestamp estiver formatado como string local, manter campo bruto
+  separado para sort.
+
+Testes a implementar:
+
+- Teste unitario do transformador ou componente garantindo que evento mais
+  recente aparece antes no estado visual.
+- Teste E2E simples que carrega fixture/API e confirma ordenacao inicial.
+- Teste de export CSV garantindo que a decisao de ordem e explicita.
+
+Validacoes esperadas:
+
+```bash
+npm test
+npm run typecheck
+npm run test:e2e
+```
+
+Criterios de aceite:
+
+- Operacoes recem-geradas aparecem no topo da tabela.
+- Usuario ainda consegue ordenar manualmente.
+- Exportacoes continuam previsiveis.
+
+### CFX9 - Isolar Estado De Demo Entre Execucoes
+
+Projetos: `sales-event-project` e `react-dash`.
+
+Problema observado:
+
+- A primeira simulacao falhou porque o estoque local de `General Admission`
+  estava zerado por execucoes anteriores.
+- Foi necessario atualizar o estoque diretamente no Postgres local para
+  continuar a geracao de massa.
+
+O que deve ser feito:
+
+- Criar um modo seguro de preparar ambiente de demo sem depender de SQL manual.
+- O reset deve ser explicito e limitado aos dados demo conhecidos.
+
+Como implementar:
+
+- Adicionar comando/script no `sales-event-project` para:
+  - garantir evento demo seedado;
+  - recompor estoque dos tickets demo;
+  - opcionalmente limpar somente vendas geradas por um `runId` especifico;
+  - nunca apagar dados fora do evento demo sem flag extra.
+- Documentar no checklist do `react-dash` quando usar esse reset.
+- Preferir idempotencia: rodar duas vezes deve deixar o ambiente em estado
+  conhecido.
+
+Testes a implementar:
+
+- Teste de script em ambiente de compose local, validando estoque antes/depois.
+- Smoke que roda reset, gera uma venda, e confirma export analytics nao vazio.
+
+Validacoes esperadas:
+
+```bash
+scripts/reset-demo-analytics-state.sh --sales-event-id 11111111-1111-1111-1111-111111111111
+scripts/generate-analytics-demo-data.sh --sales 20
+```
+
+Criterios de aceite:
+
+- Demo nao falha por estoque remanescente de ensaios antigos.
+- O reset e seguro, documentado e limitado ao ambiente local/demo.
+
 ## Dependencia Cross-Repo
 
 O `react-dash` depende de um endpoint futuro no `sales-event-project` para
