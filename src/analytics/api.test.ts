@@ -84,4 +84,17 @@ describe('sales analytics API client', () => {
       status: 403,
     });
   });
+
+  it('falls back with a readable message when the API returns an empty 200', async () => {
+    const fetcher = vi.fn(async () => new Response('', { status: 200 }));
+
+    const result = await loadSalesAnalyticsExport({}, { baseUrl: '/api', fetcher });
+
+    expect(result.source).toBe('fixture');
+    expect(result.document).toBe(localSalesAnalyticsFixture);
+    expect(result.error).toMatchObject({
+      message: 'A API local retornou resposta vazia para o export analitico.',
+      status: 200,
+    });
+  });
 });

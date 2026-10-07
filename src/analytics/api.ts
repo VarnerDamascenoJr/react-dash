@@ -70,7 +70,11 @@ export async function fetchSalesAnalyticsExport(
     throw await toApiError(response);
   }
 
-  const payload = await response.json();
+  const payload = await readJsonResponse(
+    response,
+    'A API local retornou resposta vazia para o export analitico.',
+    'A API local retornou JSON invalido para o export analitico.'
+  );
   if (!isSalesAnalyticsDocument(payload)) {
     throw new SalesAnalyticsApiError(
       'A resposta da API nao usa o schema sales-analytics-export.v1.'
@@ -128,8 +132,8 @@ async function toApiError(response: Response) {
   const fallback = errorMessageForStatus(response.status);
 
   try {
-    const body = await response.json();
-    if (body && typeof body.error === 'string' && body.error.trim()) {
+    const body = await readJsonResponse(response, fallback, fallback);
+    if (isApiErrorBody(body) && body.error.trim()) {
       return new SalesAnalyticsApiError(body.error, response.status);
     }
   } catch (_error) {
@@ -137,6 +141,32 @@ async function toApiError(response: Response) {
   }
 
   return new SalesAnalyticsApiError(fallback, response.status);
+}
+
+function isApiErrorBody(value: unknown): value is { error: string } {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const candidate = value as { error?: unknown };
+  return typeof candidate.error === 'string';
+}
+
+async function readJsonResponse(
+  response: Response,
+  emptyMessage: string,
+  invalidJsonMessage: string
+) {
+  const text = await response.text();
+  if (!text.trim()) {
+    throw new SalesAnalyticsApiError(emptyMessage, response.status);
+  }
+
+  try {
+    return JSON.parse(text) as unknown;
+  } catch (_error) {
+    throw new SalesAnalyticsApiError(invalidJsonMessage, response.status);
+  }
 }
 
 function errorMessageForStatus(status: number) {
