@@ -45,7 +45,7 @@ test('persists analytics filters without storing the API key', async () => {
     target: { value: 'http://localhost:8080' },
   });
   fireEvent.change(screen.getByLabelText(/api key/i), {
-    target: { value: 'support-key' },
+    target: { value: 'dev-support-key' },
   });
 
   await waitFor(() => {
@@ -54,6 +54,6 @@ test('persists analytics filters without storing the API key', async () => {
     );
   });
   expect(localStorage.getItem(salesAnalyticsSettingsStorageKey)).not.toContain(
-    'support-key'
+    'dev-support-key'
   );
 });

@@ -76,8 +76,10 @@ Variaveis disponiveis:
 - `VITE_SALES_API_BASE_URL`: base da API do Sales. O default recomendado e
   `/api`, usando o proxy do Vite para `http://localhost:8080`.
 
-Valores reais de API key nao devem ser gravados em arquivos versionados. Informe
-`X-API-Key` na tela do dashboard quando for carregar a API local.
+Valores reais de API key nao devem ser gravados em arquivos versionados. Para a
+stack local seedada do `sales-event-project`, informe `dev-support-key` na tela
+do dashboard quando for carregar a API local. Em outros ambientes, use uma chave
+com role `SUPPORT` ou `ADMIN`.
 
 ## Fluxo com fixture
 
@@ -121,7 +123,8 @@ Execucao local recomendada:
 3. Inicie o `react-dash` com `VITE_SALES_API_BASE_URL=/api`.
 4. Confirme ou ajuste o campo `Base URL`; o valor padrao e `/api`.
 5. Informe `Sales event`, `Start`, `End` e `Limite` conforme a demo local.
-6. Informe uma API key valida no campo `API key`.
+6. Informe `dev-support-key` no campo `API key` para a stack local seedada do
+   `sales-event-project`, ou outra chave valida com role `SUPPORT` ou `ADMIN`.
 7. Clique em `Carregar API`.
 8. Se a API falhar ou ainda nao existir, o dashboard volta para a fixture local
    e mostra a mensagem de fallback.
