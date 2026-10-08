@@ -106,7 +106,8 @@ npm start
    - `Start`: limite inferior RFC3339, quando desejar filtrar periodo;
    - `End`: limite superior RFC3339, quando desejar filtrar periodo;
    - `Limite`: limite de eventos;
-   - `API key`: chave com role `SUPPORT` ou `ADMIN`.
+   - `API key`: `dev-support-key` para a stack local seedada do
+     `sales-event-project`, ou outra chave com role `SUPPORT` ou `ADMIN`.
 7. Clique em `Carregar API`.
 8. Confirme que a fonte muda para `API local`.
 9. Repita as exportacoes JSON, CSV e PNG.

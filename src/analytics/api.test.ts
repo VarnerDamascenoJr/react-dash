@@ -27,7 +27,7 @@ describe('sales analytics API client', () => {
   it('fetches the export and sends the API key header', async () => {
     const fetcher = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
       const headers = init?.headers as Headers;
-      expect(headers.get('X-API-Key')).toBe('support-key');
+      expect(headers.get('X-API-Key')).toBe('dev-support-key');
 
       return new Response(JSON.stringify(localSalesAnalyticsFixture), {
         headers: { 'content-type': 'application/json' },
@@ -37,7 +37,7 @@ describe('sales analytics API client', () => {
 
     const document = await fetchSalesAnalyticsExport(
       { salesEventId: 'event-1' },
-      { apiKey: ' support-key ', baseUrl: '/api', fetcher }
+      { apiKey: ' dev-support-key ', baseUrl: '/api', fetcher }
     );
 
     expect(document.schemaVersion).toBe('sales-analytics-export.v1');

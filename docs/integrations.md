@@ -27,6 +27,7 @@ GET /analytics/export?salesEventId=&start=&end=&limit=
 
 - Authentication model:
   - browser client sends `X-API-Key` when provided in the dashboard UI
+  - local seeded support key for development is `dev-support-key`
   - API key values must not be committed to repo files
   - API key values are not persisted in `localStorage`
 - Expected backend roles:
