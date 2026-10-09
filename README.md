@@ -1,13 +1,13 @@
 # React Dash
 
-Dashboard analitico em React para visualizar e exportar dados operacionais do
+Analytics dashboard in React for viewing and exporting operational data from
 `sales-event-project`.
 
-O app apresenta o contrato `sales-analytics-export.v1` como uma experiencia de
-portfolio: KPIs, series por janela, distribuicao de eventos, tabela analitica e
-exportacoes JSON, CSV e PNG. Ele funciona primeiro com fixture local e tambem
-esta preparado para consumir a API local do Sales quando o endpoint
-`GET /analytics/export` estiver disponivel.
+The app presents the `sales-analytics-export.v1` contract as a portfolio-ready
+experience: KPIs, windowed time series, event distribution, analytics table, and
+JSON, CSV, and PNG exports. It works first with a local fixture and is also ready
+to consume the local Sales API when the `GET /analytics/export` endpoint is
+available.
 
 ## Stack
 
@@ -22,119 +22,126 @@ esta preparado para consumir a API local do Sales quando o endpoint
 
 ## Scripts
 
-No diretorio do projeto, voce pode executar:
+From the project directory, you can run:
 
 ### `npm start`
 
-Inicia o ambiente de desenvolvimento com Vite.
+Starts the development environment with Vite.
 
-Por padrao, a aplicacao fica disponivel em `http://localhost:5173`.
+By default, the app is available at `http://localhost:5173`.
 
 ### `npm run build`
 
-Gera o build de producao na pasta `dist/`.
+Builds the production bundle in `dist/`.
 
 ### `npm test`
 
-Executa a suite de testes com Vitest.
+Runs the test suite with Vitest.
 
 ### `npm run test:e2e`
 
-Executa os testes E2E com Playwright. O Playwright sobe o servidor Vite
-automaticamente e valida o fluxo protegido do dashboard em navegador real.
+Runs the E2E tests with Playwright. Playwright starts the Vite server
+automatically and validates the protected dashboard flow in a real browser.
 
 ### `npm run test:e2e:install`
 
-Instala o navegador Chromium usado pelo baseline E2E local/CI.
+Installs the Chromium browser used by the local/CI E2E baseline.
 
 ### `npm run typecheck`
 
-Executa a verificacao de tipos com TypeScript sem gerar arquivos.
+Runs TypeScript type checking without emitting files.
 
 ### `npm run check:style-units`
 
-Valida que novas linhas de frontend em `src` nao introduzem unidades `px`.
-Novas estilizacoes devem usar `rem` por padrao; excecoes explicitas podem usar
-o marcador `px-ok` quando uma API de browser ou biblioteca exigir pixels.
+Validates that new frontend lines in `src` do not introduce `px` units. New
+styles should use `rem` by default; explicit exceptions can use the `px-ok`
+marker when a browser API or library requires pixels.
 
 ### `npm run preview`
 
-Sobe localmente o build gerado para validacao rapida.
+Serves the generated build locally for a quick validation pass.
 
-## Configuracao local
+## Local Configuration
 
-Copie `.env.example` para `.env.local` quando quiser alterar os valores padrao
-da demo.
+Copy `.env.example` to `.env.local` when you want to override the demo defaults.
 
-Variaveis disponiveis:
+Available variables:
 
-- `VITE_DEMO_LOGIN_EMAIL`: email aceito pelo login demo.
-- `VITE_DEMO_LOGIN_PASSWORD`: senha aceita pelo login demo.
-- `VITE_DEMO_USER_NAME`: nome exibido no shell autenticado.
-- `VITE_DEMO_USER_ROLE`: papel exibido no shell autenticado.
-- `VITE_DEMO_USER_AVATAR`: avatar exibido no shell autenticado.
-- `VITE_SALES_API_BASE_URL`: base da API do Sales. O default recomendado e
-  `/api`, usando o proxy do Vite para `http://localhost:8080`.
+- `VITE_DEMO_LOGIN_EMAIL`: email accepted by the demo login.
+- `VITE_DEMO_LOGIN_PASSWORD`: password accepted by the demo login.
+- `VITE_DEMO_USER_NAME`: name shown in the authenticated shell.
+- `VITE_DEMO_USER_ROLE`: role shown in the authenticated shell.
+- `VITE_DEMO_USER_AVATAR`: avatar shown in the authenticated shell.
+- `VITE_SALES_API_BASE_URL`: Sales API base URL. The recommended default is
+  `/api`, using the Vite proxy to `http://localhost:8080`.
 
-Valores reais de API key nao devem ser gravados em arquivos versionados. Para a
-stack local seedada do `sales-event-project`, informe `dev-support-key` na tela
-do dashboard quando for carregar a API local. Em outros ambientes, use uma chave
-com role `SUPPORT` ou `ADMIN`.
+Real API key values must not be stored in versioned files. For the seeded local
+`sales-event-project` stack, enter `dev-support-key` in the dashboard when
+loading the local API. In other environments, use a key with the `SUPPORT` or
+`ADMIN` role.
 
-## Fluxo com fixture
+## Fixture Flow
 
-1. Instale dependencias:
+1. Install dependencies:
 
 ```bash
 npm ci
 ```
 
-2. Inicie o app:
+2. Start the app:
 
 ```bash
 npm start
 ```
 
-3. Abra `http://localhost:5173`.
-4. Entre com as credenciais demo configuradas em `.env.example`.
-5. A tela inicial ja carrega a fixture local
-   `src/analytics/fixtures/sales-analytics-export.v1.json`.
-6. Valide KPIs, graficos, tabela e exportacoes JSON, CSV e PNG.
+3. Open `http://localhost:5173`.
+4. Sign in with the demo credentials configured in `.env.example`.
+5. The home page loads the local fixture
+   `src/analytics/fixtures/sales-analytics-export.v1.json` by default.
+6. Validate KPIs, charts, table, and JSON, CSV, and PNG exports.
 
-## Fluxo com API local do Sales
+## Local Sales API Flow
 
-Dependencia esperada no `sales-event-project`:
+Expected dependency in `sales-event-project`:
 
 ```text
 GET /analytics/export?salesEventId=&start=&end=&limit=
 ```
 
-Contrato esperado:
+Expected contract:
 
-- autenticar via header `X-API-Key`;
-- permitir roles `SUPPORT` e `ADMIN`;
-- retornar `schemaVersion: sales-analytics-export.v1`;
-- preservar eventos, janelas, funis e sobrevivencia do export analitico.
+- authenticate with the `X-API-Key` header;
+- allow the `SUPPORT` and `ADMIN` roles;
+- return `schemaVersion: sales-analytics-export.v1`;
+- preserve events, windows, funnels, and survival analytics in the export.
 
-Execucao local recomendada:
+Recommended local run:
 
-1. Suba a stack do `sales-event-project`, incluindo API, banco e workers.
-2. Gere eventos de venda, pagamento, email/ticket e check-in.
-3. Inicie o `react-dash` com `VITE_SALES_API_BASE_URL=/api`.
-4. Confirme ou ajuste o campo `Base URL`; o valor padrao e `/api`.
-5. Informe `Sales event`, `Start`, `End` e `Limite` conforme a demo local.
-6. Informe `dev-support-key` no campo `API key` para a stack local seedada do
-   `sales-event-project`, ou outra chave valida com role `SUPPORT` ou `ADMIN`.
-7. Clique em `Carregar API`.
-8. Se a API falhar ou ainda nao existir, o dashboard volta para a fixture local
-   e mostra a mensagem de fallback.
+1. Start the `sales-event-project` stack, including API, database, and workers.
+2. In the `sales-event-project` repo, generate sales, payment, email/ticket, and
+   check-in events:
 
-O dashboard persiste apenas configuracoes nao secretas, como `Base URL` e
-filtros. O valor de `API key` fica somente em memoria da tela.
+```bash
+scripts/generate-analytics-demo-data.sh --sales 50 --reset-demo-inventory
+```
 
-## Validacao
+3. Start `react-dash` with `VITE_SALES_API_BASE_URL=/api`.
+4. Confirm or adjust the `Base URL` field; the default value is `/api`.
+5. Fill in `Sales event`, `Start`, `End`, and `Limit` according to the local
+   demo.
+6. Enter `dev-support-key` in the `API key` field for the seeded local
+   `sales-event-project` stack, or another valid key with the `SUPPORT` or
+   `ADMIN` role.
+7. Click `Load API`.
+8. If the API fails or does not exist yet, the dashboard falls back to the local
+   fixture and shows the fallback message.
 
-Antes de abrir PR ou usar a demo em portfolio:
+The dashboard persists only non-secret settings, such as `Base URL` and filters.
+The `API key` value stays only in page memory.
+
+## Validation
+
+Before opening a PR or using the demo in a portfolio:
 
 ```bash
 npm test
@@ -145,23 +152,23 @@ npm run test:e2e
 git diff --check
 ```
 
-## Estrutura
+## Structure
 
-- `src/components`: componentes reutilizaveis do dashboard
-- `src/pages`: paginas principais
-- `src/context`: estado global simples para tema
-- `src/types.ts`: tipos compartilhados
-- `src/analytics`: tipos, fixture, client, transformadores e exportadores do
-  contrato `sales-analytics-export.v1`
-- `docs/analytics-dashboard-backlog.md`: backlog e contrato de produto para
-  transformar o app em dashboard analitico do Sales Event
-- `docs/demo-checklist.md`: checklist de smoke para demo local e portfolio
-- `docs/agentic`: capacidades agnosticas para agentes, React expert skills e
-  fluxo Graphify local
+- `src/components`: reusable dashboard components
+- `src/pages`: main pages
+- `src/context`: simple global theme state
+- `src/types.ts`: shared types
+- `src/analytics`: types, fixture, client, transformers, and exporters for the
+  `sales-analytics-export.v1` contract
+- `docs/analytics-dashboard-backlog.md`: backlog and product contract for
+  turning the app into the Sales Event analytics dashboard
+- `docs/demo-checklist.md`: smoke checklist for the local demo and portfolio
+- `docs/agentic`: agent-agnostic capabilities, React expert skills, and the
+  local Graphify flow
 
-## Proximos passos sugeridos
+## Suggested Next Steps
 
-- Seguir `docs/demo-checklist.md` antes de gravar ou apresentar a demo.
-- Implementar o endpoint `GET /analytics/export` no `sales-event-project` para
-  substituir o fallback por dados reais.
-- Manter a fixture local como caminho reproduzivel para testes e handoff.
+- Follow `docs/demo-checklist.md` before recording or presenting the demo.
+- Implement the `GET /analytics/export` endpoint in `sales-event-project` to
+  replace the fallback with real data.
+- Keep the local fixture as a reproducible path for tests and handoff.
