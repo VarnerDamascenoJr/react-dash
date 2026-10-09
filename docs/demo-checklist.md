@@ -26,6 +26,7 @@ npm ci
 npm test
 npm run typecheck
 npm run build
+npm run test:e2e
 git diff --check
 ```
 
@@ -114,6 +115,21 @@ npm start
 7. Click `Load API`.
 8. Confirm that the source changes to `Local API`.
 9. Repeat the JSON, CSV, and PNG exports.
+10. Run the local API E2E path:
+
+```bash
+SALES_SUPPORT_API_KEY=dev-support-key npm run test:e2e
+```
+
+11. Capture visual evidence:
+
+```bash
+SALES_SUPPORT_API_KEY=dev-support-key npm run evidence:sales-api
+```
+
+    The evidence command captures desktop full-page, events table, funnel,
+    dark-theme full-page, and mobile full-page PNGs. Use `EVIDENCE_OUTPUT_DIR`
+    to choose a different output directory.
 
 The dashboard may remember `Base URL`, `Sales event`, `Start`, `End`, and
 `Limit` in the browser. The `API key` must not be persisted.
@@ -134,7 +150,7 @@ During review or recording:
 - capture the home screen with KPIs and charts;
 - keep one exported JSON file;
 - keep both CSV files;
-- keep at least one chart PNG;
+- keep the generated evidence PNGs;
 - record whether the source used was `Local fixture` or `Local API`.
 
 ## Done Criteria

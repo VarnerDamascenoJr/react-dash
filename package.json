@@ -24,9 +24,10 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --grep-invert @evidence",
     "test:e2e:install": "playwright install chromium",
     "test:e2e:ui": "playwright test --ui",
+    "evidence:sales-api": "playwright test tests/e2e/sales-api-evidence.spec.ts --project=chromium --grep @evidence",
     "check:style-units": "node scripts/check-style-units.cjs",
     "typecheck": "tsc --noEmit"
   },
