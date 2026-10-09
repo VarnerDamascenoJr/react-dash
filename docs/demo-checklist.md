@@ -1,24 +1,24 @@
 # Demo Checklist
 
-Este checklist prepara o `react-dash` para demonstracao local e handoff do
-portfolio. Ele cobre o caminho reproduzivel com fixture e o caminho integrado
-com a API local do `sales-event-project`.
+This checklist prepares `react-dash` for a local demo and portfolio handoff. It
+covers the reproducible fixture path and the integrated path with the local
+`sales-event-project` API.
 
-## Objetivo Da Demo
+## Demo Goal
 
-Mostrar que eventos operacionais do Sales podem virar um dataset analitico
-exploravel e exportavel:
+Show that operational Sales events can become an explorable and exportable
+analytics dataset:
 
-- KPIs de coleta e producao;
-- series por janela;
-- distribuicao de tipos de evento;
-- tabela de eventos brutos;
-- exportacoes JSON, CSV e PNG;
-- fallback local quando a API ainda nao esta disponivel.
+- collection and production KPIs;
+- windowed time series;
+- event type distribution;
+- raw events table;
+- JSON, CSV, and PNG exports;
+- local fallback when the API is not available yet.
 
 ## Pre-check
 
-No `react-dash`:
+In `react-dash`:
 
 ```bash
 git status --short --branch
@@ -29,118 +29,121 @@ npm run build
 git diff --check
 ```
 
-Resultado esperado:
+Expected result:
 
-- working tree limpo antes da demo;
-- testes passando;
-- typecheck passando;
-- build passando;
-- apenas o warning conhecido de bundle grande pode aparecer no build.
+- clean working tree before the demo;
+- tests passing;
+- typecheck passing;
+- build passing;
+- only the known large bundle warning may appear during the build.
 
-## Demo Com Fixture
+## Fixture Demo
 
-1. Inicie o app:
+1. Start the app:
 
 ```bash
 npm start
 ```
 
-2. Abra:
+2. Open:
 
 ```text
 http://localhost:5173
 ```
 
-3. Faca login com as credenciais demo documentadas em `.env.example`.
-4. Confirme que a home mostra `Fixture local` como fonte.
-5. Verifique:
-   - KPIs de eventos, vendas, receita, tickets e check-ins;
-   - grafico de eventos por janela;
-   - grafico de tipos de evento;
-   - blocos de funil e sobrevivencia com estado vazio quando ausentes;
-   - tabela de eventos brutos.
-6. Exporte:
-   - `JSON bruto`;
-   - `CSV eventos`;
-   - `CSV janelas`;
-   - `PNG janelas`;
-   - `PNG tipos`.
+3. Sign in with the demo credentials documented in `.env.example`.
+4. Confirm that the home page shows `Local fixture` as the source.
+5. Verify:
+   - event, sales, revenue, ticket, and check-in KPIs;
+   - events by window chart;
+   - event type chart;
+   - funnel and survival blocks with an empty state when absent;
+   - raw events table.
+6. Export:
+   - `Raw JSON`;
+   - `Events CSV`;
+   - `Windows CSV`;
+   - `Windows PNG`;
+   - `Types PNG`.
 
-## Demo Com API Local Do Sales
+## Local Sales API Demo
 
-Dependencia:
+Dependency:
 
 ```text
 GET /analytics/export?salesEventId=&start=&end=&limit=
 ```
 
-Passos:
+Steps:
 
-1. No `sales-event-project`, suba a stack local.
-2. Gere pelo menos uma venda e eventos relacionados:
-   - venda aceita;
-   - pagamento processado;
-   - ticket/email;
-   - check-in quando possivel.
-3. Garanta que a API do Sales esteja em:
+1. In `sales-event-project`, start the local stack.
+2. Still in `sales-event-project`, generate rich analytics data:
+
+```bash
+scripts/generate-analytics-demo-data.sh --sales 50 --reset-demo-inventory
+```
+
+   The script creates sales, approved/failed payments, email events, and
+   check-ins for the seeded local event.
+3. Make sure the Sales API is available at:
 
 ```text
 http://localhost:8080
 ```
 
-4. No `react-dash`, use:
+4. In `react-dash`, use:
 
 ```env
 VITE_SALES_API_BASE_URL=/api
 ```
 
-5. Inicie o app:
+5. Start the app:
 
 ```bash
 npm start
 ```
 
-6. Informe no dashboard:
-   - `Base URL`: `/api` com proxy Vite ou a URL absoluta da API;
-   - `Sales event`: UUID do evento local;
-   - `Start`: limite inferior RFC3339, quando desejar filtrar periodo;
-   - `End`: limite superior RFC3339, quando desejar filtrar periodo;
-   - `Limite`: limite de eventos;
-   - `API key`: `dev-support-key` para a stack local seedada do
-     `sales-event-project`, ou outra chave com role `SUPPORT` ou `ADMIN`.
-7. Clique em `Carregar API`.
-8. Confirme que a fonte muda para `API local`.
-9. Repita as exportacoes JSON, CSV e PNG.
+6. Fill in the dashboard:
+   - `Base URL`: `/api` with the Vite proxy, or the absolute API URL;
+   - `Sales event`: local event UUID;
+   - `Start`: RFC3339 lower bound when filtering by period;
+   - `End`: RFC3339 upper bound when filtering by period;
+   - `Limit`: event limit;
+   - `API key`: `dev-support-key` for the seeded local `sales-event-project`
+     stack, or another key with the `SUPPORT` or `ADMIN` role.
+7. Click `Load API`.
+8. Confirm that the source changes to `Local API`.
+9. Repeat the JSON, CSV, and PNG exports.
 
-O dashboard pode lembrar `Base URL`, `Sales event`, `Start`, `End` e `Limite`
-no navegador. A `API key` nao deve ser persistida.
+The dashboard may remember `Base URL`, `Sales event`, `Start`, `End`, and
+`Limit` in the browser. The `API key` must not be persisted.
 
-## Fallback Esperado
+## Expected Fallback
 
-Quando a API nao existe, esta fora do ar ou retorna erro:
+When the API does not exist, is down, or returns an error:
 
-- o dashboard deve continuar renderizando a fixture local;
-- a fonte deve permanecer ou voltar para `Fixture local`;
-- a mensagem deve explicar a falha de forma legivel;
-- nenhuma tela deve quebrar.
+- the dashboard must keep rendering the local fixture;
+- the source must remain on or return to `Local fixture`;
+- the message must explain the failure in a readable way;
+- no screen should break.
 
-## Evidencia Para Portfolio
+## Portfolio Evidence
 
-Durante a revisao ou gravacao:
+During review or recording:
 
-- capturar a tela inicial com KPIs e graficos;
-- guardar um JSON exportado;
-- guardar os dois CSVs;
-- guardar pelo menos um PNG de grafico;
-- registrar se a fonte usada foi `Fixture local` ou `API local`.
+- capture the home screen with KPIs and charts;
+- keep one exported JSON file;
+- keep both CSV files;
+- keep at least one chart PNG;
+- record whether the source used was `Local fixture` or `Local API`.
 
-## Criterio De Pronto
+## Done Criteria
 
-A demo esta pronta quando:
+The demo is ready when:
 
-- o app roda localmente;
-- fixture abre sem servicos externos;
-- API local funciona quando o endpoint do Sales estiver disponivel;
-- exportacoes geram arquivos legiveis;
-- comandos de validacao passam;
-- um novo agent consegue seguir este documento sem ler o codigo fonte.
+- the app runs locally;
+- the fixture opens without external services;
+- the local API works when the Sales endpoint is available;
+- exports generate readable files;
+- validation commands pass;
+- a new agent can follow this document without reading the source code.
