@@ -47,6 +47,12 @@ automatically and validates the protected dashboard flow in a real browser.
 
 Installs the Chromium browser used by the local/CI E2E baseline.
 
+### `npm run evidence:sales-api`
+
+Captures local Sales API dashboard screenshots with Playwright. Set
+`SALES_SUPPORT_API_KEY` before running it; optional inputs are
+`SALES_EVENT_ID`, `REACT_DASH_BASE_URL`, and `EVIDENCE_OUTPUT_DIR`.
+
 ### `npm run typecheck`
 
 Runs TypeScript type checking without emitting files.
@@ -139,6 +145,17 @@ scripts/generate-analytics-demo-data.sh --sales 50 --reset-demo-inventory
 The dashboard persists only non-secret settings, such as `Base URL` and filters.
 The `API key` value stays only in page memory.
 
+To validate and capture the integrated local API path:
+
+```bash
+SALES_SUPPORT_API_KEY=dev-support-key npm run test:e2e
+SALES_SUPPORT_API_KEY=dev-support-key npm run evidence:sales-api
+```
+
+The evidence command writes PNGs to `evidence/sales-api-dashboard` by default,
+or to `EVIDENCE_OUTPUT_DIR` when provided. It clears the `API key` field before
+capturing screenshots.
+
 ## Validation
 
 Before opening a PR or using the demo in a portfolio:
@@ -149,6 +166,7 @@ npm run typecheck
 npm run check:style-units
 npm run build
 npm run test:e2e
+SALES_SUPPORT_API_KEY=dev-support-key npm run evidence:sales-api
 git diff --check
 ```
 
