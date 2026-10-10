@@ -49,6 +49,45 @@ contains enough context.
 7. Use GitHub issues/discussions only when official docs do not answer.
 8. Use community sources only as secondary evidence and label them as such.
 
+## Local Library RAG CLI
+
+The project includes a local, no-API-key retrieval helper for library
+documentation. It uses the trusted source map in
+`docs/agentic/external-doc-sources.json`, resolves installed package versions
+from `package-lock.json`, stores fetched snapshots outside the repository, and
+performs lexical search over the local cache.
+
+Commands:
+
+```bash
+npm run rag:sources -- react
+npm run rag:fetch -- --library React
+npm run rag:fetch -- --library React --url https://react.dev/reference/react/useMemo
+npm run rag:query -- "React useMemo dependencies" --library React
+```
+
+Cache location:
+
+```text
+~/.cache/react-dash-lib-rag
+```
+
+Override the cache for an isolated run:
+
+```bash
+REACT_DASH_LIB_RAG_CACHE=/tmp/react-dash-lib-rag npm run rag:query -- "MUI Data Grid valueFormatter"
+```
+
+Use this CLI when a task needs quick local consultation of library docs. Add
+focused official URLs with `rag:fetch -- --library <name> --url <url>` when the
+default seed page is too broad. The URL origin must already be listed as an
+official source for that library.
+
+The source map should track the project's actual libraries, while the CLI uses
+the lockfile as the version authority. If a package is upgraded, rerun
+`npm install` so `package-lock.json` changes with it, then refresh relevant RAG
+cache entries with `npm run rag:fetch -- --library <name> --refresh`.
+
 ## Query Shape
 
 Good retrieval queries include:
@@ -140,4 +179,3 @@ Decision taken:
 Validation:
 - <commands run>
 ```
-
