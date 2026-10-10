@@ -1,5 +1,5 @@
 {
-  "purpose": "Machine-readable source map for agentic external documentation retrieval. Do not store fetched documentation in this repository.",
+  "purpose": "Machine-readable source map for agentic external documentation retrieval. Do not store fetched documentation in this repository. Installed package versions are resolved from package-lock.json by scripts/lib-rag.cjs.",
   "project": "react-dash",
   "sourcePriority": [
     "repository docs and source",
@@ -20,6 +20,15 @@
       "useFor": ["components", "hooks", "rendering behavior", "state patterns"]
     },
     {
+      "name": "React DOM",
+      "package": "react-dom",
+      "currentRange": "^18.2.0",
+      "officialDocs": [
+        "https://react.dev/reference/react-dom"
+      ],
+      "useFor": ["DOM rendering", "createRoot", "browser integration", "hydration"]
+    },
+    {
       "name": "React Router",
       "package": "react-router-dom",
       "currentRange": "^6.17.0",
@@ -31,11 +40,20 @@
     {
       "name": "Vite",
       "package": "vite",
-      "currentRange": "transitive via @vitejs/plugin-react / lockfile",
+      "currentRange": "resolved from package-lock.json",
       "officialDocs": [
         "https://vite.dev/"
       ],
       "useFor": ["dev server", "build", "proxy", "dependency optimization", "env variables"]
+    },
+    {
+      "name": "Vite React Plugin",
+      "package": "@vitejs/plugin-react",
+      "currentRange": "^5.0.0",
+      "officialDocs": [
+        "https://vite.dev/plugins/"
+      ],
+      "useFor": ["React refresh", "JSX transform", "Vite React integration"]
     },
     {
       "name": "TypeScript",
@@ -56,6 +74,24 @@
       "useFor": ["MUI components", "theme behavior", "layout primitives", "component imports"]
     },
     {
+      "name": "Emotion React",
+      "package": "@emotion/react",
+      "currentRange": "^11.11.1",
+      "officialDocs": [
+        "https://emotion.sh/docs/introduction"
+      ],
+      "useFor": ["CSS-in-JS runtime", "MUI styling engine", "theme styling"]
+    },
+    {
+      "name": "Emotion Styled",
+      "package": "@emotion/styled",
+      "currentRange": "^11.11.0",
+      "officialDocs": [
+        "https://emotion.sh/docs/styled"
+      ],
+      "useFor": ["styled components", "MUI styled engine", "component styling"]
+    },
+    {
       "name": "MUI X Data Grid",
       "package": "@mui/x-data-grid",
       "currentRange": "^6.18.2",
@@ -72,6 +108,15 @@
         "https://recharts.org/"
       ],
       "useFor": ["charts", "responsive containers", "SVG rendering", "chart export assumptions"]
+    },
+    {
+      "name": "React Circular Progressbar",
+      "package": "react-circular-progressbar",
+      "currentRange": "^2.1.0",
+      "officialDocs": [
+        "https://github.com/kevinsqi/react-circular-progressbar"
+      ],
+      "useFor": ["circular progress charts", "legacy progress widgets"]
     },
     {
       "name": "Playwright",
@@ -102,6 +147,24 @@
         "https://testing-library.com/docs/react-testing-library/intro/"
       ],
       "useFor": ["component tests", "accessible queries", "user-centric assertions"]
+    },
+    {
+      "name": "Testing Library Jest DOM",
+      "package": "@testing-library/jest-dom",
+      "currentRange": "^5.17.0",
+      "officialDocs": [
+        "https://testing-library.com/docs/ecosystem-jest-dom/"
+      ],
+      "useFor": ["DOM matchers", "component test assertions"]
+    },
+    {
+      "name": "Testing Library User Event",
+      "package": "@testing-library/user-event",
+      "currentRange": "^13.5.0",
+      "officialDocs": [
+        "https://testing-library.com/docs/user-event/intro/"
+      ],
+      "useFor": ["user interactions", "component test events", "form input tests"]
     },
     {
       "name": "Sass",
