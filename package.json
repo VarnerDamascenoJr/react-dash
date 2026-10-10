@@ -28,6 +28,9 @@
     "test:e2e:install": "playwright install chromium",
     "test:e2e:ui": "playwright test --ui",
     "check:style-units": "node scripts/check-style-units.cjs",
+    "rag:sources": "node scripts/lib-rag.cjs sources",
+    "rag:fetch": "node scripts/lib-rag.cjs fetch",
+    "rag:query": "node scripts/lib-rag.cjs query",
     "typecheck": "tsc --noEmit"
   },
   "browserslist": {

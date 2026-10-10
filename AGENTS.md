@@ -81,6 +81,15 @@ Known warnings:
 
 ## Agentic Operating Model
 
+- Codex-specific React expert skill lives in
+  [.agents/skills/react-dash-react-expert/SKILL.md](/home/varner/aprendizagem/projetos/react-dash/.agents/skills/react-dash-react-expert/SKILL.md:1).
+- Use `$react-dash-react-expert` for React work that touches routes,
+  dashboard components, analytics views, tests, auth, API keys, exports or
+  frontend configuration.
+- Frontend validation skill lives in
+  [.agents/skills/react-front-test-runner/SKILL.md](/home/varner/aprendizagem/projetos/react-dash/.agents/skills/react-front-test-runner/SKILL.md:1).
+- Use `$react-front-test-runner` after every React frontend implementation
+  task before handing off.
 - React expert skills live in
   [docs/agentic/react-expert-skills.md](/home/varner/aprendizagem/projetos/react-dash/docs/agentic/react-expert-skills.md:1).
 - Graphify development flow lives in
