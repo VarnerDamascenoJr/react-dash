@@ -1,5 +1,4 @@
 import type {
-  AggregateCounts,
   AnalyticsEventRow,
   AnalyticsKpis,
   CountMap,
