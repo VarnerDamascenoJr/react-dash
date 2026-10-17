@@ -12,20 +12,20 @@ test('switches dashboard theme from navbar and sidebar controls', async ({
   await page.getByRole('button', { name: 'Alternar tema' }).click();
   await expectAppTheme(page, 'dark');
 
-  await page.getByRole('button', { name: 'Light' }).click();
+  await page.getByRole('button', { name: 'Claro' }).click();
   await expectAppTheme(page, 'light');
 
-  await page.getByRole('button', { name: 'Dark' }).click();
+  await page.getByRole('button', { name: 'Escuro' }).click();
   await expectAppTheme(page, 'dark');
 });
 
 async function signInWithDemoAccount(page: Page) {
-  await page.getByRole('button', { name: /enter dashboard/i }).click();
+  await page.getByRole('button', { name: /entrar no painel/i }).click();
 }
 
 async function expectDashboard(page: Page) {
   await expect(
-    page.getByRole('heading', { name: /coleta operacional pronta para analise/i })
+    page.getByRole('heading', { name: /visão operacional dos eventos de vendas/i })
   ).toBeVisible();
 }
 

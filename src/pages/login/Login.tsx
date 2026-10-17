@@ -1,16 +1,19 @@
 import { useContext, useMemo, useState, type FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './login.scss';
-import { AuthContext } from '../../context/authContext';
+import { AuthContext, DemoAuthenticationError } from '../../context/authContext';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '../../components/language/LanguageSelector';
 import { demoLoginEmail, demoLoginPassword } from '../../config/auth';
 
 const Login = () => {
+  const { t } = useTranslation('login');
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState(demoLoginEmail);
   const [password, setPassword] = useState(demoLoginPassword);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<'' | 'invalidCredentials' | 'authFailed'>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const redirectPath = useMemo(() => {
@@ -28,9 +31,7 @@ const Login = () => {
       navigate(redirectPath || '/', { replace: true });
     } catch (submitError) {
       setError(
-        submitError instanceof Error
-          ? submitError.message
-          : 'Unable to authenticate.'
+        submitError instanceof DemoAuthenticationError ? 'invalidCredentials' : 'authFailed'
       );
     } finally {
       setIsSubmitting(false);
@@ -40,26 +41,26 @@ const Login = () => {
   return (
     <div className="loginPage">
       <div className="loginPage__panel">
+        <div className="loginPage__language"><LanguageSelector /></div>
         <div className="loginPage__brand">
           <span className="brandMark">RD</span>
           <div>
             <strong>React Dash</strong>
-            <span>Operations command center</span>
+            <span>{t('subtitle')}</span>
           </div>
         </div>
 
         <div className="loginPage__hero">
-          <span className="eyebrow">Sign in to continue</span>
-          <h1>Run your dashboard from a cleaner, faster control room.</h1>
+          <span className="eyebrow">{t('eyebrow')}</span>
+          <h1>{t('title')}</h1>
           <p>
-            This demo login now protects the internal routes and keeps the
-            session persisted locally.
+            {t('description')}
           </p>
         </div>
 
         <form className="loginForm" onSubmit={handleSubmit}>
           <div className="inputGroup">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('email')}</label>
             <input
               id="email"
               type="email"
@@ -68,7 +69,7 @@ const Login = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('password')}</label>
             <input
               id="password"
               type="password"
@@ -76,25 +77,25 @@ const Login = () => {
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
-          {error ? <p className="errorMessage">{error}</p> : null}
+          {error ? <p className="errorMessage" role="alert">{t(error)}</p> : null}
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Authenticating...' : 'Enter dashboard'}
+            {t(isSubmitting ? 'authenticating' : 'submit')}
           </button>
         </form>
 
         <div className="loginPage__demoHint">
-          <span>Demo access</span>
+          <span>{t('demoAccess')}</span>
           <strong>{demoLoginEmail} / {demoLoginPassword}</strong>
         </div>
       </div>
       <div className="loginPage__aside">
         <div className="insightCard">
-          <span className="eyebrow">Live overview</span>
-          <h2>Everything important, without the dashboard clutter.</h2>
+          <span className="eyebrow">{t('asideEyebrow')}</span>
+          <h2>{t('asideTitle')}</h2>
           <ul>
-            <li>Protected routes for the internal admin area.</li>
-            <li>Persistent local session for demo sign-in.</li>
-            <li>Sharper visual foundation for the next product steps.</li>
+            <li>{t('features.analytics')}</li>
+            <li>{t('features.demo')}</li>
+            <li>{t('features.exports')}</li>
           </ul>
         </div>
       </div>

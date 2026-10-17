@@ -13,6 +13,7 @@ interface VerticalDistributionBarChartProps {
   categoryKey: string;
   data: object[];
   label: string;
+  valueFormatter: (value: number) => string;
   valueKey: string;
   yAxisWidth?: number;
 }
@@ -22,6 +23,7 @@ export default function VerticalDistributionBarChart({
   categoryKey,
   data,
   label,
+  valueFormatter,
   valueKey,
   yAxisWidth = 132,
 }: VerticalDistributionBarChartProps) {
@@ -29,9 +31,9 @@ export default function VerticalDistributionBarChart({
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={data} layout="vertical" margin={{ left: 8, right: 12 }}>
         <CartesianGrid strokeDasharray="3 3" className="chartGrid" />
-        <XAxis allowDecimals={false} type="number" />
+        <XAxis allowDecimals={false} type="number" tickFormatter={valueFormatter} />
         <YAxis dataKey={categoryKey} type="category" width={yAxisWidth} />
-        <Tooltip />
+        <Tooltip formatter={(value) => valueFormatter(Number(value))} />
         <Bar
           dataKey={valueKey}
           fill={barColor}

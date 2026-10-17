@@ -13,6 +13,7 @@ interface TimeSeriesAreaChartProps {
   dataKey: string;
   gradientId: string;
   label: string;
+  valueFormatter: (value: number) => string;
   stroke: string;
   tooltipLabelFormatter: (value: string) => string;
   xDataKey: string;
@@ -24,6 +25,7 @@ export default function TimeSeriesAreaChart({
   dataKey,
   gradientId,
   label,
+  valueFormatter,
   stroke,
   tooltipLabelFormatter,
   xDataKey,
@@ -40,8 +42,8 @@ export default function TimeSeriesAreaChart({
         </defs>
         <CartesianGrid strokeDasharray="3 3" className="chartGrid" />
         <XAxis dataKey={xDataKey} tickFormatter={xTickFormatter} />
-        <YAxis allowDecimals={false} width={36} />
-        <Tooltip labelFormatter={(value) => tooltipLabelFormatter(String(value))} />
+        <YAxis allowDecimals={false} width={36} tickFormatter={valueFormatter} />
+        <Tooltip formatter={(value) => valueFormatter(Number(value))} labelFormatter={(value) => tooltipLabelFormatter(String(value))} />
         <Area
           dataKey={dataKey}
           fill={`url(#${gradientId})`}

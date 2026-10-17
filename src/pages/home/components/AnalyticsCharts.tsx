@@ -1,8 +1,8 @@
 import type { RefObject } from 'react';
 import { Box } from '@mui/material';
 import type { WindowSeriesPoint } from '../../../analytics';
-import { homeCopy } from '../copy';
-import { formatDateTime, formatInteger, formatShortTime } from '../formatters';
+import { useTranslation } from 'react-i18next';
+import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
 import ChartPanel from './charts/ChartPanel';
 import TimeSeriesAreaChart from './charts/TimeSeriesAreaChart';
 import VerticalDistributionBarChart from './charts/VerticalDistributionBarChart';
@@ -25,23 +25,26 @@ export default function AnalyticsCharts({
   id,
   windowSeries,
 }: AnalyticsChartsProps) {
+  const { t } = useTranslation('home');
+  const { formatDateTime, formatInteger, formatShortTime } = useAnalyticsFormatters();
   const latestWindow = windowSeries[windowSeries.length - 1];
 
   return (
     <Box className="analyticsGrid" component="section" id={id}>
       <ChartPanel
         containerRef={eventsChartRef}
-        emptyMetricLabel={homeCopy.emptyStates.chartMetric}
-        eyebrow={homeCopy.panels.windows.eyebrow}
+        emptyMetricLabel={t('emptyStates.chartMetric')}
+        eyebrow={t('panels.windows.eyebrow')}
         metric={latestWindow ? formatInteger(latestWindow.totalEvents) : '0'}
-        title={homeCopy.panels.windows.title}
+        title={t('panels.windows.title')}
         wide
       >
         <TimeSeriesAreaChart
           data={windowSeries}
           dataKey="totalEvents"
           gradientId="eventsGradient"
-          label={homeCopy.kpis.eventCount}
+          label={t('kpis.eventCount')}
+          valueFormatter={formatInteger}
           stroke="#2c7be5"
           tooltipLabelFormatter={formatDateTime}
           xDataKey="windowStart"
@@ -52,15 +55,16 @@ export default function AnalyticsCharts({
       <ChartPanel
         compact
         containerRef={eventTypesChartRef}
-        emptyMetricLabel={homeCopy.emptyStates.chartMetric}
-        eyebrow={homeCopy.panels.eventTypes.eyebrow}
-        title={homeCopy.panels.eventTypes.title}
+        emptyMetricLabel={t('emptyStates.chartMetric')}
+        eyebrow={t('panels.eventTypes.eyebrow')}
+        title={t('panels.eventTypes.title')}
       >
         <VerticalDistributionBarChart
           barColor="#f05d5e"
           categoryKey="name"
           data={eventTypeData}
-          label={homeCopy.kpis.eventCount}
+          label={t('kpis.eventCount')}
+          valueFormatter={formatInteger}
           valueKey="total"
         />
       </ChartPanel>

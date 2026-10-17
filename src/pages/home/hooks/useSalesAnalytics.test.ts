@@ -2,7 +2,8 @@ import { act, renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
 import { localSalesAnalyticsFixture } from '../../../analytics';
 import { salesAnalyticsSettingsStorageKey } from '../../../config/salesApi';
-import { homeCopy } from '../copy';
+import homeCopy from '../../../i18n/locales/pt-BR/home.json';
+import i18n from '../../../i18n';
 import { useSalesAnalytics } from './useSalesAnalytics';
 
 afterEach(() => {
@@ -113,6 +114,10 @@ test('returns to the fixture with a readable error after an API failure', async 
 
   expect(result.current.source).toBe('fixture');
   expect(result.current.document).toBe(localSalesAnalyticsFixture);
-  expect(result.current.loadMessage).toMatch(/nao possui permissao/i);
+  expect(result.current.loadMessage).toMatch(/não tem permissão/i);
   expect(result.current.isLoading).toBe(false);
+  await act(async () => { await i18n.changeLanguage('en-US'); });
+  expect(result.current.loadMessage).toContain('does not have permission');
+  expect(result.current.loadMessage).toContain('Showing demo data.');
+  expect(fetcher).toHaveBeenCalledTimes(2);
 });

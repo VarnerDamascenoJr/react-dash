@@ -6,14 +6,14 @@ const authStorageKey = 'react-dash.auth.user';
 test('keeps users on login when demo credentials are invalid', async ({ page }) => {
   await page.goto('/login');
 
-  await page.getByLabel('Password').fill('not-the-demo-password');
-  await page.getByRole('button', { name: /enter dashboard/i }).click();
+  await page.getByLabel('Senha').fill('not-the-demo-password');
+  await page.getByRole('button', { name: /entrar no painel/i }).click();
 
   await expect(page).toHaveURL(/\/login$/);
   await expect(
-    page.getByText('Use the demo account to access the dashboard.')
+    page.getByText('Use a conta de demonstração para acessar o painel.')
   ).toBeVisible();
-  await expect(page.getByLabel('Email')).toHaveValue(demoEmail);
+  await expect(page.getByLabel('E-mail')).toHaveValue(demoEmail);
 });
 
 test('redirects protected routes to login before returning to the dashboard', async ({
@@ -22,7 +22,7 @@ test('redirects protected routes to login before returning to the dashboard', as
   await page.goto('/events');
 
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByLabel('Email')).toHaveValue(demoEmail);
+  await expect(page.getByLabel('E-mail')).toHaveValue(demoEmail);
 
   await signInWithDemoAccount(page);
 
@@ -51,20 +51,20 @@ test('logs out and clears the persisted demo session', async ({ page }) => {
   await expect(page).toHaveURL('/');
   await expect(await getStoredSession(page)).toContain(demoEmail);
 
-  await page.getByText('Logout', { exact: true }).click();
+  await page.getByText('Encerrar sessão', { exact: true }).click();
 
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole('button', { name: /enter dashboard/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /entrar no painel/i })).toBeVisible();
   await expect(await getStoredSession(page)).toBeNull();
 });
 
 async function signInWithDemoAccount(page: Page) {
-  await page.getByRole('button', { name: /enter dashboard/i }).click();
+  await page.getByRole('button', { name: /entrar no painel/i }).click();
 }
 
 async function expectDashboard(page: Page) {
   await expect(
-    page.getByRole('heading', { name: /coleta operacional pronta para analise/i })
+    page.getByRole('heading', { name: /visão operacional dos eventos de vendas/i })
   ).toBeVisible();
 }
 

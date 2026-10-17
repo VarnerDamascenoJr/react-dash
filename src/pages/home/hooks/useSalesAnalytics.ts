@@ -9,20 +9,18 @@ import {
   saveSalesAnalyticsSettings,
   type SalesAnalyticsSettings,
 } from '../../../config/salesApi';
-import { homeCopy } from '../copy';
+import { useTranslation } from 'react-i18next';
 
 export function useSalesAnalytics() {
+  const { t } = useTranslation('home');
   const [settings, setSettings] = useState(() =>
     loadSalesAnalyticsSettings(localSalesAnalyticsFixture.source.salesEventId ?? '')
   );
   const [apiKey, setApiKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [loaded, setLoaded] = useState<
-    SalesAnalyticsLoadResult & { loadMessage: string }
-  >({
+  const [loaded, setLoaded] = useState<SalesAnalyticsLoadResult>({
     document: localSalesAnalyticsFixture,
     source: 'fixture',
-    loadMessage: homeCopy.loadStatus.fixture,
   });
 
   useEffect(() => {
@@ -38,13 +36,7 @@ export function useSalesAnalytics() {
     try {
       const { baseUrl, ...filters } = settings;
       const result = await loadSalesAnalyticsExport(filters, { apiKey, baseUrl });
-      setLoaded({
-        ...result,
-        loadMessage:
-          result.source === 'api'
-            ? homeCopy.loadStatus.api
-            : result.error?.message ?? homeCopy.loadStatus.fallback,
-      });
+      setLoaded(result);
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +45,9 @@ export function useSalesAnalytics() {
   return {
     document: loaded.document,
     source: loaded.source,
-    loadMessage: loaded.loadMessage,
+    loadMessage: loaded.error
+      ? t('loadStatus.fallbackReason', { reason: t(`apiErrors.${loaded.error.code}`) })
+      : t(loaded.source === 'api' ? 'loadStatus.api' : 'loadStatus.fixture'),
     settings,
     updateSettings,
     apiKey,

@@ -1,6 +1,16 @@
 export type CsvPrimitive = string | number | boolean | null | undefined;
 export type CsvRow = Record<string, CsvPrimitive>;
 
+export class AnalyticsExportError extends Error {
+  constructor(
+    public code: 'chartUnavailable' | 'canvasUnavailable' | 'imageFailed' | 'pngFailed',
+    message: string
+  ) {
+    super(message);
+    this.name = 'AnalyticsExportError';
+  }
+}
+
 export function serializeCsv<T extends object>(rows: T[]) {
   if (rows.length === 0) {
     return '';
@@ -43,7 +53,7 @@ export async function downloadChartPng(
 ) {
   const svg = container?.querySelector('svg');
   if (!svg) {
-    throw new Error('Grafico indisponivel para exportacao PNG.');
+    throw new AnalyticsExportError('chartUnavailable', 'Grafico indisponivel para exportacao PNG.');
   }
 
   const svgText = new XMLSerializer().serializeToString(svg);
@@ -62,7 +72,7 @@ export async function downloadChartPng(
 
     const context = canvas.getContext('2d');
     if (!context) {
-      throw new Error('Canvas indisponivel para exportacao PNG.');
+      throw new AnalyticsExportError('canvasUnavailable', 'Canvas indisponivel para exportacao PNG.');
     }
 
     context.fillStyle = '#ffffff';
@@ -110,7 +120,7 @@ function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
     image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error('Nao foi possivel renderizar o PNG.'));
+    image.onerror = () => reject(new AnalyticsExportError('imageFailed', 'Nao foi possivel renderizar o PNG.'));
     image.src = src;
   });
 }
@@ -122,7 +132,7 @@ function canvasToBlob(canvas: HTMLCanvasElement) {
         resolve(blob);
         return;
       }
-      reject(new Error('Nao foi possivel gerar o PNG.'));
+      reject(new AnalyticsExportError('pngFailed', 'Nao foi possivel gerar o PNG.'));
     }, 'image/png');
   });
 }

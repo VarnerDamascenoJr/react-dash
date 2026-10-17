@@ -28,11 +28,18 @@ export interface SalesAnalyticsLoadResult {
 
 export class SalesAnalyticsApiError extends Error {
   status?: number;
+  code: 'invalidFilters' | 'unauthorized' | 'forbidden' | 'requestFailed' |
+    'network' | 'emptyResponse' | 'invalidJson' | 'invalidSchema';
 
-  constructor(message: string, status?: number) {
+  constructor(
+    message: string,
+    status?: number,
+    code: SalesAnalyticsApiError['code'] = apiErrorCodeForStatus(status)
+  ) {
     super(message);
     this.name = 'SalesAnalyticsApiError';
     this.status = status;
+    this.code = code;
   }
 }
 
@@ -77,7 +84,9 @@ export async function fetchSalesAnalyticsExport(
   );
   if (!isSalesAnalyticsDocument(payload)) {
     throw new SalesAnalyticsApiError(
-      'A resposta da API nao usa o schema sales-analytics-export.v1.'
+      'A resposta da API nao usa o schema sales-analytics-export.v1.',
+      undefined,
+      'invalidSchema'
     );
   }
 
@@ -100,7 +109,7 @@ export async function loadSalesAnalyticsExport(
       error:
         error instanceof SalesAnalyticsApiError
           ? error
-          : new SalesAnalyticsApiError('Nao foi possivel carregar a API local.'),
+          : new SalesAnalyticsApiError('Nao foi possivel carregar a API local.', undefined, 'network'),
     };
   }
 }
@@ -159,13 +168,22 @@ async function readJsonResponse(
 ) {
   const text = await response.text();
   if (!text.trim()) {
-    throw new SalesAnalyticsApiError(emptyMessage, response.status);
+    throw new SalesAnalyticsApiError(emptyMessage, response.status, 'emptyResponse');
   }
 
   try {
     return JSON.parse(text) as unknown;
   } catch (_error) {
-    throw new SalesAnalyticsApiError(invalidJsonMessage, response.status);
+    throw new SalesAnalyticsApiError(invalidJsonMessage, response.status, 'invalidJson');
+  }
+}
+
+function apiErrorCodeForStatus(status?: number): SalesAnalyticsApiError['code'] {
+  switch (status) {
+    case 400: return 'invalidFilters';
+    case 401: return 'unauthorized';
+    case 403: return 'forbidden';
+    default: return 'requestFailed';
   }
 }
 

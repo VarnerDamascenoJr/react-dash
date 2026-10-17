@@ -1,56 +1,11 @@
 import { Box } from '@mui/material';
-import { DataGrid, type GridColDef } from '@mui/x-data-grid';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { DataGrid, enUS, ptBR, type GridColDef } from '@mui/x-data-grid';
 import type { AnalyticsEventRow } from '../../../analytics';
-import { homeCopy } from '../copy';
-import { formatCurrency, formatInteger } from '../formatters';
+import { resolveLanguage } from '../../../i18n/preferences';
+import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
 import AnalyticsPanel from './AnalyticsPanel';
-
-const eventTableCopy = homeCopy.panels.eventsTable;
-
-const eventColumns: GridColDef<AnalyticsEventRow>[] = [
-  {
-    field: 'occurredAt',
-    headerName: eventTableCopy.columns.occurredAt,
-    flex: 1.3,
-    minWidth: 180,
-  },
-  {
-    field: 'eventType',
-    headerName: eventTableCopy.columns.eventType,
-    flex: 1,
-    minWidth: 150,
-  },
-  {
-    field: 'saleId',
-    headerName: eventTableCopy.columns.saleId,
-    flex: 0.8,
-    minWidth: 120,
-  },
-  {
-    field: 'status',
-    headerName: eventTableCopy.columns.status,
-    flex: 0.8,
-    minWidth: 120,
-  },
-  {
-    field: 'provider',
-    headerName: eventTableCopy.columns.provider,
-    flex: 0.8,
-    minWidth: 120,
-  },
-  {
-    field: 'amountCents',
-    headerName: eventTableCopy.columns.amountCents,
-    flex: 0.6,
-    minWidth: 110,
-    valueFormatter: ({ value }) => formatCurrency(Number(value || 0)),
-  },
-  {
-    field: 'quantity',
-    headerName: eventTableCopy.columns.quantity,
-    width: 84,
-  },
-];
 
 interface EventsTableProps {
   id?: string;
@@ -58,14 +13,63 @@ interface EventsTableProps {
 }
 
 export default function EventsTable({ id, rows }: EventsTableProps) {
+  const { t, i18n } = useTranslation('home');
+  const { formatCurrency, formatDateTime } = useAnalyticsFormatters();
+  const gridLocale = resolveLanguage(i18n.resolvedLanguage) === 'pt-BR' ? ptBR : enUS;
+  const eventColumns = useMemo<GridColDef<AnalyticsEventRow>[]>(() => [
+    {
+      field: 'occurredAt',
+      headerName: t('panels.eventsTable.columns.occurredAt'),
+      valueFormatter: ({ value }) => formatDateTime(String(value)),
+      flex: 1.3,
+      minWidth: 180,
+    },
+    {
+      field: 'eventType',
+      headerName: t('panels.eventsTable.columns.eventType'),
+      flex: 1,
+      minWidth: 150,
+    },
+    {
+      field: 'saleId',
+      headerName: t('panels.eventsTable.columns.saleId'),
+      flex: 0.8,
+      minWidth: 120,
+    },
+    {
+      field: 'status',
+      headerName: t('panels.eventsTable.columns.status'),
+      flex: 0.8,
+      minWidth: 120,
+    },
+    {
+      field: 'provider',
+      headerName: t('panels.eventsTable.columns.provider'),
+      flex: 0.8,
+      minWidth: 120,
+    },
+    {
+      field: 'amountCents',
+      headerName: t('panels.eventsTable.columns.amountCents'),
+      flex: 0.6,
+      minWidth: 110,
+      valueFormatter: ({ value }) => formatCurrency(Number(value || 0)),
+    },
+    {
+      field: 'quantity',
+      headerName: t('panels.eventsTable.columns.quantity'),
+      width: 84,
+    },
+  ], [t, formatCurrency, formatDateTime]);
+
   return (
     <AnalyticsPanel
       className="eventPanel"
       component="section"
-      eyebrow={homeCopy.panels.events.eyebrow}
+      eyebrow={t('panels.events.eyebrow')}
       id={id}
-      metric={formatInteger(rows.length)}
-      title={homeCopy.panels.events.title}
+      metric={t('panels.events.count', { count: rows.length })}
+      title={t('panels.events.title')}
     >
       <Box className="eventPanel__grid">
         <DataGrid
@@ -74,9 +78,8 @@ export default function EventsTable({ id, rows }: EventsTableProps) {
           density="compact"
           disableRowSelectionOnClick
           localeText={{
-            noRowsLabel: eventTableCopy.noRows,
-            toolbarColumns: eventTableCopy.toolbarColumns,
-            toolbarFilters: eventTableCopy.toolbarFilters,
+            ...gridLocale.components.MuiDataGrid.defaultProps.localeText,
+            noRowsLabel: t('panels.eventsTable.noRows'),
           }}
           pageSizeOptions={[5, 10, 25]}
           rows={rows}

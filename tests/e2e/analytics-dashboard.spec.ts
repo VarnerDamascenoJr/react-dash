@@ -6,33 +6,33 @@ test('loads the protected analytics dashboard with fixture data', async ({ page 
   await page.goto('/');
 
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByLabel('Email')).toHaveValue('admin@reactdash.dev');
+  await expect(page.getByLabel('E-mail')).toHaveValue('admin@reactdash.dev');
 
-  await page.getByRole('button', { name: /enter dashboard/i }).click();
+  await page.getByRole('button', { name: /entrar no painel/i }).click();
 
   await expect(page).toHaveURL('/');
   await expect(
-    page.getByRole('heading', { name: /coleta operacional pronta para analise/i })
+    page.getByRole('heading', { name: /visão operacional dos eventos de vendas/i })
   ).toBeVisible();
-  await expect(page.getByText('Fixture local', { exact: true })).toBeVisible();
+  await expect(page.getByText('Dados de demonstração', { exact: true })).toBeVisible();
   await expect(page.getByText('Eventos coletados')).toBeVisible();
-  await expect(page.getByText('Vendas concluidas')).toBeVisible();
-  await expect(page.getByRole('button', { name: /json bruto/i })).toBeEnabled();
-  await expect(page.getByRole('button', { name: /csv eventos/i })).toBeEnabled();
+  await expect(page.getByText('Vendas concluídas')).toBeVisible();
+  await expect(page.getByRole('button', { name: /json completo/i })).toBeEnabled();
+  await expect(page.getByRole('button', { name: /csv de eventos/i })).toBeEnabled();
 
   await page.getByRole('link', { name: 'Eventos' }).click();
   await expect(page).toHaveURL(/#events$/);
   await expect(
-    page.getByRole('heading', { name: /tabela analitica/i })
+    page.getByRole('heading', { name: /tabela analítica/i })
   ).toBeVisible();
 
   await page.getByRole('link', { name: 'Funil' }).click();
   await expect(page).toHaveURL(/#funnel$/);
   await expect(
-    page.getByRole('heading', { name: /conversao com incerteza/i })
+    page.getByRole('heading', { name: /conversão com incerteza/i })
   ).toBeVisible();
 
-  await page.getByRole('link', { name: 'Configuracao' }).click();
+  await page.getByRole('link', { name: 'Configuração' }).click();
   await expect(page).toHaveURL(/#settings$/);
   await expect(page.getByLabel('Configurar fonte de dados')).toBeVisible();
 
@@ -53,29 +53,29 @@ test('loads API data and downloads the active JSON, CSVs and charts', async ({ p
     await route.fulfill({ json: apiDocument });
   });
   await page.goto('/login');
-  await page.getByRole('button', { name: /enter dashboard/i }).click();
-  await page.getByRole('link', { name: 'Configuracao' }).click();
-  await page.getByLabel('API key', { exact: true }).fill('session-only-key');
+  await page.getByRole('button', { name: /entrar no painel/i }).click();
+  await page.getByRole('link', { name: 'Configuração' }).click();
+  await page.getByLabel('Chave da API', { exact: true }).fill('session-only-key');
   await page.getByLabel('Limite', { exact: true }).fill('50');
   await page.getByRole('button', { name: 'Carregar API', exact: true }).click();
 
-  await expect(page.getByText('API local', { exact: true })).toBeVisible();
-  await expect(page.getByText(/sales-refactor-test - gerado em/)).toBeVisible();
-  await page.getByRole('link', { name: 'Exportacoes' }).click();
+  await expect(page.getByText('API do Sales', { exact: true })).toBeVisible();
+  await expect(page.getByText(/sales-refactor-test — gerado em/)).toBeVisible();
+  await page.getByRole('link', { name: 'Exportações' }).click();
 
-  const json = await downloadFile(page, /json bruto/i);
+  const json = await downloadFile(page, /json completo/i);
   expect(json.name).toBe('sales-events-2026-10-17-export.json');
   expect(JSON.parse(json.content.toString())).toEqual(apiDocument);
-  const events = await downloadFile(page, /csv eventos/i);
+  const events = await downloadFile(page, /csv de eventos/i);
   expect(events.name).toBe('sales-events-2026-10-17-events.csv');
   expect(events.content.toString()).toContain('active-api-sale');
-  const windows = await downloadFile(page, /csv janelas/i);
+  const windows = await downloadFile(page, /csv de janelas/i);
   expect(windows.name).toBe('sales-events-2026-10-17-windows.csv');
   expect(windows.content.toString()).toContain('windowSize,windowStart');
 
   for (const [button, suffix] of [
-    [/png janelas/i, 'events-chart'],
-    [/png tipos/i, 'event-types-chart'],
+    [/png de janelas/i, 'events-chart'],
+    [/png de tipos de evento/i, 'event-types-chart'],
   ] as const) {
     const png = await downloadFile(page, button);
     expect(png.name).toBe(`sales-events-2026-10-17-${suffix}.png`);
@@ -88,18 +88,18 @@ test('shows API fallback and preserves non-secret filters after reloading', asyn
     route.fulfill({ status: 403, json: {} })
   );
   await page.goto('/login');
-  await page.getByRole('button', { name: /enter dashboard/i }).click();
-  await page.getByRole('link', { name: 'Configuracao' }).click();
-  await page.getByLabel('Sales event', { exact: true }).fill('saved-event');
-  await page.getByLabel('API key', { exact: true }).fill('session-only-key');
+  await page.getByRole('button', { name: /entrar no painel/i }).click();
+  await page.getByRole('link', { name: 'Configuração' }).click();
+  await page.getByLabel('Evento de vendas', { exact: true }).fill('saved-event');
+  await page.getByLabel('Chave da API', { exact: true }).fill('session-only-key');
   await page.getByRole('button', { name: 'Carregar API', exact: true }).click();
 
-  await expect(page.getByText('Fixture local', { exact: true })).toBeVisible();
-  await expect(page.getByText('A API key nao possui permissao para o export analitico.')).toBeVisible();
+  await expect(page.getByText('Dados de demonstração', { exact: true })).toBeVisible();
+  await expect(page.getByText('A chave da API não tem permissão para consultar esses dados. Exibindo dados de demonstração.')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Carregar API', exact: true })).toBeEnabled();
   await page.reload();
-  await expect(page.getByLabel('Sales event', { exact: true })).toHaveValue('saved-event');
-  await expect(page.getByLabel('API key', { exact: true })).toHaveValue('');
+  await expect(page.getByLabel('Evento de vendas', { exact: true })).toHaveValue('saved-event');
+  await expect(page.getByLabel('Chave da API', { exact: true })).toHaveValue('');
 });
 
 async function downloadFile(page: Page, button: RegExp) {
