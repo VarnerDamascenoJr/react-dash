@@ -1,3 +1,4 @@
+import type { WidgetType, WidgetData, WidgetProps } from './widget.types';
 import {
   AccountBalanceWalletOutlined,
   KeyboardArrowUp,
@@ -6,11 +7,6 @@ import {
   ShoppingCartOutlined,
 } from '@mui/icons-material';
 import './widget.scss';
-import type { WidgetData, WidgetType } from '../../types';
-
-interface WidgetProps {
-  type: WidgetType;
-}
 
 const widgetContent: Record<WidgetType, WidgetData> = {
   user: {

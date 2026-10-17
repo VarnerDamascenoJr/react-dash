@@ -1,3 +1,5 @@
+// Sales analytics export contract.
+
 export type ISODateTimeString = string;
 
 export type CountMap = Record<string, number>;
@@ -122,6 +124,51 @@ export interface SurvivalHazardBucket {
   survivalProbability: number;
 }
 
+// API requests, loading and failures.
+
+export type SalesAnalyticsDataSource = 'api' | 'fixture';
+
+export type SalesAnalyticsApiErrorCode =
+  | 'invalidFilters'
+  | 'unauthorized'
+  | 'forbidden'
+  | 'requestFailed'
+  | 'network'
+  | 'emptyResponse'
+  | 'invalidJson'
+  | 'invalidSchema';
+
+export interface SalesAnalyticsApiFailure extends Error {
+  status?: number;
+  code: SalesAnalyticsApiErrorCode;
+}
+
+export interface SalesAnalyticsExportFilters {
+  salesEventId?: string;
+  start?: string;
+  end?: string;
+  limit?: number;
+}
+
+export interface SalesAnalyticsClientOptions {
+  apiKey?: string;
+  baseUrl?: string;
+  fetcher?: typeof fetch;
+}
+
+export interface SalesAnalyticsLoadOptions
+  extends SalesAnalyticsClientOptions {
+  fallbackDocument?: SalesAnalyticsDocument;
+}
+
+export interface SalesAnalyticsLoadResult {
+  document: SalesAnalyticsDocument;
+  source: SalesAnalyticsDataSource;
+  error?: SalesAnalyticsApiFailure;
+}
+
+// Prepared dashboard data.
+
 export interface AnalyticsKpis {
   eventCount: number;
   completedSales: number;
@@ -190,6 +237,22 @@ export interface AnalyticsEventRow {
   quantity: number;
   attempts: number;
 }
+
+export interface EventTypeDistributionPoint {
+  name: string;
+  total: number;
+}
+
+// Downloads and export failures.
+
+export type CsvPrimitive = string | number | boolean | null | undefined;
+export type CsvRow = Record<string, CsvPrimitive>;
+
+export type AnalyticsExportErrorCode =
+  | 'chartUnavailable'
+  | 'canvasUnavailable'
+  | 'imageFailed'
+  | 'pngFailed';
 
 export interface EventCsvRow {
   occurredAt: ISODateTimeString;

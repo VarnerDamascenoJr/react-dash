@@ -14,6 +14,39 @@ test('keeps users on login when demo credentials are invalid', async ({ page }) 
     page.getByText('Use a conta de demonstração para acessar o painel.')
   ).toBeVisible();
   await expect(page.getByLabel('E-mail')).toHaveValue(demoEmail);
+
+  await page.getByLabel('Senha').fill('Dash2026!');
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await signInWithDemoAccount(page);
+  await expectDashboard(page);
+});
+
+test('requires credentials before attempting to sign in', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByLabel('E-mail').clear();
+  await page.getByRole('button', { name: /entrar no painel/i }).click();
+
+  await expect(page.getByLabel('E-mail')).toBeFocused();
+  await expect(page).toHaveURL('/login');
+  await expect(await getStoredSession(page)).toBeNull();
+
+  await page.getByLabel('E-mail').fill(demoEmail);
+  await page.getByLabel('Senha').clear();
+  await page.getByRole('button', { name: /entrar no painel/i }).click();
+
+  await expect(page.getByLabel('Senha')).toBeFocused();
+  await expect(page).toHaveURL('/login');
+  await expect(await getStoredSession(page)).toBeNull();
+});
+
+test('preserves the protected URL query and fragment after signing in', async ({ page }) => {
+  await page.goto('/?view=events#overview');
+  await expect(page).toHaveURL('/login');
+
+  await signInWithDemoAccount(page);
+
+  await expect(page).toHaveURL('/?view=events#overview');
+  await expectDashboard(page);
 });
 
 test('redirects protected routes to login before returning to the dashboard', async ({

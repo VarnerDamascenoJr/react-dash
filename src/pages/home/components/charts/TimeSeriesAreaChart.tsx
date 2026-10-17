@@ -1,3 +1,4 @@
+import type { TimeSeriesAreaChartProps } from '../../home.types';
 import {
   Area,
   AreaChart,
@@ -8,19 +9,7 @@ import {
   YAxis,
 } from 'recharts';
 
-interface TimeSeriesAreaChartProps {
-  data: object[];
-  dataKey: string;
-  gradientId: string;
-  label: string;
-  valueFormatter: (value: number) => string;
-  stroke: string;
-  tooltipLabelFormatter: (value: string) => string;
-  xDataKey: string;
-  xTickFormatter: (value: string) => string;
-}
-
-export default function TimeSeriesAreaChart({
+export default function TimeSeriesAreaChart<TData extends object>({
   data,
   dataKey,
   gradientId,
@@ -30,7 +19,7 @@ export default function TimeSeriesAreaChart({
   tooltipLabelFormatter,
   xDataKey,
   xTickFormatter,
-}: TimeSeriesAreaChartProps) {
+}: TimeSeriesAreaChartProps<TData>) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart data={data} margin={{ top: 12, right: 18, left: 0, bottom: 0 }}>

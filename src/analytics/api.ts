@@ -1,40 +1,23 @@
 import { salesApiBaseUrl } from '../config/salesApi';
 import { localSalesAnalyticsFixture } from './fixtures';
-import type { SalesAnalyticsDocument } from './types';
+import type {
+  SalesAnalyticsApiErrorCode,
+  SalesAnalyticsApiFailure,
+  SalesAnalyticsClientOptions,
+  SalesAnalyticsDocument,
+  SalesAnalyticsExportFilters,
+  SalesAnalyticsLoadOptions,
+  SalesAnalyticsLoadResult,
+} from './analytics.types';
 
-export interface SalesAnalyticsExportFilters {
-  salesEventId?: string;
-  start?: string;
-  end?: string;
-  limit?: number;
-}
-
-export interface SalesAnalyticsClientOptions {
-  apiKey?: string;
-  baseUrl?: string;
-  fetcher?: typeof fetch;
-}
-
-export interface SalesAnalyticsLoadOptions
-  extends SalesAnalyticsClientOptions {
-  fallbackDocument?: SalesAnalyticsDocument;
-}
-
-export interface SalesAnalyticsLoadResult {
-  document: SalesAnalyticsDocument;
-  source: 'api' | 'fixture';
-  error?: SalesAnalyticsApiError;
-}
-
-export class SalesAnalyticsApiError extends Error {
+export class SalesAnalyticsApiError extends Error implements SalesAnalyticsApiFailure {
   status?: number;
-  code: 'invalidFilters' | 'unauthorized' | 'forbidden' | 'requestFailed' |
-    'network' | 'emptyResponse' | 'invalidJson' | 'invalidSchema';
+  code: SalesAnalyticsApiErrorCode;
 
   constructor(
     message: string,
     status?: number,
-    code: SalesAnalyticsApiError['code'] = apiErrorCodeForStatus(status)
+    code: SalesAnalyticsApiErrorCode = apiErrorCodeForStatus(status)
   ) {
     super(message);
     this.name = 'SalesAnalyticsApiError';
@@ -178,7 +161,7 @@ async function readJsonResponse(
   }
 }
 
-function apiErrorCodeForStatus(status?: number): SalesAnalyticsApiError['code'] {
+function apiErrorCodeForStatus(status?: number): SalesAnalyticsApiErrorCode {
   switch (status) {
     case 400: return 'invalidFilters';
     case 401: return 'unauthorized';

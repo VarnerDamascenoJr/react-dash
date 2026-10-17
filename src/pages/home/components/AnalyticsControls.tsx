@@ -1,17 +1,7 @@
+import type { AnalyticsControlsProps } from '../home.types';
 import { Box, Button, TextField } from '@mui/material';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
-import type { SalesAnalyticsSettings } from '../../../config/salesApi';
 import { useTranslation } from 'react-i18next';
-
-interface AnalyticsControlsProps {
-  apiKey: string;
-  id?: string;
-  isLoading: boolean;
-  settings: SalesAnalyticsSettings;
-  onApiKeyChange: (value: string) => void;
-  onSettingsChange: (changes: Partial<SalesAnalyticsSettings>) => void;
-  onLoadApi: () => void;
-}
 
 export default function AnalyticsControls({
   apiKey,
