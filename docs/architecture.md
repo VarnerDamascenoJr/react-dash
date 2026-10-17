@@ -90,6 +90,11 @@
   orchestrates the analytics overview: it loads the local fixture by default,
   calls the Sales analytics API on demand, persists non-secret filters, derives
   UI data through pure transformers and triggers browser-side exports.
+  Loading and non-secret settings persistence live in
+  `src/pages/home/hooks/useSalesAnalytics.ts`; the API key stays in hook memory.
+  `src/pages/home/hooks/useAnalyticsExports.ts` owns download actions and chart
+  references, building CSV rows only when requested. Home composes these hooks
+  with the presentational sections and memoized analytics transformers.
 
 ### Analytics module
 
@@ -140,9 +145,9 @@
 
 - Changing the analytics export contract affects `src/analytics`, the Home
   dashboard components and their tests.
-- `Home` is currently the main orchestration hub for loading, transformation,
-  persistence and export actions; dedicated analytics routes or deeper
-  interactivity will likely require extracting that stateful orchestration.
+- `Home` composes page-local loading/settings and export hooks. Dedicated
+  analytics routes would require revisiting ownership of their state; hook
+  instances currently belong to the mounted Home page.
 - Auth behavior is not abstracted behind a service layer; swapping demo auth for real auth will affect context and login page.
 
 ## Asynchrony

@@ -1,41 +1,26 @@
 import { Box, Button, TextField } from '@mui/material';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
+import type { SalesAnalyticsSettings } from '../../../config/salesApi';
 import { homeCopy } from '../copy';
 
 interface AnalyticsControlsProps {
   apiKey: string;
-  baseUrl: string;
-  end: string;
   id?: string;
   isLoading: boolean;
-  limit: number;
-  salesEventId: string;
-  start: string;
+  settings: SalesAnalyticsSettings;
   onApiKeyChange: (value: string) => void;
-  onBaseUrlChange: (value: string) => void;
-  onEndChange: (value: string) => void;
-  onLimitChange: (value: number) => void;
+  onSettingsChange: (changes: Partial<SalesAnalyticsSettings>) => void;
   onLoadApi: () => void;
-  onSalesEventIdChange: (value: string) => void;
-  onStartChange: (value: string) => void;
 }
 
 export default function AnalyticsControls({
   apiKey,
-  baseUrl,
-  end,
   id,
   isLoading,
-  limit,
-  salesEventId,
-  start,
+  settings: { baseUrl, end, limit, salesEventId, start },
   onApiKeyChange,
-  onBaseUrlChange,
-  onEndChange,
-  onLimitChange,
+  onSettingsChange,
   onLoadApi,
-  onSalesEventIdChange,
-  onStartChange,
 }: AnalyticsControlsProps) {
   return (
     <Box
@@ -49,28 +34,28 @@ export default function AnalyticsControls({
         placeholder={homeCopy.placeholders.baseUrl}
         size="small"
         value={baseUrl}
-        onChange={(event) => onBaseUrlChange(event.target.value)}
+        onChange={(event) => onSettingsChange({ baseUrl: event.target.value })}
       />
       <TextField
         label={homeCopy.controls.salesEvent}
         placeholder={homeCopy.placeholders.salesEvent}
         size="small"
         value={salesEventId}
-        onChange={(event) => onSalesEventIdChange(event.target.value)}
+        onChange={(event) => onSettingsChange({ salesEventId: event.target.value })}
       />
       <TextField
         label={homeCopy.controls.start}
         placeholder={homeCopy.placeholders.start}
         size="small"
         value={start}
-        onChange={(event) => onStartChange(event.target.value)}
+        onChange={(event) => onSettingsChange({ start: event.target.value })}
       />
       <TextField
         label={homeCopy.controls.end}
         placeholder={homeCopy.placeholders.end}
         size="small"
         value={end}
-        onChange={(event) => onEndChange(event.target.value)}
+        onChange={(event) => onSettingsChange({ end: event.target.value })}
       />
       <TextField
         label={homeCopy.controls.limit}
@@ -78,7 +63,7 @@ export default function AnalyticsControls({
         size="small"
         type="number"
         value={limit}
-        onChange={(event) => onLimitChange(Number(event.target.value))}
+        onChange={(event) => onSettingsChange({ limit: Number(event.target.value) })}
       />
       <TextField
         label={homeCopy.controls.apiKey}
