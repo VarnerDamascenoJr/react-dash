@@ -52,7 +52,8 @@ Read first:
 - `src/pages/home/Home.tsx`
 - `src/pages/home/components/`
 - `src/pages/home/home.scss`
-- `src/pages/home/copy.ts`
+- `src/i18n/locales/pt-BR/home.json`
+- `docs/localization.md`
 - `src/analytics/transformers.ts`
 
 Expert rules:

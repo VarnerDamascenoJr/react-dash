@@ -1056,21 +1056,20 @@ Enquanto esse endpoint nao existir, o `react-dash` deve operar com fixture
 local. A fixture nao e um detalhe temporario: ela e parte da estrategia de
 reprodutibilidade do portfolio.
 
-## Atividade Pendente - Dicionario E Internacionalizacao
+## Dicionario E Internacionalizacao
 
-Registrada em 2026-10-17 a pedido do usuario para retomar depois da
-refatoracao da Home. Esta atividade fica fora do escopo dessa refatoracao.
+Registrada em 2026-10-17 a pedido do usuario e implementada depois da
+refatoracao da Home, com portugues como padrao e ingles como segundo idioma.
+Detalhes e manutencao: [localization.md](localization.md).
 
-- Avaliar a migracao de `src/pages/home/copy.ts` para `i18next` com
-  `react-i18next`, com catalogos por idioma e area (portugues e ingles como
-  proposta inicial; confirmar os idiomas ao retomar).
-- Revisar acentuacao, clareza e consistencia dos termos da interface.
-- Incluir mensagens atualmente fora do catalogo e a localizacao oficial dos
-  controles MUI/Data Grid.
-- Fazer os formatadores de datas e numeros acompanharem o idioma selecionado;
-  manter a moeda coerente com os dados, sem confundir traducao com conversao
-  monetaria.
-- Validar troca de idioma, fallback, interpolacao, pluralizacao e acessibilidade.
+- Catalogos `home`, `shell` e `login` em `src/i18n/locales/pt-BR` e `en-US`.
+- Textos revisados, incluindo acentuacao, controles e mensagens de erro.
+- Seletor acessivel no login e no dashboard, preferencia persistida e fallback
+  para portugues, inclusive quando o armazenamento esta indisponivel.
+- Formatadores acompanham o idioma, mantendo os valores monetarios em BRL.
+- Menus e paginacao do Data Grid usam os pacotes oficiais de localizacao.
+- Cobertura de troca de idioma, feedback existente, fallback, interpolacao,
+  pluralizacao, downloads sem alterar dados e layout mobile.
 
 ## Ordem Recomendada
 

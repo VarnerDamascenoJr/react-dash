@@ -104,19 +104,19 @@ npm start
 ```
 
 6. Fill in the dashboard:
-   - `Base URL`: `/api` with the Vite proxy, or the absolute API URL;
-   - `Sales event`: local event UUID;
-   - `Start`: RFC3339 lower bound when filtering by period;
-   - `End`: RFC3339 upper bound when filtering by period;
-   - `Limit`: event limit;
-   - `API key`: `dev-support-key` for the seeded local `sales-event-project`
+   - `URL base`: `/api` with the Vite proxy, or the absolute API URL;
+   - `Evento de vendas`: local event UUID;
+   - `Início`: RFC3339 lower bound when filtering by period;
+   - `Fim`: RFC3339 upper bound when filtering by period;
+   - `Limite`: event limit;
+   - `Chave da API`: `dev-support-key` for the seeded local `sales-event-project`
      stack, or another key with the `SUPPORT` or `ADMIN` role.
-7. Click `Load API`.
+7. Click `Carregar API`.
 8. Confirm that the source changes to `Local API`.
 9. Repeat the JSON, CSV, and PNG exports.
 
-The dashboard may remember `Base URL`, `Sales event`, `Start`, `End`, and
-`Limit` in the browser. The `API key` must not be persisted.
+The dashboard may remember `URL base`, `Evento de vendas`, `Início`, `Fim`, and
+`Limite` in the browser. The `Chave da API` must not be persisted.
 
 ## Expected Fallback
 
@@ -147,3 +147,10 @@ The demo is ready when:
 - exports generate readable files;
 - validation commands pass;
 - a new agent can follow this document without reading the source code.
+
+## Language Smoke
+
+The default language is Portuguese. Switch to English from the login or dashboard
+selector and confirm labels, feedback, number/date formatting and Data Grid
+pagination update. Reload to confirm the preference is restored. API keys stay
+in memory, and JSON/CSV exports keep their original contract field names.
