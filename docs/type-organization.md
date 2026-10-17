@@ -16,7 +16,7 @@ file for each technical layer within a context.
 | `src/config/salesApi.types.ts` | Persisted non-secret analytics configuration |
 | `src/i18n/i18n.types.ts` | Language alias and i18next resource augmentation |
 | `src/components/sidebar/sidebar.types.ts` | Navigation items and section/entry props |
-| `src/pages/login/login.types.ts` | Login feedback and redirect state |
+| `src/pages/login/login.types.ts` | Login feedback and form props; credentials reuse the auth contract |
 
 Consumers outside analytics import its public types from `src/analytics/index.ts`.
 Type modules do not import runtime implementations. In particular, load failures
