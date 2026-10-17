@@ -1,22 +1,10 @@
-import type { RefObject } from 'react';
+import type { AnalyticsChartsProps } from '../home.types';
 import { Box } from '@mui/material';
-import type { WindowSeriesPoint } from '../../../analytics';
 import { useTranslation } from 'react-i18next';
 import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
 import ChartPanel from './charts/ChartPanel';
 import TimeSeriesAreaChart from './charts/TimeSeriesAreaChart';
 import VerticalDistributionBarChart from './charts/VerticalDistributionBarChart';
-
-interface AnalyticsChartsProps {
-  eventTypeData: Array<{
-    name: string;
-    total: number;
-  }>;
-  eventTypesChartRef: RefObject<HTMLDivElement>;
-  eventsChartRef: RefObject<HTMLDivElement>;
-  id?: string;
-  windowSeries: WindowSeriesPoint[];
-}
 
 export default function AnalyticsCharts({
   eventTypeData,

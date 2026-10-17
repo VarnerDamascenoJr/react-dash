@@ -1,9 +1,8 @@
-export type CsvPrimitive = string | number | boolean | null | undefined;
-export type CsvRow = Record<string, CsvPrimitive>;
+import type { AnalyticsExportErrorCode, CsvPrimitive } from './analytics.types';
 
 export class AnalyticsExportError extends Error {
   constructor(
-    public code: 'chartUnavailable' | 'canvasUnavailable' | 'imageFailed' | 'pngFailed',
+    public code: AnalyticsExportErrorCode,
     message: string
   ) {
     super(message);

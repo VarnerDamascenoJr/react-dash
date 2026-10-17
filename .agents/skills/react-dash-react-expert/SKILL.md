@@ -90,6 +90,8 @@ For security-boundary changes, also read:
 - Keep the current route tree simple unless the task explicitly asks for
   dedicated pages.
 - Keep analytics business logic out of presentational components.
+- Keep interfaces, aliases and props in one `<context>.types.ts` file per
+  context; follow `docs/type-organization.md`.
 - Extract orchestration from `Home` only when it reduces real complexity.
 - Preserve protected route behavior and demo login flow.
 - Shape component props around prepared view data instead of raw API payloads.

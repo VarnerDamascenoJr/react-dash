@@ -98,8 +98,11 @@
 
 ### Analytics module
 
-- [src/analytics/types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/types.ts:1)
+- [src/analytics/analytics.types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/analytics.types.ts:1)
   defines the `sales-analytics-export.v1` TypeScript contract.
+- The same context file groups
+  transport/loading contracts, prepared UI data and export records within
+  the analytics context. Public names are re-exported through its boundary.
 - [src/analytics/fixtures.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/fixtures.ts:1)
   exposes the versioned local fixture used for reproducible demos and fallback.
 - [src/analytics/transformers.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.ts:1)
@@ -122,6 +125,18 @@
 - API and export errors expose codes for UI translation. Hooks translate
   feedback at render time, preserving loaded data and pending operation state
   across language changes. See [localization.md](localization.md).
+
+### Type ownership
+
+- Authentication types live in `src/auth/auth.types.ts`; theme state and actions
+  live in `src/context/darkMode.types.ts`. Persisted analytics settings belong
+  to `src/config/salesApi.types.ts`.
+- Component props and state contracts belong to their context type file;
+  Home uses `src/pages/home/home.types.ts`. Legacy form, table and widget types
+  follow the same convention. i18next augmentation is isolated in
+  `src/i18n/i18n.types.ts`.
+- Chart data keys are checked against the provided series and expected field
+  type. See [type-organization.md](type-organization.md) for conventions.
 
 ### Reusable components
 
