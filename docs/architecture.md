@@ -95,6 +95,14 @@
   `src/pages/home/hooks/useAnalyticsExports.ts` owns download actions and chart
   references, building CSV rows only when requested. Home composes these hooks
   with the presentational sections and memoized analytics transformers.
+- `src/pages/login/Login.tsx` composes the demo login page with MUI `Box`,
+  `Stack`, `Typography` and `Paper`. Its
+  `hooks/useLoginForm.ts` owns credentials, pending state, authentication feedback
+  codes and navigation. `components/LoginForm.tsx` renders the MUI fields and
+  feedback; `login.types.ts` holds its props and feedback contract. Credentials
+  stay in memory, duplicate pending submissions are ignored, and successful
+  sign-in restores the protected path, query and fragment through
+  `loginRedirect.ts`.
 
 ### Analytics module
 
