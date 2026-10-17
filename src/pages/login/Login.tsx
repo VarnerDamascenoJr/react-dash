@@ -4,6 +4,7 @@ import './login.scss';
 import { AuthContext, DemoAuthenticationError } from '../../context/authContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from '../../components/language/LanguageSelector';
+import type { LoginFeedback, LoginRedirectState } from './login.types';
 import { demoLoginEmail, demoLoginPassword } from '../../config/auth';
 
 const Login = () => {
@@ -13,11 +14,11 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState(demoLoginEmail);
   const [password, setPassword] = useState(demoLoginPassword);
-  const [error, setError] = useState<'' | 'invalidCredentials' | 'authFailed'>('');
+  const [error, setError] = useState<LoginFeedback>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const redirectPath = useMemo(() => {
-    return (location.state as { from?: { pathname?: string } } | null)?.from
+    return (location.state as LoginRedirectState | null)?.from
       ?.pathname;
   }, [location.state]);
 

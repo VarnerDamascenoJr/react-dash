@@ -1,3 +1,4 @@
+import type { EmptyStateProps, InsightPanelsProps } from '../home.types';
 import {
   Box,
   List,
@@ -5,17 +6,9 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import type { FunnelStepRow, SurvivalSummaryRow } from '../../../analytics';
 import { useTranslation } from 'react-i18next';
 import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
 import AnalyticsPanel from './AnalyticsPanel';
-
-interface InsightPanelsProps {
-  funnelId?: string;
-  funnelRows: FunnelStepRow[];
-  survivalId?: string;
-  survivalRows: SurvivalSummaryRow[];
-}
 
 export default function InsightPanels({
   funnelId,
@@ -84,7 +77,7 @@ export default function InsightPanels({
   );
 }
 
-function EmptyState({ text }: { text: string }) {
+function EmptyState({ text }: EmptyStateProps) {
   return (
     <Box className="emptyState">
       <Typography variant="body2">{text}</Typography>

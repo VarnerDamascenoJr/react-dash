@@ -1,4 +1,4 @@
-import type { DarkModeAction, DarkModeState } from '../types';
+import type { DarkModeAction, DarkModeState } from './darkMode.types';
 
 const darkModeReducer = (
   state: DarkModeState,

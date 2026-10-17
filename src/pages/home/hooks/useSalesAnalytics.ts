@@ -7,8 +7,8 @@ import {
 import {
   loadSalesAnalyticsSettings,
   saveSalesAnalyticsSettings,
-  type SalesAnalyticsSettings,
 } from '../../../config/salesApi';
+import type { SalesAnalyticsSettings } from '../../../config/salesApi.types';
 import { useTranslation } from 'react-i18next';
 
 export function useSalesAnalytics() {

@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from 'react';
 import './new.scss';
 import { DriveFolderUploadOutlined } from '@mui/icons-material';
-import type { NewPageProps } from '../../types';
+import type { NewPageProps } from './new.types';
 
 const fallbackImage =
   'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg';

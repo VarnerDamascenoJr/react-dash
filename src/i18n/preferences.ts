@@ -1,6 +1,7 @@
+import type { AppLanguage } from './i18n.types';
+
 export const languageStorageKey = 'react-dash.language';
 export const supportedLanguages = ['pt-BR', 'en-US'] as const;
-export type AppLanguage = (typeof supportedLanguages)[number];
 
 export function resolveLanguage(language?: string | null): AppLanguage {
   return language === 'en-US' || language === 'en' ? 'en-US' : 'pt-BR';

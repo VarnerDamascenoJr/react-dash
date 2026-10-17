@@ -1,4 +1,4 @@
-import type { FormInput } from './types';
+import type { FormInput } from './pages/new/new.types';
 
 export const userInputs: FormInput[] = [
   {

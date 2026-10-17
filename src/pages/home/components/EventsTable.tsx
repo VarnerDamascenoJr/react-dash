@@ -1,3 +1,4 @@
+import type { EventsTableProps } from '../home.types';
 import { Box } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -6,11 +7,6 @@ import type { AnalyticsEventRow } from '../../../analytics';
 import { resolveLanguage } from '../../../i18n/preferences';
 import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
 import AnalyticsPanel from './AnalyticsPanel';
-
-interface EventsTableProps {
-  id?: string;
-  rows: AnalyticsEventRow[];
-}
 
 export default function EventsTable({ id, rows }: EventsTableProps) {
   const { t, i18n } = useTranslation('home');

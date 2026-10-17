@@ -1,4 +1,4 @@
-import type { AuthUser } from '../types';
+import type { AuthUser } from '../auth/auth.types';
 
 const fallbackDemoUser: AuthUser = {
   name: 'Avery Stone',

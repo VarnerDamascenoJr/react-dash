@@ -1,13 +1,7 @@
+import type { AnalyticsHeaderProps } from '../home.types';
 import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
-
-interface AnalyticsHeaderProps {
-  generatedAt: string;
-  loadMessage: string;
-  service: string;
-  source: 'fixture' | 'api';
-}
 
 export default function AnalyticsHeader({
   generatedAt,

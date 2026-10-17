@@ -1,5 +1,5 @@
 import type { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import type { UserRow } from './types';
+import type { UserRow } from './components/datatable/datatable.types';
 
 export const userColumns: GridColDef<UserRow>[] = [
   { field: 'id', headerName: 'ID', width: 70 },
