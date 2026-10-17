@@ -19,6 +19,7 @@ available.
 - MUI
 - Recharts
 - Sass
+- i18next and react-i18next
 
 ## Scripts
 
@@ -126,18 +127,28 @@ scripts/generate-analytics-demo-data.sh --sales 50 --reset-demo-inventory
 ```
 
 3. Start `react-dash` with `VITE_SALES_API_BASE_URL=/api`.
-4. Confirm or adjust the `Base URL` field; the default value is `/api`.
-5. Fill in `Sales event`, `Start`, `End`, and `Limit` according to the local
+4. Confirm or adjust the `URL base` field; the default value is `/api`.
+5. Fill in `Evento de vendas`, `Início`, `Fim`, and `Limite` according to the local
    demo.
-6. Enter `dev-support-key` in the `API key` field for the seeded local
+6. Enter `dev-support-key` in the `Chave da API` field for the seeded local
    `sales-event-project` stack, or another valid key with the `SUPPORT` or
    `ADMIN` role.
-7. Click `Load API`.
+7. Click `Carregar API`.
 8. If the API fails or does not exist yet, the dashboard falls back to the local
    fixture and shows the fallback message.
 
 The dashboard persists only non-secret settings, such as `Base URL` and filters.
 The `API key` value stays only in page memory.
+
+## Languages
+
+The login and dashboard default to Portuguese (`pt-BR`) and also support English
+(`en-US`). Use the language selector on login or in the dashboard header; the
+selection persists across reloads. The walkthrough above uses Portuguese labels.
+
+Dates, numbers, feedback and Data Grid controls follow the selected language.
+Currency remains BRL, and JSON/CSV exports preserve the original contract data.
+See [docs/localization.md](docs/localization.md) for catalog maintenance and tests.
 
 ## Validation
 

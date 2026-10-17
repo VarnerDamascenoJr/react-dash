@@ -5,8 +5,9 @@ import {
   buildWindowCsvRows,
   localSalesAnalyticsFixture,
 } from '../../../analytics';
-import { downloadChartPng, downloadCsv, downloadJson } from '../../../analytics/exporters';
-import { homeCopy } from '../copy';
+import { AnalyticsExportError, downloadChartPng, downloadCsv, downloadJson } from '../../../analytics/exporters';
+import homeCopy from '../../../i18n/locales/pt-BR/home.json';
+import i18n from '../../../i18n';
 import { useAnalyticsExports } from './useAnalyticsExports';
 
 vi.mock('../../../analytics/exporters', async (importOriginal) => ({
@@ -72,8 +73,19 @@ test('exports each PNG using its mounted chart container', async () => {
 });
 
 test('reports PNG failures without claiming a successful export', async () => {
-  vi.mocked(downloadChartPng).mockRejectedValueOnce(new Error('Grafico indisponivel.'));
+  vi.mocked(downloadChartPng).mockRejectedValueOnce(new AnalyticsExportError('chartUnavailable', 'Chart unavailable'));
   const { result } = renderHook(() => useAnalyticsExports(localSalesAnalyticsFixture));
   await act(async () => { await result.current.exportWindowsPng(); });
-  expect(result.current.exportMessage).toBe('Grafico indisponivel.');
+  expect(result.current.exportMessage).toBe(homeCopy.exportErrors.chartUnavailable);
+  await act(async () => { await i18n.changeLanguage('en-US'); });
+  expect(result.current.exportMessage).toBe('Chart unavailable for export.');
+  expect(downloadChartPng).toHaveBeenCalledTimes(1);
+});
+
+test('translates an existing export confirmation when language changes', async () => {
+  const { result } = renderHook(() => useAnalyticsExports(localSalesAnalyticsFixture));
+  act(() => { result.current.exportJson(); });
+  await act(async () => { await i18n.changeLanguage('en-US'); });
+  expect(result.current.exportMessage).toBe('Full document exported as JSON.');
+  expect(downloadJson).toHaveBeenCalledTimes(1);
 });

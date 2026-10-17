@@ -1,43 +1,17 @@
-export function formatInteger(value: number) {
-  return new Intl.NumberFormat('pt-BR').format(value);
-}
+export function createAnalyticsFormatters(locale: string) {
+  const integer = new Intl.NumberFormat(locale);
+  const currency = new Intl.NumberFormat(locale, { currency: 'BRL', style: 'currency' });
+  const dateTime = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' });
+  const shortTime = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' });
+  const percent = new Intl.NumberFormat(locale, { maximumFractionDigits: 1, style: 'percent' });
+  const seconds = new Intl.NumberFormat(locale, { style: 'unit', unit: 'second', unitDisplay: 'short' });
 
-export function formatCurrency(cents: number) {
-  return new Intl.NumberFormat('pt-BR', {
-    currency: 'BRL',
-    style: 'currency',
-  }).format(cents / 100);
-}
-
-export function formatDateTime(value: string) {
-  if (!value) {
-    return '-';
-  }
-
-  return new Intl.DateTimeFormat('pt-BR', {
-    dateStyle: 'short',
-    timeStyle: 'short',
-  }).format(new Date(value));
-}
-
-export function formatShortTime(value: string) {
-  return new Intl.DateTimeFormat('pt-BR', {
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value));
-}
-
-export function formatPercent(value: number) {
-  return new Intl.NumberFormat('pt-BR', {
-    maximumFractionDigits: 1,
-    style: 'percent',
-  }).format(value);
-}
-
-export function formatSeconds(value: number | null) {
-  if (value === null) {
-    return '-';
-  }
-
-  return `${formatInteger(value)}s`;
+  return {
+    formatInteger: (value: number) => integer.format(value),
+    formatCurrency: (cents: number) => currency.format(cents / 100),
+    formatDateTime: (value: string) => value ? dateTime.format(new Date(value)) : '-',
+    formatShortTime: (value: string) => shortTime.format(new Date(value)),
+    formatPercent: (value: number) => percent.format(value),
+    formatSeconds: (value: number | null) => value === null ? '-' : seconds.format(value),
+  };
 }

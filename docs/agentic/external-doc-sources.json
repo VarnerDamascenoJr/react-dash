@@ -96,7 +96,8 @@
       "package": "@mui/x-data-grid",
       "currentRange": "^6.18.2",
       "officialDocs": [
-        "https://mui.com/x/react-data-grid/"
+        "https://mui.com/x/react-data-grid/",
+        "https://v6.mui.com/x/react-data-grid/localization/"
       ],
       "useFor": ["analytics tables", "grid columns", "pagination", "locale text"]
     },
@@ -174,6 +175,37 @@
         "https://sass-lang.com/documentation/"
       ],
       "useFor": ["SCSS syntax", "style organization", "deprecations"]
+    },
+    {
+      "name": "i18next",
+      "package": "i18next",
+      "currentRange": "^26.4.7",
+      "officialDocs": [
+        "https://www.i18next.com/overview/configuration-options",
+        "https://www.i18next.com/translation-function/plurals",
+        "https://www.i18next.com/overview/typescript"
+      ],
+      "useFor": [
+        "translation resources",
+        "fallback",
+        "pluralization",
+        "interpolation",
+        "TypeScript keys"
+      ]
+    },
+    {
+      "name": "React i18next",
+      "package": "react-i18next",
+      "currentRange": "^17.0.21",
+      "officialDocs": [
+        "https://react.i18next.com/latest/using-with-hooks",
+        "https://react.i18next.com/latest/usetranslation-hook"
+      ],
+      "useFor": [
+        "React translations",
+        "language switching",
+        "translation hooks"
+      ]
     },
     {
       "name": "Browser APIs",

@@ -6,8 +6,8 @@ import {
   Typography,
 } from '@mui/material';
 import type { FunnelStepRow, SurvivalSummaryRow } from '../../../analytics';
-import { homeCopy } from '../copy';
-import { formatPercent, formatSeconds } from '../formatters';
+import { useTranslation } from 'react-i18next';
+import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
 import AnalyticsPanel from './AnalyticsPanel';
 
 interface InsightPanelsProps {
@@ -23,15 +23,17 @@ export default function InsightPanels({
   survivalId,
   survivalRows,
 }: InsightPanelsProps) {
+  const { t } = useTranslation('home');
+  const { formatPercent, formatSeconds } = useAnalyticsFormatters();
   return (
     <Box className="insightGrid" component="section">
       <AnalyticsPanel
-        eyebrow={homeCopy.panels.funnel.eyebrow}
+        eyebrow={t('panels.funnel.eyebrow')}
         id={funnelId}
-        title={homeCopy.panels.funnel.title}
+        title={t('panels.funnel.title')}
       >
         {funnelRows.length === 0 ? (
-          <EmptyState text={homeCopy.emptyStates.funnel} />
+          <EmptyState text={t('emptyStates.funnel')} />
         ) : (
           <List className="metricList" disablePadding>
             {funnelRows.slice(0, 5).map((row) => (
@@ -53,12 +55,12 @@ export default function InsightPanels({
       </AnalyticsPanel>
 
       <AnalyticsPanel
-        eyebrow={homeCopy.panels.survival.eyebrow}
+        eyebrow={t('panels.survival.eyebrow')}
         id={survivalId}
-        title={homeCopy.panels.survival.title}
+        title={t('panels.survival.title')}
       >
         {survivalRows.length === 0 ? (
-          <EmptyState text={homeCopy.emptyStates.survival} />
+          <EmptyState text={t('emptyStates.survival')} />
         ) : (
           <List className="metricList" disablePadding>
             {survivalRows.map((row) => (

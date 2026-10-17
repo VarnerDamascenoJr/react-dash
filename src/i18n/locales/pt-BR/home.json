@@ -1,0 +1,120 @@
+{
+  "controls": {
+    "ariaLabel": "Configurar fonte de dados",
+    "apiKey": "Chave da API",
+    "baseUrl": "URL base",
+    "end": "Fim",
+    "loadApi": "Carregar API",
+    "loading": "Carregando…",
+    "salesEvent": "Evento de vendas",
+    "start": "Início",
+    "limit": "Limite"
+  },
+  "emptyStates": {
+    "chartMetric": "Sem dados agregados",
+    "funnel": "Nenhum segmento de funil nesta exportação.",
+    "survival": "Nenhuma análise de sobrevivência nesta exportação."
+  },
+  "exportPanel": {
+    "ariaLabel": "Exportar dados analíticos",
+    "csvEvents": "CSV de eventos",
+    "csvWindows": "CSV de janelas",
+    "defaultMessage": "Baixe os dados completos, os CSVs ou os gráficos exibidos.",
+    "json": "JSON completo",
+    "pngEventTypes": "PNG de tipos de evento",
+    "pngWindows": "PNG de janelas",
+    "subtitle": "Dados e gráficos",
+    "title": "Exportações"
+  },
+  "exportStatus": {
+    "csvEvents": "CSV de eventos exportado.",
+    "csvWindows": "CSV de janelas exportado.",
+    "json": "Documento completo exportado em JSON.",
+    "png": "Gráfico exportado em PNG."
+  },
+  "exportErrors": {
+    "chartUnavailable": "Gráfico indisponível para exportação.",
+    "canvasUnavailable": "Não foi possível preparar a imagem do gráfico.",
+    "imageFailed": "Não foi possível renderizar a imagem do gráfico.",
+    "pngFailed": "Não foi possível gerar o PNG.",
+    "unknown": "Não foi possível exportar o gráfico."
+  },
+  "header": {
+    "eyebrow": "Análise de eventos de vendas",
+    "source": "Fonte",
+    "title": "Visão operacional dos eventos de vendas.",
+    "generated": "{{service}} — gerado em {{date}}"
+  },
+  "kpis": {
+    "checkIns": "Check-ins",
+    "completedSales": "Vendas concluídas",
+    "eventCount": "Eventos coletados",
+    "issuedTickets": "Ingressos emitidos",
+    "observedRevenue": "Receita observada"
+  },
+  "loadStatus": {
+    "api": "Dados carregados da API do Sales.",
+    "fixture": "Dados de demonstração carregados.",
+    "fallback": "API indisponível. Exibindo dados de demonstração.",
+    "fallbackReason": "{{reason}} Exibindo dados de demonstração."
+  },
+  "apiErrors": {
+    "invalidFilters": "Os filtros informados são inválidos.",
+    "unauthorized": "Informe uma chave da API para carregar os dados do Sales.",
+    "forbidden": "A chave da API não tem permissão para consultar esses dados.",
+    "requestFailed": "Não foi possível carregar os dados do Sales.",
+    "network": "Não foi possível conectar à API do Sales.",
+    "emptyResponse": "A API retornou uma resposta vazia.",
+    "invalidJson": "A API retornou um JSON inválido.",
+    "invalidSchema": "A resposta da API não segue o formato analítico esperado."
+  },
+  "panels": {
+    "eventTypes": {
+      "title": "Distribuição dos eventos",
+      "eyebrow": "Tipos de evento"
+    },
+    "events": {
+      "title": "Tabela analítica",
+      "eyebrow": "Eventos brutos",
+      "count_one": "{{count, number}} evento",
+      "count_other": "{{count, number}} eventos",
+      "count_many": "{{count, number}} eventos",
+      "count_zero": "Nenhum evento"
+    },
+    "eventsTable": {
+      "columns": {
+        "amountCents": "Valor",
+        "eventType": "Evento",
+        "occurredAt": "Data e hora",
+        "provider": "Provedor",
+        "quantity": "Qtd.",
+        "saleId": "ID da venda",
+        "status": "Status"
+      },
+      "noRows": "Nenhum evento para os filtros atuais"
+    },
+    "funnel": {
+      "title": "Conversão com incerteza",
+      "eyebrow": "Funil"
+    },
+    "survival": {
+      "title": "Tempo até o evento",
+      "eyebrow": "Sobrevivência"
+    },
+    "windows": {
+      "title": "Eventos por janela",
+      "eyebrow": "Janelas de 5 minutos"
+    }
+  },
+  "placeholders": {
+    "apiKey": "X-API-Key",
+    "baseUrl": "/api",
+    "end": "2026-09-02T00:00:00Z",
+    "salesEvent": "salesEventId",
+    "start": "2026-09-01T10:00:00Z"
+  },
+  "source": {
+    "api": "API do Sales",
+    "fixture": "Dados de demonstração"
+  }
+}

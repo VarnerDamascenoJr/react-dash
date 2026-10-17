@@ -21,76 +21,77 @@ import { NavLink } from 'react-router-dom';
 import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { AuthContext } from '../../context/authContext';
-import { shellCopy } from '../layout/shellCopy';
+import { useTranslation } from 'react-i18next';
 import SidebarNavSection from './SidebarNavSection';
 import { homeSectionHrefs } from '../../pages/home/sections';
 
 const Sidebar = () => {
+  const { t } = useTranslation('shell');
   const { darkMode, dispatch } = useContext(DarkModeContext);
   const { user, logout } = useContext(AuthContext);
   const navSections = [
     {
-      title: shellCopy.sidebar.sections.overview,
+      title: t('sidebar.sections.overview'),
       items: [
         {
           end: true,
           icon: <DashboardIcon className="icon" />,
-          label: shellCopy.sidebar.items.overview,
+          label: t('sidebar.items.overview'),
           to: homeSectionHrefs.overview,
         },
       ],
     },
     {
-      title: shellCopy.sidebar.sections.analytics,
+      title: t('sidebar.sections.analytics'),
       items: [
         {
           icon: <EventNoteOutlinedIcon className="icon" />,
-          label: shellCopy.sidebar.items.events,
+          label: t('sidebar.items.events'),
           to: homeSectionHrefs.events,
         },
         {
           icon: <FilterAltOutlinedIcon className="icon" />,
-          label: shellCopy.sidebar.items.funnel,
+          label: t('sidebar.items.funnel'),
           to: homeSectionHrefs.funnel,
         },
         {
           icon: <TimelineOutlinedIcon className="icon" />,
-          label: shellCopy.sidebar.items.survival,
+          label: t('sidebar.items.survival'),
           to: homeSectionHrefs.survival,
         },
       ],
     },
     {
-      title: shellCopy.sidebar.sections.outputs,
+      title: t('sidebar.sections.outputs'),
       items: [
         {
           icon: <AssessmentIcon className="icon" />,
-          label: shellCopy.sidebar.items.windows,
+          label: t('sidebar.items.windows'),
           to: homeSectionHrefs.windows,
         },
         {
           icon: <FileDownloadOutlinedIcon className="icon" />,
-          label: shellCopy.sidebar.items.exports,
+          label: t('sidebar.items.exports'),
           to: homeSectionHrefs.exports,
         },
         {
           icon: <SettingsApplicationsIcon className="icon" />,
-          label: shellCopy.sidebar.items.settings,
+          label: t('sidebar.items.settings'),
           to: homeSectionHrefs.settings,
         },
       ],
     },
     {
-      title: shellCopy.sidebar.sections.account,
+      title: t('sidebar.sections.account'),
       items: [
         {
           icon: <AccountCircleOutlinedIcon className="icon" />,
-          label: shellCopy.sidebar.items.profile,
+          label: t('sidebar.items.profile'),
         },
         {
           className: 'logoutItem',
           icon: <ExitToAppOutlinedIcon className="icon" />,
-          label: shellCopy.sidebar.items.logout,
+          label: t('sidebar.items.logout'),
           onClick: logout,
         },
       ],
@@ -101,10 +102,10 @@ const Sidebar = () => {
     <Box className="sidebar" component="aside">
       <Box className="top">
         <NavLink to="/" className="brand">
-          <Box className="brandMark">{shellCopy.brand.mark}</Box>
+          <Box className="brandMark">{t('brand.mark')}</Box>
           <Stack className="brandText">
-            <Typography component="strong">{shellCopy.brand.name}</Typography>
-            <Typography component="span">{shellCopy.brand.subtitle}</Typography>
+            <Typography component="strong">{t('brand.name')}</Typography>
+            <Typography component="span">{t('brand.subtitle')}</Typography>
           </Stack>
         </NavLink>
       </Box>
@@ -115,7 +116,7 @@ const Sidebar = () => {
             component="span"
             variant="overline"
           >
-            {shellCopy.sidebar.signedInAs}
+            {t('sidebar.signedInAs')}
           </Typography>
           <Typography component="strong">{user?.name}</Typography>
           <Typography component="span">{user?.role}</Typography>
@@ -142,14 +143,14 @@ const Sidebar = () => {
             value="light"
             onClick={() => dispatch({ type: 'LIGHT' })}
           >
-            {shellCopy.sidebar.theme.light}
+            {t('sidebar.theme.light')}
           </ToggleButton>
           <ToggleButton
             className="themeToggle"
             value="dark"
             onClick={() => dispatch({ type: 'DARK' })}
           >
-            {shellCopy.sidebar.theme.dark}
+            {t('sidebar.theme.dark')}
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>

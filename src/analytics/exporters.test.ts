@@ -1,4 +1,4 @@
-import { buildExportFileName, serializeCsv } from './exporters';
+import { buildExportFileName, downloadChartPng, serializeCsv } from './exporters';
 
 describe('analytics exporters', () => {
   it('serializes CSV rows with escaped values', () => {
@@ -28,5 +28,12 @@ describe('analytics exporters', () => {
     expect(buildExportFileName('2026-09-22T12:00:00Z', 'events', 'csv')).toBe(
       'sales-events-2026-09-22-events.csv'
     );
+  });
+
+  it('exposes a translatable code when the chart is unavailable', async () => {
+    await expect(downloadChartPng('chart.png', null)).rejects.toMatchObject({
+      name: 'AnalyticsExportError',
+      code: 'chartUnavailable',
+    });
   });
 });

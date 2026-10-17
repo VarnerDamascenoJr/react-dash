@@ -112,6 +112,17 @@
 - [src/analytics/exporters.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.ts:1)
   handles JSON, CSV and chart PNG downloads in the browser.
 
+### Localization
+
+- `src/i18n` initializes bundled, typed translation catalogs for Portuguese
+  (`pt-BR`, default/fallback) and English (`en-US`). Namespaces cover Home,
+  the dashboard shell and login.
+- A shared language selector updates the preference and document language.
+  Home formatters and Data Grid locale packs follow that selection.
+- API and export errors expose codes for UI translation. Hooks translate
+  feedback at render time, preserving loaded data and pending operation state
+  across language changes. See [localization.md](localization.md).
+
 ### Reusable components
 
 - Widgets, chart, featured card, table and data grid are presentation-focused.

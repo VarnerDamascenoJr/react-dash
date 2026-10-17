@@ -1,0 +1,19 @@
+.languageSelector {
+  min-width: 10rem;
+  max-width: 100%;
+  color: inherit;
+
+  .MuiInputBase-root,
+  .MuiInputLabel-root {
+    color: inherit;
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: currentColor;
+  }
+
+  option {
+    background: #fff;
+    color: #172033;
+  }
+}

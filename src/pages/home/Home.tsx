@@ -13,14 +13,17 @@ import EventsTable from './components/EventsTable';
 import ExportPanel from './components/ExportPanel';
 import InsightPanels from './components/InsightPanels';
 import KpiGrid from './components/KpiGrid';
-import { homeCopy } from './copy';
-import { formatCurrency, formatInteger } from './formatters';
+import { useTranslation } from 'react-i18next';
+import { useAnalyticsFormatters } from './useAnalyticsFormatters';
 import { homeSectionIds } from './sections';
 import { useSalesAnalytics } from './hooks/useSalesAnalytics';
 import { useAnalyticsExports } from './hooks/useAnalyticsExports';
 import './home.scss';
 
 const Home = () => {
+  const { t } = useTranslation('home');
+  const { formatCurrency, formatInteger } = useAnalyticsFormatters();
+
   const {
     document,
     source,
@@ -87,20 +90,20 @@ const Home = () => {
 
       <KpiGrid
         items={[
-          { label: homeCopy.kpis.eventCount, value: formatInteger(kpis.eventCount) },
+          { label: t('kpis.eventCount'), value: formatInteger(kpis.eventCount) },
           {
-            label: homeCopy.kpis.completedSales,
+            label: t('kpis.completedSales'),
             value: formatInteger(kpis.completedSales),
           },
           {
-            label: homeCopy.kpis.observedRevenue,
+            label: t('kpis.observedRevenue'),
             value: formatCurrency(kpis.observedRevenueCents),
           },
           {
-            label: homeCopy.kpis.issuedTickets,
+            label: t('kpis.issuedTickets'),
             value: formatInteger(kpis.issuedTickets),
           },
-          { label: homeCopy.kpis.checkIns, value: formatInteger(kpis.checkIns) },
+          { label: t('kpis.checkIns'), value: formatInteger(kpis.checkIns) },
         ]}
       />
 

@@ -5,6 +5,7 @@ export {
   loadSalesAnalyticsExport,
 } from './api';
 export {
+  AnalyticsExportError,
   buildExportFileName,
   downloadChartPng,
   downloadCsv,

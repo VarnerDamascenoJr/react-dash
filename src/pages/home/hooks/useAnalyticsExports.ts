@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import {
+  AnalyticsExportError,
   buildEventCsvRows,
   buildExportFileName,
   buildWindowCsvRows,
@@ -8,10 +9,15 @@ import {
   downloadJson,
   type SalesAnalyticsDocument,
 } from '../../../analytics';
-import { homeCopy } from '../copy';
+import { useTranslation } from 'react-i18next';
+
+type ExportFeedback =
+  | { kind: 'success'; key: 'json' | 'csvEvents' | 'csvWindows' | 'png' }
+  | { kind: 'error'; key: AnalyticsExportError['code'] | 'unknown' };
 
 export function useAnalyticsExports(document: SalesAnalyticsDocument) {
-  const [exportMessage, setExportMessage] = useState('');
+  const { t } = useTranslation('home');
+  const [feedback, setFeedback] = useState<ExportFeedback | null>(null);
   const eventsChartRef = useRef<HTMLDivElement>(null);
   const eventTypesChartRef = useRef<HTMLDivElement>(null);
 
@@ -20,32 +26,34 @@ export function useAnalyticsExports(document: SalesAnalyticsDocument) {
 
   const exportJson = () => {
     downloadJson(fileName('export', 'json'), document);
-    setExportMessage(homeCopy.exportStatus.json);
+    setFeedback({ kind: 'success', key: 'json' });
   };
 
   const exportEventsCsv = () => {
     downloadCsv(fileName('events', 'csv'), buildEventCsvRows(document));
-    setExportMessage(homeCopy.exportStatus.csvEvents);
+    setFeedback({ kind: 'success', key: 'csvEvents' });
   };
 
   const exportWindowsCsv = () => {
     downloadCsv(fileName('windows', 'csv'), buildWindowCsvRows(document));
-    setExportMessage(homeCopy.exportStatus.csvWindows);
+    setFeedback({ kind: 'success', key: 'csvWindows' });
   };
 
   const exportPng = async (suffix: string, container: HTMLElement | null) => {
     try {
       await downloadChartPng(fileName(suffix, 'png'), container);
-      setExportMessage(homeCopy.exportStatus.png);
+      setFeedback({ kind: 'success', key: 'png' });
     } catch (error) {
-      setExportMessage(
-        error instanceof Error ? error.message : 'Falha ao exportar PNG.'
-      );
+      setFeedback({ kind: 'error', key: error instanceof AnalyticsExportError ? error.code : 'unknown' });
     }
   };
 
   return {
-    exportMessage,
+    exportMessage: feedback
+      ? feedback.kind === 'success'
+        ? t(`exportStatus.${feedback.key}`)
+        : t(`exportErrors.${feedback.key}`)
+      : '',
     eventsChartRef,
     eventTypesChartRef,
     exportJson,
