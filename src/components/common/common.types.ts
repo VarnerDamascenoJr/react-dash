@@ -6,17 +6,6 @@ export interface PageIntroProps {
   description: string;
 }
 
-export interface MetricListItem {
-  id: string;
-  label: string;
-  value: string;
-}
-
-export interface MetricListProps {
-  items: MetricListItem[];
-  emptyText: string;
-}
-
 export interface SectionPanelProps {
   children: ReactNode;
   className?: string;
