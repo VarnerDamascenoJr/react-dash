@@ -15,7 +15,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import './navbar.scss';
 import LanguageSelector from '../common/controls/LanguageSelector';
-import TooltipIconButton from '../common/TooltipIconButton';
+import TooltipIconButton from '../common/controls/TooltipIconButton';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useContext } from 'react';
