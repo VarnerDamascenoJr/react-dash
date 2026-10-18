@@ -127,7 +127,7 @@
 
 - `src/i18n` initializes bundled, typed translation catalogs for Portuguese
   (`pt-BR`, default/fallback) and English (`en-US`). Namespaces cover Home,
-  the dashboard shell and login.
+  the dashboard shell, login and the legacy List introduction.
 - A shared language selector updates the preference and document language.
   Home formatters and Data Grid locale packs follow that selection.
 - API and export errors expose codes for UI translation. Hooks translate
