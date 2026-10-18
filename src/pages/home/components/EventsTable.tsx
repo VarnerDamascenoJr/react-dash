@@ -6,7 +6,7 @@ import { DataGrid, enUS, ptBR, type GridColDef } from '@mui/x-data-grid';
 import type { AnalyticsEventRow } from '../../../analytics';
 import { resolveLanguage } from '../../../i18n/preferences';
 import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
-import SectionPanel from '../../../components/common/SectionPanel';
+import SectionPanel from '../../../components/common/layout/SectionPanel';
 
 export default function EventsTable({ id, rows }: EventsTableProps) {
   const { t, i18n } = useTranslation('home');

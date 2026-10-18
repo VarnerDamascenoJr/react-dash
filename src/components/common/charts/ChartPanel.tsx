@@ -1,6 +1,6 @@
 import type { ChartPanelProps } from './charts.types';
 import { Box } from '@mui/material';
-import SectionPanel from '../SectionPanel';
+import SectionPanel from '../layout/SectionPanel';
 import '../common.scss';
 
 export default function ChartPanel({

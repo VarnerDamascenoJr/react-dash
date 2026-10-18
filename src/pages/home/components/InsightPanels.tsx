@@ -2,7 +2,7 @@ import type { InsightPanelsProps } from '../home.types';
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
-import SectionPanel from '../../../components/common/SectionPanel';
+import SectionPanel from '../../../components/common/layout/SectionPanel';
 import MetricList from '../../../components/common/data-display/MetricList';
 
 export default function InsightPanels({

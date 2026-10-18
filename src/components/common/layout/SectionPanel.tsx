@@ -1,6 +1,6 @@
-import type { SectionPanelProps } from './common.types';
+import type { SectionPanelProps } from './layout.types';
 import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
-import './common.scss';
+import './sectionPanel.scss';
 
 export default function SectionPanel({
   children,
