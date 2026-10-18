@@ -58,6 +58,8 @@ tests should not require external services.
 - Analytics API URL building, API-key header behavior and fallback behavior.
 - Analytics transformers for KPIs, windows, rows and empty documents.
 - CSV serialization and export filename generation.
+- Shared metric lists and empty states, formatter instance reuse, generic
+  JSON/CSV/Blob downloads, and malformed or blocked preference storage.
 - Legacy `New` page form field rendering.
 - Login form validation, pending submission locking, translated feedback,
   retry after failure and complete return destinations. Redirect unit tests

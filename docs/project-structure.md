@@ -54,6 +54,12 @@ Environment-backed frontend configuration.
 
 Reusable building blocks.
 
+#### `src/components/common/`
+
+Shared MUI components, their `common.types.ts` contracts and styles: brand,
+language selector, labeled icon buttons, panels, metric lists and empty states.
+The `charts/` context owns generic chart rendering and `charts.types.ts`.
+
 #### `src/components/auth/`
 
 Route guard components.
@@ -66,7 +72,6 @@ Route guard components.
 Shell composition.
 
 - `DashboardLayout.tsx`
-- `shellCopy.ts`: display copy used by the authenticated shell, sidebar and navbar
 
 #### `src/components/sidebar/` and `src/components/navbar/`
 
@@ -76,7 +81,7 @@ Shared authenticated navigation and actions.
 
 #### `src/components/widgets/`
 
-KPI cards for home dashboard.
+Legacy KPI cards; the active overview uses its own `KpiGrid` section.
 
 #### `src/components/featured/`
 
@@ -85,7 +90,7 @@ Summary card with circular progress and comparison values.
 #### `src/components/chart/`
 
 Legacy revenue chart using Recharts. The active analytics overview uses chart
-components under `src/pages/home/components/charts/`.
+components under `src/components/common/charts/`.
 
 #### `src/components/datatable/`
 
@@ -101,7 +106,7 @@ Route-level screens.
 
 - `home/`: dashboard landing page
   - `components/`: sections used only by the analytics overview
-  - `formatters.ts`: display formatters for currency, dates, percentages and counts
+  - `useAnalyticsFormatters.ts`: binds the active locale to shared formatters
 - `login/`: sign-in page
 - `list/`: legacy generic list page, not wired into the current route tree
 - `new/`: legacy generic entry form page, not wired into the current route tree
@@ -112,6 +117,12 @@ Route-level screens.
 
 Legacy mock table metadata and mocked user rows for non-routed user/product
 components.
+
+### `src/utils/`
+
+Global functions for locale formatting, CSV serialization, browser downloads
+and optional preference storage. See [reusability.md](reusability.md) for the
+inventory and context boundaries.
 
 ### `src/formSource.ts`
 
@@ -141,7 +152,6 @@ Declares Vite environment variable names used by the frontend.
 - No ORM models or migrations
 - No API client abstraction layer
 - No dedicated DTO/schema validation library usage
-- No lint config file
 - No formatter config file
 - No CI pipeline file
 

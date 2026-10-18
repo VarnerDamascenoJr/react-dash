@@ -10,13 +10,16 @@ file for each technical layer within a context.
 | Location | Responsibility |
 | --- | --- |
 | `src/analytics/analytics.types.ts` | Export document, API loading, view models, CSV records and error codes |
-| `src/pages/home/home.types.ts` | Home sections, charts, chart key helper and export feedback |
+| `src/pages/home/home.types.ts` | Home sections and export feedback |
 | `src/auth/auth.types.ts` | User, credentials, authentication context and provider props |
 | `src/context/darkMode.types.ts` | Theme state, actions, context and provider props |
 | `src/config/salesApi.types.ts` | Persisted non-secret analytics configuration |
 | `src/i18n/i18n.types.ts` | Language alias and i18next resource augmentation |
 | `src/components/sidebar/sidebar.types.ts` | Navigation items and section/entry props |
 | `src/pages/login/login.types.ts` | Login feedback and form props; credentials reuse the auth contract |
+| `src/components/common/common.types.ts` | Brand, panels, metric lists, empty states and labeled icon actions |
+| `src/components/common/charts/charts.types.ts` | Generic chart props and data-key helper |
+| `src/utils/csv.types.ts` | Generic CSV value and row contracts |
 
 Consumers outside analytics import its public types from `src/analytics/index.ts`.
 Type modules do not import runtime implementations. In particular, load failures
@@ -45,8 +48,9 @@ Persisted settings also remain separate from optional API query parameters.
 ## Local Types And Legacy Code
 
 Component files import their props from the context's type file. For example,
-all Home sections and charts use `home.types.ts`; they do not each require a
-separate type file. `ChartDataKey` in that file restricts keys to fields of the
+Home sections use `home.types.ts`; they do not each require a
+separate type file. Shared charts own `charts.types.ts` under `common/charts`.
+`ChartDataKey` in that file restricts keys to fields of the
 expected value type, and chart props infer the data shape from their series.
 
 Legacy form definitions live in `src/pages/new/new.types.ts`; legacy user rows

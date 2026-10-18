@@ -148,6 +148,13 @@
 
 ### Reusable components
 
+- `src/components/common` owns shared MUI presentation: brand, language selector,
+  labeled icon actions, section panels, metric lists, empty states and generic
+  charts. Their props no longer depend on Home types or analytics payloads.
+- `src/utils` owns locale formatter caching, CSV serialization, JSON/CSV/Blob
+  downloads and safe optional preference storage. Analytics exporters use the
+  shared Blob downloader for PNGs; Sales-specific filenames and error codes
+  remain in analytics. See [reusability.md](reusability.md).
 - Widgets, chart, featured card, table and data grid are presentation-focused.
 - `Datatable` holds one local interactive behavior: removing a row from local state.
 

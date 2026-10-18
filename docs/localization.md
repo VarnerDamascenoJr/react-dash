@@ -33,8 +33,9 @@ Only the language code is stored under `react-dash.language`. Unsupported saved
 values fall back to Portuguese. Blocked browser storage does not prevent language
 switching in memory. The document `lang` attribute follows the active language.
 
-`useAnalyticsFormatters` supplies memoized `Intl` formatters for the selected
-locale. Dates retain their instant and browser timezone. Amounts remain in BRL:
+`useAnalyticsFormatters` selects the shared `Intl` instances cached by locale in
+`src/utils/formatters.ts`. Mounted sections reuse the same instances.
+Dates retain their instant and browser timezone. Amounts remain in BRL:
 changing locale changes the display, without converting the underlying currency.
 
 The Data Grid uses its official v6 locale packs, including pagination and column
