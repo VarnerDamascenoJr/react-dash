@@ -1,11 +1,6 @@
 import type { ReactNode } from 'react';
 import type { IconButtonProps } from '@mui/material';
 
-export interface BrandProps {
-  subtitle: string;
-  className?: string;
-}
-
 export interface TooltipIconButtonProps extends Omit<IconButtonProps, 'aria-label'> {
   label: string;
 }

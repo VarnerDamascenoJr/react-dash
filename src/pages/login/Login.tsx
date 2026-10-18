@@ -1,7 +1,7 @@
 import { Box, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from '../../components/common/LanguageSelector';
-import Brand from '../../components/common/Brand';
+import Brand from '../../components/common/branding/Brand';
 import { demoLoginEmail, demoLoginPassword } from '../../config/auth';
 import LoginForm from './components/LoginForm';
 import { useLoginForm } from './hooks/useLoginForm';

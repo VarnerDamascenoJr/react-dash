@@ -24,7 +24,7 @@ import { AuthContext } from '../../context/authContext';
 import { useTranslation } from 'react-i18next';
 import SidebarNavSection from './SidebarNavSection';
 import { homeSectionHrefs } from '../../pages/home/sections';
-import Brand from '../common/Brand';
+import Brand from '../common/branding/Brand';
 
 const Sidebar = () => {
   const { t } = useTranslation('shell');

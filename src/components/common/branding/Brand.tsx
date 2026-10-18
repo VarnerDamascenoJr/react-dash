@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { BrandProps } from './common.types';
-import './common.scss';
+import type { BrandProps } from './branding.types';
+import './brand.scss';
 
 export default function Brand({ subtitle, className = '' }: BrandProps) {
   const { t } = useTranslation('shell');
