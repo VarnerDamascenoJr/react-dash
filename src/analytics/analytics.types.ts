@@ -245,9 +245,6 @@ export interface EventTypeDistributionPoint {
 
 // Downloads and export failures.
 
-export type CsvPrimitive = string | number | boolean | null | undefined;
-export type CsvRow = Record<string, CsvPrimitive>;
-
 export type AnalyticsExportErrorCode =
   | 'chartUnavailable'
   | 'canvasUnavailable'

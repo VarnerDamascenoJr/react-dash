@@ -1,4 +1,4 @@
-export function createAnalyticsFormatters(locale: string) {
+function createFormatters(locale: string) {
   const integer = new Intl.NumberFormat(locale);
   const currency = new Intl.NumberFormat(locale, { currency: 'BRL', style: 'currency' });
   const dateTime = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' });
@@ -14,4 +14,15 @@ export function createAnalyticsFormatters(locale: string) {
     formatPercent: (value: number) => percent.format(value),
     formatSeconds: (value: number | null) => value === null ? '-' : seconds.format(value),
   };
+}
+
+const formattersByLocale = new Map<string, ReturnType<typeof createFormatters>>();
+
+export function getFormatters(locale: string) {
+  let formatters = formattersByLocale.get(locale);
+  if (!formatters) {
+    formatters = createFormatters(locale);
+    formattersByLocale.set(locale, formatters);
+  }
+  return formatters;
 }

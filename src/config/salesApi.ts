@@ -1,4 +1,5 @@
 import type { SalesAnalyticsSettings } from './salesApi.types';
+import { readStoredJson, writeStoredJson } from '../utils/storage';
 
 export const salesApiBaseUrl =
   import.meta.env.VITE_SALES_API_BASE_URL?.trim() || '/api';
@@ -23,54 +24,32 @@ export function loadSalesAnalyticsSettings(
 ): SalesAnalyticsSettings {
   const defaults = defaultSalesAnalyticsSettings(defaultSalesEventId);
 
-  if (typeof window === 'undefined') {
-    return defaults;
-  }
-
-  try {
-    const rawSettings = window.localStorage.getItem(
-      salesAnalyticsSettingsStorageKey
-    );
-    if (!rawSettings) {
-      return defaults;
-    }
-
-    const parsed = JSON.parse(rawSettings) as Partial<SalesAnalyticsSettings>;
+  const parsed = readStoredJson(salesAnalyticsSettingsStorageKey);
+  if (parsed && typeof parsed === 'object') {
+    const settings = parsed as Partial<SalesAnalyticsSettings>;
     return {
       baseUrl:
-        typeof parsed.baseUrl === 'string' ? parsed.baseUrl : defaults.baseUrl,
-      end: typeof parsed.end === 'string' ? parsed.end : defaults.end,
-      limit: normalizeLimit(parsed.limit, defaults.limit),
+        typeof settings.baseUrl === 'string' ? settings.baseUrl : defaults.baseUrl,
+      end: typeof settings.end === 'string' ? settings.end : defaults.end,
+      limit: normalizeLimit(settings.limit, defaults.limit),
       salesEventId:
-        typeof parsed.salesEventId === 'string'
-          ? parsed.salesEventId
+        typeof settings.salesEventId === 'string'
+          ? settings.salesEventId
           : defaults.salesEventId,
-      start: typeof parsed.start === 'string' ? parsed.start : defaults.start,
+      start: typeof settings.start === 'string' ? settings.start : defaults.start,
     };
-  } catch (_error) {
-    return defaults;
   }
+  return defaults;
 }
 
 export function saveSalesAnalyticsSettings(settings: SalesAnalyticsSettings) {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  try {
-    window.localStorage.setItem(
-      salesAnalyticsSettingsStorageKey,
-      JSON.stringify({
-        baseUrl: settings.baseUrl,
-        end: settings.end,
-        limit: settings.limit,
-        salesEventId: settings.salesEventId,
-        start: settings.start,
-      })
-    );
-  } catch (_error) {
-    // Storage can be unavailable in restricted browser modes; the UI still works in memory.
-  }
+  writeStoredJson(salesAnalyticsSettingsStorageKey, {
+    baseUrl: settings.baseUrl,
+    end: settings.end,
+    limit: settings.limit,
+    salesEventId: settings.salesEventId,
+    start: settings.start,
+  });
 }
 
 function normalizeLimit(value: unknown, fallback: number) {
