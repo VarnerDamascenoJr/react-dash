@@ -1,4 +1,4 @@
-import type { PageIntroProps } from './common.types';
+import type { PageIntroProps } from './layout.types';
 
 export default function PageIntro({ eyebrow, title, description }: PageIntroProps) {
   return (

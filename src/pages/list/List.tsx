@@ -1,5 +1,5 @@
 import './list.scss';
-import PageIntro from '../../components/common/PageIntro';
+import PageIntro from '../../components/common/layout/PageIntro';
 import Datatable from '../../components/datatable/Datatable';
 
 const List = () => {
