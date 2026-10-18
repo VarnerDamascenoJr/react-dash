@@ -6,7 +6,7 @@ import { DataGrid, enUS, ptBR, type GridColDef } from '@mui/x-data-grid';
 import type { AnalyticsEventRow } from '../../../analytics';
 import { resolveLanguage } from '../../../i18n/preferences';
 import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
-import AnalyticsPanel from './AnalyticsPanel';
+import SectionPanel from '../../../components/common/SectionPanel';
 
 export default function EventsTable({ id, rows }: EventsTableProps) {
   const { t, i18n } = useTranslation('home');
@@ -59,7 +59,7 @@ export default function EventsTable({ id, rows }: EventsTableProps) {
   ], [t, formatCurrency, formatDateTime]);
 
   return (
-    <AnalyticsPanel
+    <SectionPanel
       className="eventPanel"
       component="section"
       eyebrow={t('panels.events.eyebrow')}
@@ -86,6 +86,6 @@ export default function EventsTable({ id, rows }: EventsTableProps) {
           }}
         />
       </Box>
-    </AnalyticsPanel>
+    </SectionPanel>
   );
 }

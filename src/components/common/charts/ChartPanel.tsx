@@ -1,6 +1,7 @@
-import type { ChartPanelProps } from '../../home.types';
+import type { ChartPanelProps } from './charts.types';
 import { Box } from '@mui/material';
-import AnalyticsPanel from '../AnalyticsPanel';
+import SectionPanel from '../SectionPanel';
+import '../common.scss';
 
 export default function ChartPanel({
   children,
@@ -13,7 +14,7 @@ export default function ChartPanel({
   wide = false,
 }: ChartPanelProps) {
   return (
-    <AnalyticsPanel
+    <SectionPanel
       className={wide ? 'panelLarge' : ''}
       emptyMetricLabel={emptyMetricLabel}
       eyebrow={eyebrow}
@@ -26,6 +27,6 @@ export default function ChartPanel({
       >
         {children}
       </Box>
-    </AnalyticsPanel>
+    </SectionPanel>
   );
 }

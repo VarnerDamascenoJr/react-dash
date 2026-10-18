@@ -1,7 +1,8 @@
-import type { AnalyticsPanelProps } from '../home.types';
+import type { SectionPanelProps } from './common.types';
 import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
+import './common.scss';
 
-export default function AnalyticsPanel({
+export default function SectionPanel({
   children,
   className = '',
   component = 'article',
@@ -10,7 +11,7 @@ export default function AnalyticsPanel({
   id,
   metric,
   title,
-}: AnalyticsPanelProps) {
+}: SectionPanelProps) {
   const panelClassName = className ? `panel ${className}` : 'panel';
 
   return (

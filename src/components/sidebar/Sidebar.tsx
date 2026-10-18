@@ -24,6 +24,7 @@ import { AuthContext } from '../../context/authContext';
 import { useTranslation } from 'react-i18next';
 import SidebarNavSection from './SidebarNavSection';
 import { homeSectionHrefs } from '../../pages/home/sections';
+import Brand from '../common/Brand';
 
 const Sidebar = () => {
   const { t } = useTranslation('shell');
@@ -102,11 +103,7 @@ const Sidebar = () => {
     <Box className="sidebar" component="aside">
       <Box className="top">
         <NavLink to="/" className="brand">
-          <Box className="brandMark">{t('brand.mark')}</Box>
-          <Stack className="brandText">
-            <Typography component="strong">{t('brand.name')}</Typography>
-            <Typography component="span">{t('brand.subtitle')}</Typography>
-          </Stack>
+          <Brand subtitle={t('brand.subtitle')} />
         </NavLink>
       </Box>
       <Stack className="center">

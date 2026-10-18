@@ -1,6 +1,6 @@
 import { expectTypeOf, test } from 'vitest';
 import type { ComponentProps } from 'react';
-import type { EventTypeDistributionPoint, WindowSeriesPoint } from '../../../../analytics';
+import type { EventTypeDistributionPoint, WindowSeriesPoint } from '../../../analytics';
 import type TimeSeriesAreaChart from './TimeSeriesAreaChart';
 import type VerticalDistributionBarChart from './VerticalDistributionBarChart';
 

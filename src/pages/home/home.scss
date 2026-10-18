@@ -11,7 +11,6 @@
 .analyticsHeader,
 .controlPanel,
 .exportPanel,
-.panel,
 .kpiCard {
   border: 0.0625rem solid var(--border-soft);
   background: linear-gradient(180deg, var(--surface-primary), rgba(255, 255, 255, 0.68));
@@ -89,7 +88,6 @@
 }
 
 .analyticsHeader__eyebrow,
-.panelHeader span,
 .kpiCard span,
 .controlPanel span,
 .sourceBadge span {
@@ -209,81 +207,6 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.panel {
-  padding: 1.5rem;
-  border-radius: var(--radius-xl);
-  min-width: 0;
-}
-
-.panelHeader {
-  margin-bottom: 1.125rem;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.25rem;
-  min-width: 0;
-
-  h3 {
-    margin: 0.375rem 0 0;
-    font-size: 1.1rem;
-  }
-
-  strong {
-    color: var(--accent-secondary);
-    font-size: 1.6rem;
-    white-space: nowrap;
-  }
-}
-
-.panelHeader__copy {
-  min-width: 0;
-}
-
-.panelHeader__emptyMetric {
-  border-color: var(--border-soft);
-  color: var(--text-secondary);
-  font-weight: 700;
-}
-
-.chartFrame {
-  width: 100%;
-  height: 20rem;
-
-  &.compact {
-    height: 18.75rem;
-  }
-}
-
-.metricList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-
-  li {
-    min-height: 3rem;
-    padding: 0 0.875rem;
-    border: 0.0625rem solid var(--border-soft);
-    border-radius: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-}
-
-.emptyState {
-  min-height: 8.25rem;
-  border: 0.0625rem dashed var(--border-soft);
-  border-radius: var(--radius-lg);
-  color: var(--text-secondary);
-  display: grid;
-  place-items: center;
-  text-align: center;
-}
-
 .eventPanel {
   overflow: hidden;
 
@@ -358,32 +281,9 @@
     }
   }
 
-  .panel {
-    padding: 1.125rem;
-  }
-
-  .panelHeader {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-
-    strong,
-    .panelHeader__emptyMetric {
-      align-self: flex-start;
-    }
-  }
-
   .exportActions {
     .MuiButton-root {
       flex-basis: 100%;
-    }
-  }
-
-  .chartFrame {
-    height: 16.25rem;
-
-    &.compact {
-      height: 15rem;
     }
   }
 }

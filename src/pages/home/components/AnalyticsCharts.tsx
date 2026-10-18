@@ -2,9 +2,9 @@ import type { AnalyticsChartsProps } from '../home.types';
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
-import ChartPanel from './charts/ChartPanel';
-import TimeSeriesAreaChart from './charts/TimeSeriesAreaChart';
-import VerticalDistributionBarChart from './charts/VerticalDistributionBarChart';
+import ChartPanel from '../../../components/common/charts/ChartPanel';
+import TimeSeriesAreaChart from '../../../components/common/charts/TimeSeriesAreaChart';
+import VerticalDistributionBarChart from '../../../components/common/charts/VerticalDistributionBarChart';
 
 export default function AnalyticsCharts({
   eventTypeData,
