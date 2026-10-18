@@ -17,6 +17,7 @@ inspection confirmed the shared responsibilities before extraction.
 | `LanguageSelector` | Login and navbar use the same selector and language preference |
 | `TooltipIconButton` | Navbar actions use one label for the tooltip and accessible button name |
 | `SectionPanel` | Charts, event table, funnel and survival share the panel header and metric display |
+| `PageIntro` | Legacy List page introduction with caller-supplied eyebrow, title and description; preserves the global `pageIntro` styles |
 | `MetricList` / `EmptyState` | Funnel and survival share row rendering and empty states; callers prepare labels and formatted values |
 | `charts/ChartPanel`, `TimeSeriesAreaChart`, `VerticalDistributionBarChart` | Generic chart contracts and presentation live outside Home |
 
@@ -51,10 +52,10 @@ login feedback and login redirect rules remain in their owning contexts. These
 functions carry product policy; placing them in a global utility file would
 couple unrelated consumers to that policy.
 
-The older, non-routed pages have a repeated `pageIntro` layout and a separate
-mock-data chart. Consider consolidating their header if those pages return to
-the active product. Their mock data and differing chart axes are not part of
-the shared analytics components.
+The older, non-routed List page composes `PageIntro` and `Datatable`. New and
+Single still render their introductions inline and can adopt `PageIntro` when
+those pages are revisited. Their mock data and differing chart axes are not
+part of the shared analytics components.
 
 ## Validation
 
