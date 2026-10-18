@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import type { EmptyStateProps } from './common.types';
-import './common.scss';
+import type { EmptyStateProps } from './feedback.types';
+import './emptyState.scss';
 
 export default function EmptyState({ text }: EmptyStateProps) {
   return (

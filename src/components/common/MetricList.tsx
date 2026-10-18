@@ -1,5 +1,5 @@
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
-import EmptyState from './EmptyState';
+import EmptyState from './feedback/EmptyState';
 import type { MetricListProps } from './common.types';
 import './common.scss';
 

@@ -1,9 +1,5 @@
 import type { ReactNode } from 'react';
 
-export interface EmptyStateProps {
-  text: string;
-}
-
 export interface PageIntroProps {
   eyebrow: string;
   title: string;
