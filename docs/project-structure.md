@@ -56,9 +56,18 @@ Reusable building blocks.
 
 #### `src/components/common/`
 
-Shared MUI components, their `common.types.ts` contracts and styles: brand,
-language selector, labeled icon buttons, panels, metric lists and empty states.
-The `charts/` context owns generic chart rendering and `charts.types.ts`.
+Shared UI grouped by responsibility. Each directory owns its components,
+context types, styles and existing tests:
+
+- `branding/`: brand identity.
+- `controls/`: language selector and labeled icon buttons.
+- `feedback/`: empty states.
+- `layout/`: page introductions and section panels.
+- `data-display/`: metric lists.
+- `charts/`: generic chart rendering and chart containers.
+
+Consumers import directly from the component file in its context directory.
+See [reusability.md](reusability.md) for the component and type inventory.
 
 #### `src/components/auth/`
 

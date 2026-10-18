@@ -148,9 +148,10 @@
 
 ### Reusable components
 
-- `src/components/common` owns shared MUI presentation: brand, language selector,
-  labeled icon actions, section panels, metric lists, empty states and generic
-  charts. Their props no longer depend on Home types or analytics payloads.
+- `src/components/common` groups shared presentation into `branding`,
+  `controls`, `feedback`, `layout`, `data-display` and `charts` contexts, each
+  with its own types and styles. Their props do not depend on Home types or
+  analytics payloads.
 - `src/utils` owns locale formatter caching, CSV serialization, JSON/CSV/Blob
   downloads and safe optional preference storage. Analytics exporters use the
   shared Blob downloader for PNGs; Sales-specific filenames and error codes
