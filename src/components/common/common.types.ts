@@ -14,6 +14,12 @@ export interface EmptyStateProps {
   text: string;
 }
 
+export interface PageIntroProps {
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+
 export interface MetricListItem {
   id: string;
   label: string;
