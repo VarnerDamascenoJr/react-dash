@@ -166,7 +166,8 @@ git diff --check
 ## Structure
 
 - `src/components`: reusable dashboard components
-- `src/components/common`: shared MUI components, panels and charts
+- `src/components/common`: shared UI grouped into branding, controls, feedback,
+  layout, data-display and charts, with types and styles in each context
 - `src/utils`: shared formatting, CSV, download and preference-storage functions
 - `src/pages`: main pages
 - `src/context`: simple global theme state

@@ -21,11 +21,25 @@ inspection confirmed the shared responsibilities before extraction.
 | `MetricList` / `EmptyState` | Funnel and survival share row rendering and empty states; callers prepare labels and formatted values |
 | `charts/ChartPanel`, `TimeSeriesAreaChart`, `VerticalDistributionBarChart` | Generic chart contracts and presentation live outside Home |
 
-Common UI props live in `common.types.ts`; chart props and the data-key helper
-live in `charts/charts.types.ts`. Common styles travel with the components.
+Shared UI is organized by responsibility. Each context keeps its components,
+types, styles and existing tests together:
+
+| Directory | Components | Types |
+| --- | --- | --- |
+| `common/branding/` | `Brand` | `branding.types.ts` |
+| `common/controls/` | `LanguageSelector`, `TooltipIconButton` | `controls.types.ts` |
+| `common/feedback/` | `EmptyState` | `feedback.types.ts` |
+| `common/layout/` | `PageIntro`, `SectionPanel` | `layout.types.ts` |
+| `common/data-display/` | `MetricList` | `dataDisplay.types.ts` |
+| `common/charts/` | `ChartPanel`, `TimeSeriesAreaChart`, `VerticalDistributionBarChart` | `charts.types.ts` |
+
+Styles are imported by their owning components, without a shared `common.scss`.
+`PageIntro` retains the global header styles in `src/index.css`, also used by
+the inline introductions in legacy New and Single pages.
 Panel selectors account for MUI's generated styles so their surface, spacing
 and responsive header remain consistent outside Home.
-Import components directly from their owning files.
+Import components directly from their owning files, such as
+`components/common/layout/SectionPanel`.
 
 ## Consolidated Functions
 

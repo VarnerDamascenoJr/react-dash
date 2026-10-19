@@ -1,5 +1,5 @@
 import { IconButton, Tooltip } from '@mui/material';
-import type { TooltipIconButtonProps } from './common.types';
+import type { TooltipIconButtonProps } from './controls.types';
 
 export default function TooltipIconButton({
   label,

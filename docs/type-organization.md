@@ -17,7 +17,11 @@ file for each technical layer within a context.
 | `src/i18n/i18n.types.ts` | Language alias and i18next resource augmentation |
 | `src/components/sidebar/sidebar.types.ts` | Navigation items and section/entry props |
 | `src/pages/login/login.types.ts` | Login feedback and form props; credentials reuse the auth contract |
-| `src/components/common/common.types.ts` | Brand, panels, metric lists, empty states and labeled icon actions |
+| `src/components/common/branding/branding.types.ts` | Brand props |
+| `src/components/common/controls/controls.types.ts` | Labeled icon action props |
+| `src/components/common/feedback/feedback.types.ts` | Empty state props |
+| `src/components/common/layout/layout.types.ts` | Page introduction and section panel props |
+| `src/components/common/data-display/dataDisplay.types.ts` | Metric list items and props |
 | `src/components/common/charts/charts.types.ts` | Generic chart props and data-key helper |
 | `src/utils/csv.types.ts` | Generic CSV value and row contracts |
 
@@ -52,6 +56,8 @@ Home sections use `home.types.ts`; they do not each require a
 separate type file. Shared charts own `charts.types.ts` under `common/charts`.
 `ChartDataKey` in that file restricts keys to fields of the
 expected value type, and chart props infer the data shape from their series.
+Other shared UI contexts follow the same pattern under `common/branding`,
+`common/controls`, `common/feedback`, `common/layout` and `common/data-display`.
 
 Legacy form definitions live in `src/pages/new/new.types.ts`; legacy user rows
 live in `src/components/datatable/datatable.types.ts`. Widget definitions live in

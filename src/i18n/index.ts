@@ -19,7 +19,7 @@ void i18n.use(initReactI18next).init({
   supportedLngs: [...supportedLanguages],
   load: 'currentOnly',
   defaultNS: 'home',
-  ns: ['home', 'shell', 'login'],
+  ns: ['home', 'shell', 'login', 'list'],
   initAsync: false,
   interpolation: { escapeValue: false }, // React escapes rendered text.
 });

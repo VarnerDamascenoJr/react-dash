@@ -1,7 +1,7 @@
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
-import EmptyState from './EmptyState';
-import type { MetricListProps } from './common.types';
-import './common.scss';
+import EmptyState from '../feedback/EmptyState';
+import type { MetricListProps } from './dataDisplay.types';
+import './metricList.scss';
 
 export default function MetricList({ items, emptyText }: MetricListProps) {
   if (items.length === 0) return <EmptyState text={emptyText} />;

@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { resolveLanguage } from '../../i18n/preferences';
+import { resolveLanguage } from '../../../i18n/preferences';
 import './languageSelector.scss';
 
 export default function LanguageSelector() {
