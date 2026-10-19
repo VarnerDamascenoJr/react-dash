@@ -127,7 +127,7 @@
 
 - `src/i18n` initializes bundled, typed translation catalogs for Portuguese
   (`pt-BR`, default/fallback) and English (`en-US`). Namespaces cover Home,
-  the dashboard shell and login.
+  the dashboard shell, login and the legacy List introduction.
 - A shared language selector updates the preference and document language.
   Home formatters and Data Grid locale packs follow that selection.
 - API and export errors expose codes for UI translation. Hooks translate
@@ -148,6 +148,14 @@
 
 ### Reusable components
 
+- `src/components/common` groups shared presentation into `branding`,
+  `controls`, `feedback`, `layout`, `data-display` and `charts` contexts, each
+  with its own types and styles. Their props do not depend on Home types or
+  analytics payloads.
+- `src/utils` owns locale formatter caching, CSV serialization, JSON/CSV/Blob
+  downloads and safe optional preference storage. Analytics exporters use the
+  shared Blob downloader for PNGs; Sales-specific filenames and error codes
+  remain in analytics. See [reusability.md](reusability.md).
 - Widgets, chart, featured card, table and data grid are presentation-focused.
 - `Datatable` holds one local interactive behavior: removing a row from local state.
 

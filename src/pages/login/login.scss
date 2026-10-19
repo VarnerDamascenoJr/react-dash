@@ -26,29 +26,24 @@
   gap: 1.75rem;
 }
 
-.loginPage__brand {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
+.loginPage .loginPage__brand {
+  --brand-accent: #f05d5e;
 
   .brandMark {
     width: 3.25rem;
     height: 3.25rem;
-    display: grid;
-    place-items: center;
     border-radius: 1.125rem;
-    background: linear-gradient(135deg, #f05d5e, #f2a65a);
-    font-weight: 700;
-  }
-
-  strong,
-  span {
-    display: block;
-  }
-
-  span {
     color: rgba(237, 244, 255, 0.72);
     font-size: 0.9rem;
+  }
+
+  .brandText {
+    gap: 0;
+
+    span {
+      color: rgba(237, 244, 255, 0.72);
+      font-size: 0.9rem;
+    }
   }
 }
 

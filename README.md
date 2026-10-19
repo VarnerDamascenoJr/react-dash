@@ -166,6 +166,9 @@ git diff --check
 ## Structure
 
 - `src/components`: reusable dashboard components
+- `src/components/common`: shared UI grouped into branding, controls, feedback,
+  layout, data-display and charts, with types and styles in each context
+- `src/utils`: shared formatting, CSV, download and preference-storage functions
 - `src/pages`: main pages
 - `src/context`: simple global theme state
 - `src/auth/auth.types.ts`: authentication contracts
@@ -174,6 +177,7 @@ git diff --check
   `sales-analytics-export.v1` contract
 - `src/analytics/analytics.types.ts`: analytics interfaces and aliases
 - `docs/type-organization.md`: type ownership and interface/alias conventions
+- `docs/reusability.md`: shared component/function inventory and reuse boundaries
 - `docs/analytics-dashboard-backlog.md`: backlog and product contract for
   turning the app into the Sales Event analytics dashboard
 - `docs/demo-checklist.md`: smoke checklist for the local demo and portfolio

@@ -1,4 +1,4 @@
-import type { TimeSeriesAreaChartProps } from '../../home.types';
+import type { TimeSeriesAreaChartProps } from './charts.types';
 import {
   Area,
   AreaChart,

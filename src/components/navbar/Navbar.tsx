@@ -3,12 +3,10 @@ import {
   Box,
   Button,
   Chip,
-  IconButton,
   InputAdornment,
   InputBase,
   Paper,
   Stack,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -16,7 +14,8 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import './navbar.scss';
-import LanguageSelector from '../language/LanguageSelector';
+import LanguageSelector from '../common/controls/LanguageSelector';
+import TooltipIconButton from '../common/controls/TooltipIconButton';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useContext } from 'react';
@@ -59,31 +58,19 @@ const Navbar = () => {
             icon={<CalendarMonthOutlinedIcon className="icon" />}
             label={t('navbar.demoWindow')}
           />
-          <Tooltip title={t('navbar.toggleTheme')}>
-            <IconButton
-              aria-label={t('navbar.toggleTheme')}
-              className="iconButton"
-              onClick={() => dispatch({ type: 'TOGGLE' })}
-            >
-              <DarkModeOutlinedIcon className="icon" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={t('navbar.notifications')}>
-            <IconButton
-              aria-label={t('navbar.notifications')}
-              className="iconButton"
-            >
-              <NotificationsNoneOutlinedIcon className="icon" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={t('navbar.messages')}>
-            <IconButton
-              aria-label={t('navbar.messages')}
-              className="iconButton"
-            >
-              <ChatBubbleOutlineOutlinedIcon className="icon" />
-            </IconButton>
-          </Tooltip>
+          <TooltipIconButton
+            label={t('navbar.toggleTheme')}
+            className="iconButton"
+            onClick={() => dispatch({ type: 'TOGGLE' })}
+          >
+            <DarkModeOutlinedIcon className="icon" />
+          </TooltipIconButton>
+          <TooltipIconButton label={t('navbar.notifications')} className="iconButton">
+            <NotificationsNoneOutlinedIcon className="icon" />
+          </TooltipIconButton>
+          <TooltipIconButton label={t('navbar.messages')} className="iconButton">
+            <ChatBubbleOutlineOutlinedIcon className="icon" />
+          </TooltipIconButton>
           <Paper className="profileCard" elevation={0}>
             <Avatar
               alt={user?.name}

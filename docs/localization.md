@@ -6,11 +6,12 @@ language from the labeled selector on login or in the dashboard header.
 
 ## Catalogs
 
-Translations live in `src/i18n/locales/<language>/` with three namespaces:
+Translations live in `src/i18n/locales/<language>/` with four namespaces:
 
 - `home.json`: analytics sections, controls, empty states and feedback.
 - `shell.json`: navigation, header and language selector.
 - `login.json`: demo sign-in and authentication feedback.
+- `list.json`: the legacy List page introduction.
 
 Use `useTranslation('home')` (or the relevant namespace) inside React components
 and hooks. Keys are checked against the Portuguese resources by TypeScript.
@@ -33,8 +34,9 @@ Only the language code is stored under `react-dash.language`. Unsupported saved
 values fall back to Portuguese. Blocked browser storage does not prevent language
 switching in memory. The document `lang` attribute follows the active language.
 
-`useAnalyticsFormatters` supplies memoized `Intl` formatters for the selected
-locale. Dates retain their instant and browser timezone. Amounts remain in BRL:
+`useAnalyticsFormatters` selects the shared `Intl` instances cached by locale in
+`src/utils/formatters.ts`. Mounted sections reuse the same instances.
+Dates retain their instant and browser timezone. Amounts remain in BRL:
 changing locale changes the display, without converting the underlying currency.
 
 The Data Grid uses its official v6 locale packs, including pagination and column
@@ -50,8 +52,9 @@ diagnostic messages remain available on the error objects. The API client and
 exporters do not depend on the translation system.
 
 Contract fields, event identifiers, provider values and JSON/CSV data remain
-unchanged. PNGs capture the chart in the current language. Legacy pages outside
-the active route tree are outside this localization scope.
+unchanged. PNGs capture the chart in the current language. The legacy List page
+introduction also follows the selected language. Other legacy content,
+including its Datatable, remains outside this localization scope.
 
 ## Validation
 

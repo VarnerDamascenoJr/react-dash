@@ -1,6 +1,7 @@
 import { Box, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import LanguageSelector from '../../components/language/LanguageSelector';
+import LanguageSelector from '../../components/common/controls/LanguageSelector';
+import Brand from '../../components/common/branding/Brand';
 import { demoLoginEmail, demoLoginPassword } from '../../config/auth';
 import LoginForm from './components/LoginForm';
 import { useLoginForm } from './hooks/useLoginForm';
@@ -16,15 +17,7 @@ const Login = () => {
         <Box className="loginPage__language">
           <LanguageSelector />
         </Box>
-        <Stack direction="row" className="loginPage__brand">
-          <Box component="span" className="brandMark">RD</Box>
-          <Box>
-            <Typography component="strong" variant="inherit" fontWeight={700}>
-              React Dash
-            </Typography>
-            <Typography component="span" variant="body2">{t('subtitle')}</Typography>
-          </Box>
-        </Stack>
+        <Brand className="loginPage__brand" subtitle={t('subtitle')} />
 
         <Box component="header" className="loginPage__hero">
           <Typography component="span" variant="overline" className="eyebrow">
