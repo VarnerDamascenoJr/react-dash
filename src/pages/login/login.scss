@@ -7,6 +7,10 @@
     radial-gradient(circle at bottom right, rgba(44, 123, 229, 0.16), transparent 24%),
     #08101d;
   color: #edf4ff;
+
+  .MuiTypography-root {
+    font-family: inherit;
+  }
 }
 
 .loginPage__panel,
@@ -15,6 +19,7 @@
 }
 
 .loginPage__panel {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -70,7 +75,7 @@
   }
 }
 
-.loginForm {
+.loginPage .loginForm {
   display: flex;
   flex-direction: column;
   gap: 1.125rem;
@@ -79,46 +84,72 @@
   background: rgba(255, 255, 255, 0.08);
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(1.125rem);
+  color: inherit;
 
-  .inputGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  label {
+  .MuiInputLabel-root {
     color: rgba(237, 244, 255, 0.82);
     font-weight: 600;
   }
 
-  input {
-    height: 3.25rem;
-    border: 0.0625rem solid rgba(255, 255, 255, 0.12);
+  .MuiOutlinedInput-root {
     border-radius: 1rem;
-    padding: 0 1rem;
     background: rgba(7, 16, 30, 0.62);
     color: white;
+
+    .MuiOutlinedInput-notchedOutline {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    &:hover .MuiOutlinedInput-notchedOutline {
+      border-color: #8dbfff;
+    }
+
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-color: #8dbfff;
+    }
+
+    &.Mui-error .MuiOutlinedInput-notchedOutline {
+      border-color: #ffb8a1;
+    }
+
+    .MuiInputBase-input.Mui-disabled {
+      -webkit-text-fill-color: rgba(237, 244, 255, 0.6);
+    }
   }
 
-  button {
-    height: 3.375rem;
+  .MuiInputLabel-root.Mui-focused {
+    color: #8dbfff;
+  }
+
+  .MuiInputLabel-root.Mui-disabled {
+    color: rgba(237, 244, 255, 0.6);
+  }
+
+  .MuiInputLabel-root.Mui-error,
+  .MuiAlert-root,
+  .MuiAlert-icon {
+    color: #ffb8a1;
+  }
+
+  .MuiAlert-root {
+    border-color: #ffb8a1;
+  }
+
+  .loginForm__submit {
+    min-height: 3.375rem;
     border: 0;
     border-radius: 1.125rem;
     background: linear-gradient(135deg, #f05d5e, #f2a65a);
-    color: white;
+    color: #08101d;
     font-weight: 700;
-    cursor: pointer;
+    text-transform: none;
   }
 
-  button:disabled {
+  .loginForm__submit:disabled {
     opacity: 0.76;
+    color: #08101d;
     cursor: wait;
   }
-}
-
-.errorMessage {
-  margin: 0;
-  color: #ffb8a1;
 }
 
 .loginPage__demoHint {
@@ -129,6 +160,7 @@
 
   strong {
     color: #fff;
+    overflow-wrap: anywhere;
   }
 }
 
@@ -138,12 +170,13 @@
   justify-content: center;
 }
 
-.insightCard {
+.loginPage .insightCard {
   width: min(26.25rem, 100%);
   padding: 1.875rem;
   border-radius: 1.875rem;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
   border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  color: inherit;
 
   .eyebrow {
     color: #8dbfff;

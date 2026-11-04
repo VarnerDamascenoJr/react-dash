@@ -1,10 +1,6 @@
+import type { ChartProps } from './chart.types';
 import './chart.scss';
 import { AreaChart, Area, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-interface ChartProps {
-  aspect: number;
-  title: string;
-}
 
 const data = [
   { name: 'January', Total: 1200 },

@@ -3,7 +3,7 @@ import './datatable.scss';
 import { DataGrid, type GridColDef, type GridRenderCellParams } from '@mui/x-data-grid';
 import { userColumns, userRows } from '../../datatablesource';
 import { Link } from 'react-router-dom';
-import type { UserRow } from '../../types';
+import type { UserRow } from './datatable.types';
 
 export default function Datatable() {
   const [data, setData] = useState<UserRow[]>(userRows);

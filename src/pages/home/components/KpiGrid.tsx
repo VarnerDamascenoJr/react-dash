@@ -1,11 +1,5 @@
+import type { KpiGridProps } from '../home.types';
 import { Box, Paper, Typography } from '@mui/material';
-
-interface KpiGridProps {
-  items: Array<{
-    label: string;
-    value: string;
-  }>;
-}
 
 export default function KpiGrid({ items }: KpiGridProps) {
   return (

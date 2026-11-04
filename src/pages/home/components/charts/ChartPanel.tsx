@@ -1,17 +1,6 @@
-import type { ReactNode, RefObject } from 'react';
+import type { ChartPanelProps } from '../../home.types';
 import { Box } from '@mui/material';
 import AnalyticsPanel from '../AnalyticsPanel';
-
-interface ChartPanelProps {
-  children: ReactNode;
-  compact?: boolean;
-  containerRef: RefObject<HTMLDivElement>;
-  emptyMetricLabel: string;
-  eyebrow: string;
-  metric?: string;
-  title: string;
-  wide?: boolean;
-}
 
 export default function ChartPanel({
   children,

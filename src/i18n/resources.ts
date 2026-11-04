@@ -9,10 +9,3 @@ export const resources = {
   'pt-BR': { home: ptHome, shell: ptShell, login: ptLogin },
   'en-US': { home: enHome, shell: enShell, login: enLogin },
 };
-
-declare module 'i18next' {
-  interface CustomTypeOptions {
-    defaultNS: 'home';
-    resources: typeof resources['pt-BR'];
-  }
-}

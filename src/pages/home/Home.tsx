@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import {
+  type EventTypeDistributionPoint,
   buildAnalyticsKpis,
   buildEventRows,
   buildFunnelRows,
@@ -46,7 +47,7 @@ const Home = () => {
     [document]
   );
 
-  const eventTypeData = useMemo(
+  const eventTypeData = useMemo<EventTypeDistributionPoint[]>(
     () =>
       Object.entries(document.summary.eventTypeCounts).map(([name, total]) => ({
         name,

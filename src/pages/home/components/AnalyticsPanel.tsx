@@ -1,16 +1,5 @@
-import type { ReactNode } from 'react';
+import type { AnalyticsPanelProps } from '../home.types';
 import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
-
-interface AnalyticsPanelProps {
-  children: ReactNode;
-  className?: string;
-  component?: 'article' | 'section';
-  emptyMetricLabel?: string;
-  eyebrow: string;
-  id?: string;
-  metric?: string;
-  title: string;
-}
 
 export default function AnalyticsPanel({
   children,

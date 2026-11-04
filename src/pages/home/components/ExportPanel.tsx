@@ -1,23 +1,10 @@
+import type { ExportPanelProps } from '../home.types';
 import { Button, Paper, Stack, Typography } from '@mui/material';
 import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 import { useTranslation } from 'react-i18next';
-
-interface ExportPanelProps {
-  canExportEventTypesPng: boolean;
-  canExportEventsCsv: boolean;
-  canExportWindowsCsv: boolean;
-  canExportWindowsPng: boolean;
-  exportMessage: string;
-  id?: string;
-  onExportEventTypesPng: () => void;
-  onExportEventsCsv: () => void;
-  onExportJson: () => void;
-  onExportWindowsCsv: () => void;
-  onExportWindowsPng: () => void;
-}
 
 export default function ExportPanel({
   canExportEventTypesPng,

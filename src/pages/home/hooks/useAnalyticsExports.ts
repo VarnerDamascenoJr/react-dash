@@ -1,3 +1,4 @@
+import type { ExportFeedback } from '../home.types';
 import { useRef, useState } from 'react';
 import {
   AnalyticsExportError,
@@ -10,10 +11,6 @@ import {
   type SalesAnalyticsDocument,
 } from '../../../analytics';
 import { useTranslation } from 'react-i18next';
-
-type ExportFeedback =
-  | { kind: 'success'; key: 'json' | 'csvEvents' | 'csvWindows' | 'png' }
-  | { kind: 'error'; key: AnalyticsExportError['code'] | 'unknown' };
 
 export function useAnalyticsExports(document: SalesAnalyticsDocument) {
   const { t } = useTranslation('home');

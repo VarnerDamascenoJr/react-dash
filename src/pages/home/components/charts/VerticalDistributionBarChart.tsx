@@ -1,3 +1,4 @@
+import type { VerticalDistributionBarChartProps } from '../../home.types';
 import {
   Bar,
   BarChart,
@@ -8,17 +9,7 @@ import {
   YAxis,
 } from 'recharts';
 
-interface VerticalDistributionBarChartProps {
-  barColor: string;
-  categoryKey: string;
-  data: object[];
-  label: string;
-  valueFormatter: (value: number) => string;
-  valueKey: string;
-  yAxisWidth?: number;
-}
-
-export default function VerticalDistributionBarChart({
+export default function VerticalDistributionBarChart<TData extends object>({
   barColor,
   categoryKey,
   data,
@@ -26,7 +17,7 @@ export default function VerticalDistributionBarChart({
   valueFormatter,
   valueKey,
   yAxisWidth = 132,
-}: VerticalDistributionBarChartProps) {
+}: VerticalDistributionBarChartProps<TData>) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={data} layout="vertical" margin={{ left: 8, right: 12 }}>

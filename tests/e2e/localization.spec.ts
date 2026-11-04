@@ -4,7 +4,7 @@ import fixture from '../../src/analytics/fixtures/sales-analytics-export.v1.json
 test('switches login language, translates an existing error and restores the selection', async ({ page }) => {
   await page.goto('/login');
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
-  await page.getByLabel('Senha', { exact: true }).fill('invalid-password');
+  await page.getByLabel(/^Senha\b/).fill('invalid-password');
   await page.getByRole('button', { name: 'Entrar no painel', exact: true }).click();
   await expect(page.getByRole('alert')).toHaveText('Use a conta de demonstração para acessar o painel.');
 
@@ -13,7 +13,7 @@ test('switches login language, translates an existing error and restores the sel
   await expect(page.getByRole('alert')).toHaveText('Use the demo account to access the dashboard.');
   await page.reload();
   await expect(page.getByRole('combobox', { name: 'Language', exact: true })).toHaveValue('en-US');
-  await expect(page.getByLabel('Password', { exact: true })).toBeVisible();
+  await expect(page.getByLabel(/^Password\b/)).toBeVisible();
   await page.getByRole('button', { name: 'Enter dashboard', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Operational overview of sales events.' })).toBeVisible();
   await expect(page.getByText('Demo data', { exact: true })).toBeVisible();

@@ -1,105 +1,72 @@
-import { useContext, useMemo, useState, type FormEvent } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import './login.scss';
-import { AuthContext, DemoAuthenticationError } from '../../context/authContext';
+import { Box, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from '../../components/language/LanguageSelector';
 import { demoLoginEmail, demoLoginPassword } from '../../config/auth';
+import LoginForm from './components/LoginForm';
+import { useLoginForm } from './hooks/useLoginForm';
+import './login.scss';
 
 const Login = () => {
   const { t } = useTranslation('login');
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { login } = useContext(AuthContext);
-  const [email, setEmail] = useState(demoLoginEmail);
-  const [password, setPassword] = useState(demoLoginPassword);
-  const [error, setError] = useState<'' | 'invalidCredentials' | 'authFailed'>('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const redirectPath = useMemo(() => {
-    return (location.state as { from?: { pathname?: string } } | null)?.from
-      ?.pathname;
-  }, [location.state]);
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError('');
-    setIsSubmitting(true);
-
-    try {
-      await login({ email, password });
-      navigate(redirectPath || '/', { replace: true });
-    } catch (submitError) {
-      setError(
-        submitError instanceof DemoAuthenticationError ? 'invalidCredentials' : 'authFailed'
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const { values, error, isSubmitting, updateField, handleSubmit } = useLoginForm();
 
   return (
-    <div className="loginPage">
-      <div className="loginPage__panel">
-        <div className="loginPage__language"><LanguageSelector /></div>
-        <div className="loginPage__brand">
-          <span className="brandMark">RD</span>
-          <div>
-            <strong>React Dash</strong>
-            <span>{t('subtitle')}</span>
-          </div>
-        </div>
+    <Box component="main" className="loginPage">
+      <Stack className="loginPage__panel">
+        <Box className="loginPage__language">
+          <LanguageSelector />
+        </Box>
+        <Stack direction="row" className="loginPage__brand">
+          <Box component="span" className="brandMark">RD</Box>
+          <Box>
+            <Typography component="strong" variant="inherit" fontWeight={700}>
+              React Dash
+            </Typography>
+            <Typography component="span" variant="body2">{t('subtitle')}</Typography>
+          </Box>
+        </Stack>
 
-        <div className="loginPage__hero">
-          <span className="eyebrow">{t('eyebrow')}</span>
-          <h1>{t('title')}</h1>
-          <p>
-            {t('description')}
-          </p>
-        </div>
+        <Box component="header" className="loginPage__hero">
+          <Typography component="span" variant="overline" className="eyebrow">
+            {t('eyebrow')}
+          </Typography>
+          <Typography component="h1" variant="h2" fontWeight={700}>
+            {t('title')}
+          </Typography>
+          <Typography>{t('description')}</Typography>
+        </Box>
 
-        <form className="loginForm" onSubmit={handleSubmit}>
-          <div className="inputGroup">
-            <label htmlFor="email">{t('email')}</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="password">{t('password')}</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </div>
-          {error ? <p className="errorMessage" role="alert">{t(error)}</p> : null}
-          <button type="submit" disabled={isSubmitting}>
-            {t(isSubmitting ? 'authenticating' : 'submit')}
-          </button>
-        </form>
+        <LoginForm
+          values={values}
+          error={error}
+          isSubmitting={isSubmitting}
+          onFieldChange={updateField}
+          onSubmit={handleSubmit}
+        />
 
-        <div className="loginPage__demoHint">
-          <span>{t('demoAccess')}</span>
-          <strong>{demoLoginEmail} / {demoLoginPassword}</strong>
-        </div>
-      </div>
-      <div className="loginPage__aside">
-        <div className="insightCard">
-          <span className="eyebrow">{t('asideEyebrow')}</span>
-          <h2>{t('asideTitle')}</h2>
-          <ul>
-            <li>{t('features.analytics')}</li>
-            <li>{t('features.demo')}</li>
-            <li>{t('features.exports')}</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+        <Stack className="loginPage__demoHint" id="login-demo-hint">
+          <Typography component="span" variant="body2">{t('demoAccess')}</Typography>
+          <Typography component="strong" variant="inherit" fontWeight={700}>
+            {demoLoginEmail} / {demoLoginPassword}
+          </Typography>
+        </Stack>
+      </Stack>
+      <Box component="aside" className="loginPage__aside" aria-labelledby="login-overview-title">
+        <Paper className="insightCard" elevation={0}>
+          <Typography component="span" variant="overline" className="eyebrow">
+            {t('asideEyebrow')}
+          </Typography>
+          <Typography component="h2" variant="h4" fontWeight={700} id="login-overview-title">
+            {t('asideTitle')}
+          </Typography>
+          <Box component="ul">
+            <Box component="li">{t('features.analytics')}</Box>
+            <Box component="li">{t('features.demo')}</Box>
+            <Box component="li">{t('features.exports')}</Box>
+          </Box>
+        </Paper>
+      </Box>
+    </Box>
   );
 };
 

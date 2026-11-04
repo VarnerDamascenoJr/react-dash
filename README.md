@@ -168,9 +168,12 @@ git diff --check
 - `src/components`: reusable dashboard components
 - `src/pages`: main pages
 - `src/context`: simple global theme state
-- `src/types.ts`: shared types
+- `src/auth/auth.types.ts`: authentication contracts
+- `src/context/darkMode.types.ts`: theme state and action types
 - `src/analytics`: types, fixture, client, transformers, and exporters for the
   `sales-analytics-export.v1` contract
+- `src/analytics/analytics.types.ts`: analytics interfaces and aliases
+- `docs/type-organization.md`: type ownership and interface/alias conventions
 - `docs/analytics-dashboard-backlog.md`: backlog and product contract for
   turning the app into the Sales Event analytics dashboard
 - `docs/demo-checklist.md`: smoke checklist for the local demo and portfolio

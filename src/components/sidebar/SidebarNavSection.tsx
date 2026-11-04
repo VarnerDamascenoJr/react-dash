@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { SidebarNavEntryProps, SidebarNavItem, SidebarNavSectionProps } from './sidebar.types';
 import {
   ListItemButton,
   ListItemIcon,
@@ -6,20 +6,6 @@ import {
   ListSubheader,
 } from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
-
-interface SidebarNavItem {
-  className?: string;
-  end?: boolean;
-  icon: ReactNode;
-  label: string;
-  onClick?: () => void;
-  to?: string;
-}
-
-interface SidebarNavSectionProps {
-  items: SidebarNavItem[];
-  title: string;
-}
 
 export default function SidebarNavSection({
   items,
@@ -37,7 +23,7 @@ export default function SidebarNavSection({
   );
 }
 
-function SidebarNavEntry({ item }: { item: SidebarNavItem }) {
+function SidebarNavEntry({ item }: SidebarNavEntryProps) {
   const location = useLocation();
   const button = (
     <ListItemButton

@@ -117,9 +117,12 @@ components.
 
 Form field metadata for user and product forms.
 
-### `src/types.ts`
+### Type contracts
 
-Shared TypeScript interfaces and types.
+Shared types live with their owning area: `src/auth/auth.types.ts`,
+`src/context/darkMode.types.ts`, `src/config/salesApi.types.ts` and
+`src/analytics/analytics.types.ts`. Home props live in `src/pages/home/home.types.ts`; legacy form
+and table types stay with those features. See [type-organization.md](type-organization.md).
 
 ### `src/setupTests.ts`
 

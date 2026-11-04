@@ -12,13 +12,6 @@ export {
   downloadJson,
   serializeCsv,
 } from './exporters';
-export type {
-  SalesAnalyticsClientOptions,
-  SalesAnalyticsExportFilters,
-  SalesAnalyticsLoadOptions,
-  SalesAnalyticsLoadResult,
-} from './api';
-export type { CsvPrimitive, CsvRow } from './exporters';
 export { localSalesAnalyticsFixture } from './fixtures';
 export {
   buildAnalyticsKpis,
@@ -33,17 +26,28 @@ export {
 export type {
   AggregateCounts,
   AnalyticsEventRow,
+  AnalyticsExportErrorCode,
   AnalyticsKpis,
   BetaBinomial,
   ConfidenceInterval,
   CountMap,
+  CsvPrimitive,
+  CsvRow,
   EventCsvRow,
+  EventTypeDistributionPoint,
   FunnelSegment,
   FunnelStep,
   FunnelStepRow,
   ISODateTimeString,
+  SalesAnalyticsApiErrorCode,
+  SalesAnalyticsApiFailure,
+  SalesAnalyticsClientOptions,
+  SalesAnalyticsDataSource,
   SalesAnalyticsDocument,
   SalesAnalyticsEvent,
+  SalesAnalyticsExportFilters,
+  SalesAnalyticsLoadOptions,
+  SalesAnalyticsLoadResult,
   SalesAnalyticsSource,
   SalesAnalyticsSummary,
   SurvivalAnalysis,
@@ -52,4 +56,4 @@ export type {
   WindowAggregate,
   WindowCsvRow,
   WindowSeriesPoint,
-} from './types';
+} from './analytics.types';

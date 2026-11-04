@@ -14,6 +14,8 @@ Translations live in `src/i18n/locales/<language>/` with three namespaces:
 
 Use `useTranslation('home')` (or the relevant namespace) inside React components
 and hooks. Keys are checked against the Portuguese resources by TypeScript.
+The module augmentation lives in `src/i18n/i18n.types.ts`, separate from runtime
+resource registration.
 `strictNullChecks` is enabled as required by the i18next typed API.
 Keep matching, non-empty keys in both languages; the catalog tests check this.
 

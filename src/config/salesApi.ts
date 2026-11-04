@@ -1,16 +1,10 @@
+import type { SalesAnalyticsSettings } from './salesApi.types';
+
 export const salesApiBaseUrl =
   import.meta.env.VITE_SALES_API_BASE_URL?.trim() || '/api';
 
 export const salesAnalyticsSettingsStorageKey = 'react-dash.analytics.settings';
 export const defaultSalesAnalyticsLimit = 2000;
-
-export interface SalesAnalyticsSettings {
-  baseUrl: string;
-  salesEventId: string;
-  start: string;
-  end: string;
-  limit: number;
-}
 
 export function defaultSalesAnalyticsSettings(
   defaultSalesEventId = ''

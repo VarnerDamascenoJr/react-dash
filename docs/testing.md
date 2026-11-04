@@ -59,9 +59,14 @@ tests should not require external services.
 - Analytics transformers for KPIs, windows, rows and empty documents.
 - CSV serialization and export filename generation.
 - Legacy `New` page form field rendering.
+- Login form validation, pending submission locking, translated feedback,
+  retry after failure and complete return destinations. Redirect unit tests
+  cover malformed state, external destinations and login loops.
 - Protected login-to-dashboard flow with fixture data in a real browser.
 - Browser-level auth behavior for invalid login, protected-route redirects,
   public-login redirects for authenticated users and logout/session cleanup.
+- Browser-level required login fields, recovery after invalid credentials and
+  preservation of protected query parameters and fragments.
 - Browser-level theme switching from the navbar action and sidebar segmented
   controls.
 
