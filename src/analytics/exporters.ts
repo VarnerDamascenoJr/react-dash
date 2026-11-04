@@ -1,4 +1,5 @@
-import type { AnalyticsExportErrorCode, CsvPrimitive } from './analytics.types';
+import type { AnalyticsExportErrorCode } from './analytics.types';
+import { downloadBlob } from '../utils/download';
 
 export class AnalyticsExportError extends Error {
   constructor(
@@ -8,42 +9,6 @@ export class AnalyticsExportError extends Error {
     super(message);
     this.name = 'AnalyticsExportError';
   }
-}
-
-export function serializeCsv<T extends object>(rows: T[]) {
-  if (rows.length === 0) {
-    return '';
-  }
-
-  const headers = Object.keys(rows[0]);
-  const lines = [
-    headers.map(escapeCsvCell).join(','),
-    ...rows.map((row) =>
-      headers
-        .map((header) =>
-          escapeCsvCell((row as Record<string, CsvPrimitive>)[header])
-        )
-        .join(',')
-    ),
-  ];
-
-  return `${lines.join('\n')}\n`;
-}
-
-export function downloadJson(fileName: string, value: unknown) {
-  downloadBlob(
-    fileName,
-    new Blob([`${JSON.stringify(value, null, 2)}\n`], {
-      type: 'application/json;charset=utf-8',
-    })
-  );
-}
-
-export function downloadCsv<T extends object>(fileName: string, rows: T[]) {
-  downloadBlob(
-    fileName,
-    new Blob([serializeCsv(rows)], { type: 'text/csv;charset=utf-8' })
-  );
 }
 
 export async function downloadChartPng(
@@ -92,27 +57,6 @@ export function buildExportFileName(
 ) {
   const date = generatedAt ? generatedAt.slice(0, 10) : new Date().toISOString().slice(0, 10);
   return `sales-events-${date}-${suffix}.${extension}`;
-}
-
-function downloadBlob(fileName: string, blob: Blob) {
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-
-  anchor.href = url;
-  anchor.download = fileName;
-  anchor.style.display = 'none';
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  URL.revokeObjectURL(url);
-}
-
-function escapeCsvCell(value: CsvPrimitive) {
-  const text = value === null || value === undefined ? '' : String(value);
-  if (/[",\n\r]/.test(text)) {
-    return `"${text.replace(/"/g, '""')}"`;
-  }
-  return text;
 }
 
 function loadImage(src: string) {

@@ -1,14 +1,9 @@
-import type { EmptyStateProps, InsightPanelsProps } from '../home.types';
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from '@mui/material';
+import type { InsightPanelsProps } from '../home.types';
+import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
-import AnalyticsPanel from './AnalyticsPanel';
+import SectionPanel from '../../../components/common/layout/SectionPanel';
+import MetricList from '../../../components/common/data-display/MetricList';
 
 export default function InsightPanels({
   funnelId,
@@ -20,67 +15,35 @@ export default function InsightPanels({
   const { formatPercent, formatSeconds } = useAnalyticsFormatters();
   return (
     <Box className="insightGrid" component="section">
-      <AnalyticsPanel
+      <SectionPanel
         eyebrow={t('panels.funnel.eyebrow')}
         id={funnelId}
         title={t('panels.funnel.title')}
       >
-        {funnelRows.length === 0 ? (
-          <EmptyState text={t('emptyStates.funnel')} />
-        ) : (
-          <List className="metricList" disablePadding>
-            {funnelRows.slice(0, 5).map((row) => (
-              <ListItem disableGutters key={row.id}>
-                <ListItemText
-                  primary={
-                    <Typography component="span" variant="body2">
-                      {row.from} -&gt; {row.to}
-                    </Typography>
-                  }
-                />
-                <Typography component="strong" variant="subtitle1">
-                  {formatPercent(row.conversionProbability)}
-                </Typography>
-              </ListItem>
-            ))}
-          </List>
-        )}
-      </AnalyticsPanel>
+        <MetricList
+          emptyText={t('emptyStates.funnel')}
+          items={funnelRows.slice(0, 5).map((row) => ({
+            id: row.id,
+            label: `${row.from} -> ${row.to}`,
+            value: formatPercent(row.conversionProbability),
+          }))}
+        />
+      </SectionPanel>
 
-      <AnalyticsPanel
+      <SectionPanel
         eyebrow={t('panels.survival.eyebrow')}
         id={survivalId}
         title={t('panels.survival.title')}
       >
-        {survivalRows.length === 0 ? (
-          <EmptyState text={t('emptyStates.survival')} />
-        ) : (
-          <List className="metricList" disablePadding>
-            {survivalRows.map((row) => (
-              <ListItem disableGutters key={row.id}>
-                <ListItemText
-                  primary={
-                    <Typography component="span" variant="body2">
-                      {row.eventName}
-                    </Typography>
-                  }
-                />
-                <Typography component="strong" variant="subtitle1">
-                  {formatSeconds(row.p50Seconds)}
-                </Typography>
-              </ListItem>
-            ))}
-          </List>
-        )}
-      </AnalyticsPanel>
-    </Box>
-  );
-}
-
-function EmptyState({ text }: EmptyStateProps) {
-  return (
-    <Box className="emptyState">
-      <Typography variant="body2">{text}</Typography>
+        <MetricList
+          emptyText={t('emptyStates.survival')}
+          items={survivalRows.map((row) => ({
+            id: row.id,
+            label: row.eventName,
+            value: formatSeconds(row.p50Seconds),
+          }))}
+        />
+      </SectionPanel>
     </Box>
   );
 }

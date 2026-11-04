@@ -1,4 +1,4 @@
-import type { VerticalDistributionBarChartProps } from '../../home.types';
+import type { VerticalDistributionBarChartProps } from './charts.types';
 import {
   Bar,
   BarChart,

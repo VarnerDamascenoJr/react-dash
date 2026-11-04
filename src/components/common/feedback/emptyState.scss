@@ -1,0 +1,9 @@
+.emptyState {
+  min-height: 8.25rem;
+  border: 0.0625rem dashed var(--border-soft);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}

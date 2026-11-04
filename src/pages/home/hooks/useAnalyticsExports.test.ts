@@ -5,16 +5,20 @@ import {
   buildWindowCsvRows,
   localSalesAnalyticsFixture,
 } from '../../../analytics';
-import { AnalyticsExportError, downloadChartPng, downloadCsv, downloadJson } from '../../../analytics/exporters';
+import { AnalyticsExportError, downloadChartPng } from '../../../analytics/exporters';
+import { downloadCsv, downloadJson } from '../../../utils/download';
 import homeCopy from '../../../i18n/locales/pt-BR/home.json';
 import i18n from '../../../i18n';
 import { useAnalyticsExports } from './useAnalyticsExports';
 
 vi.mock('../../../analytics/exporters', async (importOriginal) => ({
   ...await importOriginal<typeof import('../../../analytics/exporters')>(),
+  downloadChartPng: vi.fn(),
+}));
+
+vi.mock('../../../utils/download', () => ({
   downloadJson: vi.fn(),
   downloadCsv: vi.fn(),
-  downloadChartPng: vi.fn(),
 }));
 
 afterEach(() => { vi.resetAllMocks(); });

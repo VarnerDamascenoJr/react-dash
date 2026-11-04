@@ -1,4 +1,5 @@
 import type { AppLanguage } from './i18n.types';
+import { readStoredValue, writeStoredValue } from '../utils/storage';
 
 export const languageStorageKey = 'react-dash.language';
 export const supportedLanguages = ['pt-BR', 'en-US'] as const;
@@ -8,17 +9,9 @@ export function resolveLanguage(language?: string | null): AppLanguage {
 }
 
 export function loadLanguage(): AppLanguage {
-  try {
-    return resolveLanguage(window.localStorage.getItem(languageStorageKey));
-  } catch (_error) {
-    return 'pt-BR';
-  }
+  return resolveLanguage(readStoredValue(languageStorageKey));
 }
 
 export function saveLanguage(language: AppLanguage) {
-  try {
-    window.localStorage.setItem(languageStorageKey, language);
-  } catch (_error) {
-    // Language switching remains available when browser storage is restricted.
-  }
+  writeStoredValue(languageStorageKey, language);
 }

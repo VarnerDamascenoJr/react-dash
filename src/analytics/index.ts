@@ -8,9 +8,6 @@ export {
   AnalyticsExportError,
   buildExportFileName,
   downloadChartPng,
-  downloadCsv,
-  downloadJson,
-  serializeCsv,
 } from './exporters';
 export { localSalesAnalyticsFixture } from './fixtures';
 export {
@@ -31,8 +28,6 @@ export type {
   BetaBinomial,
   ConfidenceInterval,
   CountMap,
-  CsvPrimitive,
-  CsvRow,
   EventCsvRow,
   EventTypeDistributionPoint,
   FunnelSegment,

@@ -1,4 +1,5 @@
 import type { ExportFeedback } from '../home.types';
+import { downloadCsv, downloadJson } from '../../../utils/download';
 import { useRef, useState } from 'react';
 import {
   AnalyticsExportError,
@@ -6,8 +7,6 @@ import {
   buildExportFileName,
   buildWindowCsvRows,
   downloadChartPng,
-  downloadCsv,
-  downloadJson,
   type SalesAnalyticsDocument,
 } from '../../../analytics';
 import { useTranslation } from 'react-i18next';

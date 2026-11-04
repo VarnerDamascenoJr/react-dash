@@ -1,8 +1,16 @@
-import { createAnalyticsFormatters } from './formatters';
+import { getFormatters } from './formatters';
+
+test('reuses formatter instances across consumers and locale switches', () => {
+  const pt = getFormatters('pt-BR');
+  const en = getFormatters('en-US');
+  expect(getFormatters('pt-BR')).toBe(pt);
+  expect(getFormatters('en-US')).toBe(en);
+  expect(pt).not.toBe(en);
+});
 
 test('formats numbers and percentages by locale while preserving BRL amounts', () => {
-  const pt = createAnalyticsFormatters('pt-BR');
-  const en = createAnalyticsFormatters('en-US');
+  const pt = getFormatters('pt-BR');
+  const en = getFormatters('en-US');
   expect(pt.formatInteger(1234)).toBe('1.234');
   expect(en.formatInteger(1234)).toBe('1,234');
   expect(pt.formatCurrency(123456)).toBe('R$\u00a01.234,56');
@@ -14,8 +22,8 @@ test('formats numbers and percentages by locale while preserving BRL amounts', (
 });
 
 test('formats dates by locale without changing the timestamp', () => {
-  const pt = createAnalyticsFormatters('pt-BR');
-  const en = createAnalyticsFormatters('en-US');
+  const pt = getFormatters('pt-BR');
+  const en = getFormatters('en-US');
   const date = new Date(2026, 9, 17, 13, 45).toISOString();
   expect(pt.formatDateTime(date)).toContain('17/10/2026');
   expect(en.formatDateTime(date)).toContain('10/17/26');
