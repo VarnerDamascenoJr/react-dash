@@ -1,4 +1,5 @@
 import { expect, type Page, test } from '@playwright/test';
+import fixture from '../../src/analytics/fixtures/sales-analytics-export.v1.json';
 import {
   clearApiKeyField,
   expectNoPageHorizontalOverflow,
@@ -8,6 +9,28 @@ import {
 
 // Real API keys must not be retained in network traces or videos.
 test.use({ trace: 'off', video: 'off' });
+
+test('loads API data through the evidence flow without persisting the key', async ({ page }) => {
+  const env = { salesEventId: 'evidence-flow-event', supportApiKey: 'evidence-flow-test-key' };
+  const apiDocument = {
+    ...fixture,
+    source: { ...fixture.source, service: 'sales-evidence-regression' },
+  };
+  await page.route('**/analytics/export?**', async (route) => {
+    expect(route.request().headers()['x-api-key']).toBe(env.supportApiKey);
+    expect(new URL(route.request().url()).searchParams.get('salesEventId')).toBe(env.salesEventId);
+    await route.fulfill({ json: apiDocument });
+  });
+
+  await loadLocalSalesApi(page, env);
+  await expect(page.getByText(/sales-evidence-regression — gerado em/)).toBeVisible();
+  const preferences = await page.evaluate(() => JSON.stringify(window.localStorage));
+  expect(preferences).not.toContain(env.supportApiKey);
+  await clearApiKeyField(page);
+  await page.reload();
+  await expect(page.getByLabel('Evento de vendas', { exact: true })).toHaveValue(env.salesEventId);
+  await expect(page.getByLabel('Chave da API', { exact: true })).toHaveValue('');
+});
 
 test('loads analytics from the local Sales API', async ({ page }) => {
   const env = readSalesApiEnv();
