@@ -11,7 +11,7 @@ Devin or another assistant.
 - [graphify-development.md](graphify-development.md): how to use the local
   Graphify code graph in the development flow.
 - [external-docs-rag.md](external-docs-rag.md): when and how agents should
-  retrieve official external documentation.
+  retrieve and query official external documentation.
 - [external-doc-sources.json](external-doc-sources.json): machine-readable map
   of approved documentation sources for the current stack.
 
@@ -23,4 +23,6 @@ Devin or another assistant.
 - Prefer fixture-first development for deterministic tests and demos.
 - Use external documentation retrieval when local context is insufficient or
   best-practice guidance may have changed.
+- Use `npm run rag:*` for local library documentation lookup before adding
+  ad-hoc external research to a task.
 - Update this directory when the agent workflow changes.

@@ -1,13 +1,7 @@
+import type { AnalyticsHeaderProps } from '../home.types';
 import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
-import { homeCopy } from '../copy';
-import { formatDateTime } from '../formatters';
-
-interface AnalyticsHeaderProps {
-  generatedAt: string;
-  loadMessage: string;
-  service: string;
-  source: 'fixture' | 'api';
-}
+import { useTranslation } from 'react-i18next';
+import { useAnalyticsFormatters } from '../useAnalyticsFormatters';
 
 export default function AnalyticsHeader({
   generatedAt,
@@ -15,6 +9,8 @@ export default function AnalyticsHeader({
   service,
   source,
 }: AnalyticsHeaderProps) {
+  const { t } = useTranslation('home');
+  const { formatDateTime } = useAnalyticsFormatters();
   return (
     <Paper className="analyticsHeader" component="section" elevation={0}>
       <Box className="analyticsHeader__copy">
@@ -23,27 +19,27 @@ export default function AnalyticsHeader({
           component="span"
           variant="overline"
         >
-          {homeCopy.header.eyebrow}
+          {t('header.eyebrow')}
         </Typography>
         <Typography component="h2" variant="h3">
-          {homeCopy.header.title}
+          {t('header.title')}
         </Typography>
         <Typography component="p" variant="body1">
-          {service} - gerado em {formatDateTime(generatedAt)}
+          {t('header.generated', { service, date: formatDateTime(generatedAt) })}
         </Typography>
       </Box>
       <Stack className={`sourceBadge ${source}`}>
         <Typography component="span" variant="overline">
-          {homeCopy.header.source}
+          {t('header.source')}
         </Typography>
         <Chip
           className="sourceBadge__chip"
           label={
-            source === 'api' ? homeCopy.source.api : homeCopy.source.fixture
+            source === 'api' ? t('source.api') : t('source.fixture')
           }
           size="small"
         />
-        <Typography component="small" variant="caption">
+        <Typography component="small" variant="caption" role="status">
           {loadMessage}
         </Typography>
       </Stack>

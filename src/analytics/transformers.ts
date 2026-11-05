@@ -1,5 +1,4 @@
 import type {
-  AggregateCounts,
   AnalyticsEventRow,
   AnalyticsKpis,
   CountMap,
@@ -11,7 +10,7 @@ import type {
   WindowAggregate,
   WindowCsvRow,
   WindowSeriesPoint,
-} from './types';
+} from './analytics.types';
 
 export const emptySalesAnalyticsDocument: SalesAnalyticsDocument = {
   schemaVersion: 'sales-analytics-export.v1',

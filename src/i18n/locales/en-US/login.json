@@ -1,0 +1,20 @@
+{
+  "subtitle": "Operations command center",
+  "eyebrow": "Sign in to continue",
+  "title": "Track sales events in one place.",
+  "description": "Explore metrics, charts and exports with a demo account.",
+  "email": "Email",
+  "password": "Password",
+  "authenticating": "Signing in…",
+  "submit": "Enter dashboard",
+  "invalidCredentials": "Use the demo account to access the dashboard.",
+  "authFailed": "Could not sign in. Please try again.",
+  "demoAccess": "Demo access",
+  "asideEyebrow": "Overview",
+  "asideTitle": "The data that matters for your operations.",
+  "features": {
+    "analytics": "Metrics, funnels and survival analysis.",
+    "demo": "Demo data available without an API connection.",
+    "exports": "Export data and charts as JSON, CSV and PNG."
+  }
+}

@@ -17,31 +17,8 @@
     }
 
     .brandMark {
-      width: 3rem;
-      height: 3rem;
-      display: grid;
-      place-items: center;
-      border-radius: 1rem;
-      background: linear-gradient(135deg, var(--accent-primary), #f2a65a);
-      color: white;
-      font-weight: 700;
       letter-spacing: 0.04em;
       box-shadow: 0 1.125rem 1.875rem rgba(240, 93, 94, 0.24);
-    }
-
-    .brandText {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1875rem;
-
-      strong {
-        font-size: 1rem;
-      }
-
-      span {
-        color: var(--text-secondary);
-        font-size: 0.82rem;
-      }
     }
   }
 

@@ -11,9 +11,11 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "i18next": "^26.4.7",
     "react": "^18.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^17.0.21",
     "react-router-dom": "^6.17.0",
     "recharts": "^2.9.2",
     "sass": "^1.69.4"
@@ -23,12 +25,16 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "lint": "eslint . --max-warnings=0",
     "test": "vitest run",
     "test:e2e": "playwright test --grep-invert @evidence",
     "test:e2e:install": "playwright install chromium",
     "test:e2e:ui": "playwright test --ui",
     "evidence:sales-api": "playwright test tests/e2e/sales-api-evidence.spec.ts --project=chromium --grep @evidence",
     "check:style-units": "node scripts/check-style-units.cjs",
+    "rag:sources": "node scripts/lib-rag.cjs sources",
+    "rag:fetch": "node scripts/lib-rag.cjs fetch",
+    "rag:query": "node scripts/lib-rag.cjs query",
     "typecheck": "tsc --noEmit"
   },
   "browserslist": {
@@ -44,12 +50,17 @@
     ]
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
     "jsdom": "^26.1.0",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.1",
     "vitest": "^3.2.4"
   }
 }

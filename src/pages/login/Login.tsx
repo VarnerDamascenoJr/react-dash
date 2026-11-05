@@ -1,104 +1,65 @@
-import { useContext, useMemo, useState, type FormEvent } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import './login.scss';
-import { AuthContext } from '../../context/authContext';
+import { Box, Paper, Stack, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '../../components/common/controls/LanguageSelector';
+import Brand from '../../components/common/branding/Brand';
 import { demoLoginEmail, demoLoginPassword } from '../../config/auth';
+import LoginForm from './components/LoginForm';
+import { useLoginForm } from './hooks/useLoginForm';
+import './login.scss';
 
 const Login = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { login } = useContext(AuthContext);
-  const [email, setEmail] = useState(demoLoginEmail);
-  const [password, setPassword] = useState(demoLoginPassword);
-  const [error, setError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const redirectPath = useMemo(() => {
-    return (location.state as { from?: { pathname?: string } } | null)?.from
-      ?.pathname;
-  }, [location.state]);
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError('');
-    setIsSubmitting(true);
-
-    try {
-      await login({ email, password });
-      navigate(redirectPath || '/', { replace: true });
-    } catch (submitError) {
-      setError(
-        submitError instanceof Error
-          ? submitError.message
-          : 'Unable to authenticate.'
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const { t } = useTranslation('login');
+  const { values, error, isSubmitting, updateField, handleSubmit } = useLoginForm();
 
   return (
-    <div className="loginPage">
-      <div className="loginPage__panel">
-        <div className="loginPage__brand">
-          <span className="brandMark">RD</span>
-          <div>
-            <strong>React Dash</strong>
-            <span>Operations command center</span>
-          </div>
-        </div>
+    <Box component="main" className="loginPage">
+      <Stack className="loginPage__panel">
+        <Box className="loginPage__language">
+          <LanguageSelector />
+        </Box>
+        <Brand className="loginPage__brand" subtitle={t('subtitle')} />
 
-        <div className="loginPage__hero">
-          <span className="eyebrow">Sign in to continue</span>
-          <h1>Run your dashboard from a cleaner, faster control room.</h1>
-          <p>
-            This demo login now protects the internal routes and keeps the
-            session persisted locally.
-          </p>
-        </div>
+        <Box component="header" className="loginPage__hero">
+          <Typography component="span" variant="overline" className="eyebrow">
+            {t('eyebrow')}
+          </Typography>
+          <Typography component="h1" variant="h2" fontWeight={700}>
+            {t('title')}
+          </Typography>
+          <Typography>{t('description')}</Typography>
+        </Box>
 
-        <form className="loginForm" onSubmit={handleSubmit}>
-          <div className="inputGroup">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </div>
-          {error ? <p className="errorMessage">{error}</p> : null}
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Authenticating...' : 'Enter dashboard'}
-          </button>
-        </form>
+        <LoginForm
+          values={values}
+          error={error}
+          isSubmitting={isSubmitting}
+          onFieldChange={updateField}
+          onSubmit={handleSubmit}
+        />
 
-        <div className="loginPage__demoHint">
-          <span>Demo access</span>
-          <strong>{demoLoginEmail} / {demoLoginPassword}</strong>
-        </div>
-      </div>
-      <div className="loginPage__aside">
-        <div className="insightCard">
-          <span className="eyebrow">Live overview</span>
-          <h2>Everything important, without the dashboard clutter.</h2>
-          <ul>
-            <li>Protected routes for the internal admin area.</li>
-            <li>Persistent local session for demo sign-in.</li>
-            <li>Sharper visual foundation for the next product steps.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+        <Stack className="loginPage__demoHint" id="login-demo-hint">
+          <Typography component="span" variant="body2">{t('demoAccess')}</Typography>
+          <Typography component="strong" variant="inherit" fontWeight={700}>
+            {demoLoginEmail} / {demoLoginPassword}
+          </Typography>
+        </Stack>
+      </Stack>
+      <Box component="aside" className="loginPage__aside" aria-labelledby="login-overview-title">
+        <Paper className="insightCard" elevation={0}>
+          <Typography component="span" variant="overline" className="eyebrow">
+            {t('asideEyebrow')}
+          </Typography>
+          <Typography component="h2" variant="h4" fontWeight={700} id="login-overview-title">
+            {t('asideTitle')}
+          </Typography>
+          <Box component="ul">
+            <Box component="li">{t('features.analytics')}</Box>
+            <Box component="li">{t('features.demo')}</Box>
+            <Box component="li">{t('features.exports')}</Box>
+          </Box>
+        </Paper>
+      </Box>
+    </Box>
   );
 };
 

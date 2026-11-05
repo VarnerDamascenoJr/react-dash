@@ -1,40 +1,14 @@
-export type CsvPrimitive = string | number | boolean | null | undefined;
-export type CsvRow = Record<string, CsvPrimitive>;
+import type { AnalyticsExportErrorCode } from './analytics.types';
+import { downloadBlob } from '../utils/download';
 
-export function serializeCsv<T extends object>(rows: T[]) {
-  if (rows.length === 0) {
-    return '';
+export class AnalyticsExportError extends Error {
+  constructor(
+    public code: AnalyticsExportErrorCode,
+    message: string
+  ) {
+    super(message);
+    this.name = 'AnalyticsExportError';
   }
-
-  const headers = Object.keys(rows[0]);
-  const lines = [
-    headers.map(escapeCsvCell).join(','),
-    ...rows.map((row) =>
-      headers
-        .map((header) =>
-          escapeCsvCell((row as Record<string, CsvPrimitive>)[header])
-        )
-        .join(',')
-    ),
-  ];
-
-  return `${lines.join('\n')}\n`;
-}
-
-export function downloadJson(fileName: string, value: unknown) {
-  downloadBlob(
-    fileName,
-    new Blob([`${JSON.stringify(value, null, 2)}\n`], {
-      type: 'application/json;charset=utf-8',
-    })
-  );
-}
-
-export function downloadCsv<T extends object>(fileName: string, rows: T[]) {
-  downloadBlob(
-    fileName,
-    new Blob([serializeCsv(rows)], { type: 'text/csv;charset=utf-8' })
-  );
 }
 
 export async function downloadChartPng(
@@ -43,7 +17,7 @@ export async function downloadChartPng(
 ) {
   const svg = container?.querySelector('svg');
   if (!svg) {
-    throw new Error('Grafico indisponivel para exportacao PNG.');
+    throw new AnalyticsExportError('chartUnavailable', 'Grafico indisponivel para exportacao PNG.');
   }
 
   const svgText = new XMLSerializer().serializeToString(svg);
@@ -62,7 +36,7 @@ export async function downloadChartPng(
 
     const context = canvas.getContext('2d');
     if (!context) {
-      throw new Error('Canvas indisponivel para exportacao PNG.');
+      throw new AnalyticsExportError('canvasUnavailable', 'Canvas indisponivel para exportacao PNG.');
     }
 
     context.fillStyle = '#ffffff';
@@ -85,32 +59,11 @@ export function buildExportFileName(
   return `sales-events-${date}-${suffix}.${extension}`;
 }
 
-function downloadBlob(fileName: string, blob: Blob) {
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-
-  anchor.href = url;
-  anchor.download = fileName;
-  anchor.style.display = 'none';
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  URL.revokeObjectURL(url);
-}
-
-function escapeCsvCell(value: CsvPrimitive) {
-  const text = value === null || value === undefined ? '' : String(value);
-  if (/[",\n\r]/.test(text)) {
-    return `"${text.replace(/"/g, '""')}"`;
-  }
-  return text;
-}
-
 function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
     image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error('Nao foi possivel renderizar o PNG.'));
+    image.onerror = () => reject(new AnalyticsExportError('imageFailed', 'Nao foi possivel renderizar o PNG.'));
     image.src = src;
   });
 }
@@ -122,7 +75,7 @@ function canvasToBlob(canvas: HTMLCanvasElement) {
         resolve(blob);
         return;
       }
-      reject(new Error('Nao foi possivel gerar o PNG.'));
+      reject(new AnalyticsExportError('pngFailed', 'Nao foi possivel gerar o PNG.'));
     }, 'image/png');
   });
 }

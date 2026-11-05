@@ -1,0 +1,120 @@
+{
+  "controls": {
+    "ariaLabel": "Configure data source",
+    "apiKey": "API key",
+    "baseUrl": "Base URL",
+    "end": "End",
+    "loadApi": "Load API",
+    "loading": "Loading…",
+    "salesEvent": "Sales event",
+    "start": "Start",
+    "limit": "Limit"
+  },
+  "emptyStates": {
+    "chartMetric": "No aggregate data",
+    "funnel": "No funnel segments in this export.",
+    "survival": "No survival analyses in this export."
+  },
+  "exportPanel": {
+    "ariaLabel": "Export analytics data",
+    "csvEvents": "Events CSV",
+    "csvWindows": "Windows CSV",
+    "defaultMessage": "Download the full data, CSVs or displayed charts.",
+    "json": "Full JSON",
+    "pngEventTypes": "Event types PNG",
+    "pngWindows": "Windows PNG",
+    "subtitle": "Data and charts",
+    "title": "Exports"
+  },
+  "exportStatus": {
+    "csvEvents": "Events CSV exported.",
+    "csvWindows": "Windows CSV exported.",
+    "json": "Full document exported as JSON.",
+    "png": "Chart exported as PNG."
+  },
+  "exportErrors": {
+    "chartUnavailable": "Chart unavailable for export.",
+    "canvasUnavailable": "Could not prepare the chart image.",
+    "imageFailed": "Could not render the chart image.",
+    "pngFailed": "Could not generate the PNG.",
+    "unknown": "Could not export the chart."
+  },
+  "header": {
+    "eyebrow": "Sales event analytics",
+    "source": "Source",
+    "title": "Operational overview of sales events.",
+    "generated": "{{service}} — generated at {{date}}"
+  },
+  "kpis": {
+    "checkIns": "Check-ins",
+    "completedSales": "Completed sales",
+    "eventCount": "Collected events",
+    "issuedTickets": "Tickets issued",
+    "observedRevenue": "Observed revenue"
+  },
+  "loadStatus": {
+    "api": "Data loaded from the Sales API.",
+    "fixture": "Demo data loaded.",
+    "fallback": "API unavailable. Showing demo data.",
+    "fallbackReason": "{{reason}} Showing demo data."
+  },
+  "apiErrors": {
+    "invalidFilters": "The selected filters are invalid.",
+    "unauthorized": "Enter an API key to load Sales data.",
+    "forbidden": "The API key does not have permission to access this data.",
+    "requestFailed": "Could not load Sales data.",
+    "network": "Could not connect to the Sales API.",
+    "emptyResponse": "The API returned an empty response.",
+    "invalidJson": "The API returned invalid JSON.",
+    "invalidSchema": "The API response does not match the expected analytics format."
+  },
+  "panels": {
+    "eventTypes": {
+      "title": "Event distribution",
+      "eyebrow": "Event types"
+    },
+    "events": {
+      "title": "Analytics table",
+      "eyebrow": "Raw events",
+      "count_one": "{{count, number}} event",
+      "count_other": "{{count, number}} events",
+      "count_many": "{{count, number}} events",
+      "count_zero": "No events"
+    },
+    "eventsTable": {
+      "columns": {
+        "amountCents": "Amount",
+        "eventType": "Event",
+        "occurredAt": "Date and time",
+        "provider": "Provider",
+        "quantity": "Qty.",
+        "saleId": "Sale ID",
+        "status": "Status"
+      },
+      "noRows": "No events match the current filters"
+    },
+    "funnel": {
+      "title": "Conversion with uncertainty",
+      "eyebrow": "Funnel"
+    },
+    "survival": {
+      "title": "Time to event",
+      "eyebrow": "Survival"
+    },
+    "windows": {
+      "title": "Events per window",
+      "eyebrow": "5-minute windows"
+    }
+  },
+  "placeholders": {
+    "apiKey": "X-API-Key",
+    "baseUrl": "/api",
+    "end": "2026-09-02T00:00:00Z",
+    "salesEvent": "salesEventId",
+    "start": "2026-09-01T10:00:00Z"
+  },
+  "source": {
+    "api": "Sales API",
+    "fixture": "Demo data"
+  }
+}

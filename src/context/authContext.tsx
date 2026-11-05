@@ -2,12 +2,18 @@ import {
   createContext,
   useMemo,
   useState,
-  type ReactNode,
 } from 'react';
-import type { AuthContextValue, AuthUser, LoginFormValues } from '../types';
+import type { AuthContextProviderProps, AuthContextValue, AuthUser, LoginFormValues } from '../auth/auth.types';
 import { demoLoginPassword, demoUser } from '../config/auth';
 
 const AUTH_STORAGE_KEY = 'react-dash.auth.user';
+
+export class DemoAuthenticationError extends Error {
+  constructor() {
+    super('Invalid demo credentials.');
+    this.name = 'DemoAuthenticationError';
+  }
+}
 
 const defaultContextValue: AuthContextValue = {
   user: null,
@@ -18,10 +24,6 @@ const defaultContextValue: AuthContextValue = {
 
 export const AuthContext =
   createContext<AuthContextValue>(defaultContextValue);
-
-interface AuthContextProviderProps {
-  children: ReactNode;
-}
 
 export const AuthContextProvider = ({
   children,
@@ -42,7 +44,7 @@ export const AuthContextProvider = ({
       normalizedEmail !== demoUser.email ||
       password.trim() !== demoLoginPassword
     ) {
-      throw new Error('Use the demo account to access the dashboard.');
+      throw new DemoAuthenticationError();
     }
 
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(demoUser));

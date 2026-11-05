@@ -1,23 +1,10 @@
+import type { ExportPanelProps } from '../home.types';
 import { Button, Paper, Stack, Typography } from '@mui/material';
 import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
-import { homeCopy } from '../copy';
-
-interface ExportPanelProps {
-  canExportEventTypesPng: boolean;
-  canExportEventsCsv: boolean;
-  canExportWindowsCsv: boolean;
-  canExportWindowsPng: boolean;
-  exportMessage: string;
-  id?: string;
-  onExportEventTypesPng: () => void;
-  onExportEventsCsv: () => void;
-  onExportJson: () => void;
-  onExportWindowsCsv: () => void;
-  onExportWindowsPng: () => void;
-}
+import { useTranslation } from 'react-i18next';
 
 export default function ExportPanel({
   canExportEventTypesPng,
@@ -32,23 +19,24 @@ export default function ExportPanel({
   onExportWindowsCsv,
   onExportWindowsPng,
 }: ExportPanelProps) {
+  const { t } = useTranslation('home');
   return (
     <Paper
       className="exportPanel"
-      aria-label={homeCopy.exportPanel.ariaLabel}
+      aria-label={t('exportPanel.ariaLabel')}
       component="section"
       elevation={0}
       id={id}
     >
       <Stack className="exportPanel__copy">
         <Typography component="span" variant="overline">
-          {homeCopy.exportPanel.title}
+          {t('exportPanel.title')}
         </Typography>
         <Typography component="strong" variant="subtitle1">
-          {homeCopy.exportPanel.subtitle}
+          {t('exportPanel.subtitle')}
         </Typography>
-        <Typography component="small" variant="caption">
-          {exportMessage || homeCopy.exportPanel.defaultMessage}
+        <Typography component="small" variant="caption" role="status">
+          {exportMessage || t('exportPanel.defaultMessage')}
         </Typography>
       </Stack>
       <Stack className="exportActions" direction="row">
@@ -58,7 +46,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportJson}
         >
-          {homeCopy.exportPanel.json}
+          {t('exportPanel.json')}
         </Button>
         <Button
           disabled={!canExportEventsCsv}
@@ -67,7 +55,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportEventsCsv}
         >
-          {homeCopy.exportPanel.csvEvents}
+          {t('exportPanel.csvEvents')}
         </Button>
         <Button
           disabled={!canExportWindowsCsv}
@@ -76,7 +64,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportWindowsCsv}
         >
-          {homeCopy.exportPanel.csvWindows}
+          {t('exportPanel.csvWindows')}
         </Button>
         <Button
           disabled={!canExportWindowsPng}
@@ -85,7 +73,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportWindowsPng}
         >
-          {homeCopy.exportPanel.pngWindows}
+          {t('exportPanel.pngWindows')}
         </Button>
         <Button
           disabled={!canExportEventTypesPng}
@@ -94,7 +82,7 @@ export default function ExportPanel({
           variant="outlined"
           onClick={onExportEventTypesPng}
         >
-          {homeCopy.exportPanel.pngEventTypes}
+          {t('exportPanel.pngEventTypes')}
         </Button>
       </Stack>
     </Paper>

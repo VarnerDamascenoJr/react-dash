@@ -27,6 +27,8 @@ Expert rules:
 - Keep the current route tree simple unless the task explicitly asks for
   dedicated pages.
 - Avoid pushing analytics business logic into presentational components.
+- Keep interfaces, aliases and props in one `<context>.types.ts` file per
+  context; follow `docs/type-organization.md`.
 - Extract orchestration from `Home` only when it reduces real complexity.
 - Preserve protected route behavior and demo login flow.
 - Keep component props shaped around prepared view data, not raw API payloads.
@@ -52,7 +54,8 @@ Read first:
 - `src/pages/home/Home.tsx`
 - `src/pages/home/components/`
 - `src/pages/home/home.scss`
-- `src/pages/home/copy.ts`
+- `src/i18n/locales/pt-BR/home.json`
+- `docs/localization.md`
 - `src/analytics/transformers.ts`
 
 Expert rules:

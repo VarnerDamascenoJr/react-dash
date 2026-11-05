@@ -25,11 +25,11 @@ test('renders the analytics overview on the home page', () => {
     </AuthContextProvider>
   );
 
-  expect(screen.getByText(/sales event analytics/i)).toBeInTheDocument();
+  expect(screen.getByText(/análise de eventos de vendas/i)).toBeInTheDocument();
   expect(screen.getByText(/eventos coletados/i)).toBeInTheDocument();
-  expect(screen.getByLabelText(/base url/i)).toHaveValue('/api');
-  expect(screen.getByLabelText(/start/i)).toBeInTheDocument();
-  expect(screen.getByLabelText(/end/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/url base/i)).toHaveValue('/api');
+  expect(screen.getByLabelText(/início/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/fim/i)).toBeInTheDocument();
 });
 
 test('persists analytics filters without storing the API key', async () => {
@@ -41,10 +41,10 @@ test('persists analytics filters without storing the API key', async () => {
     </AuthContextProvider>
   );
 
-  fireEvent.change(screen.getByLabelText(/base url/i), {
+  fireEvent.change(screen.getByLabelText(/url base/i), {
     target: { value: 'http://localhost:8080' },
   });
-  fireEvent.change(screen.getByLabelText(/api key/i), {
+  fireEvent.change(screen.getByLabelText(/chave da api/i), {
     target: { value: 'dev-support-key' },
   });
 

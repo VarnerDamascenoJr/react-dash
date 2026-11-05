@@ -1,6 +1,6 @@
-import { createContext, useReducer, type ReactNode } from 'react';
+import { createContext, useReducer } from 'react';
 import darkModeReducer from './darkModeReducer';
-import type { DarkModeContextValue, DarkModeState } from '../types';
+import type { DarkModeContextProviderProps, DarkModeContextValue, DarkModeState } from './darkMode.types';
 
 const initialState: DarkModeState = {
   darkMode: false,
@@ -13,10 +13,6 @@ const defaultContextValue: DarkModeContextValue = {
 
 export const DarkModeContext =
   createContext<DarkModeContextValue>(defaultContextValue);
-
-interface DarkModeContextProviderProps {
-  children: ReactNode;
-}
 
 export const DarkModeContextProvider = ({
   children,

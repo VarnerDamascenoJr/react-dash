@@ -1,0 +1,43 @@
+{
+  "brand": {
+    "mark": "RD",
+    "name": "React Dash",
+    "subtitle": "Sales analytics"
+  },
+  "language": "Language",
+  "navbar": {
+    "eyebrow": "Sales analytics",
+    "title": "Control room",
+    "searchPlaceholder": "Search events, funnels or exports",
+    "searchLabel": "Search dashboard",
+    "demoWindow": "Local demo",
+    "toggleTheme": "Toggle theme",
+    "notifications": "Notifications",
+    "messages": "Messages",
+    "signOut": "Sign out"
+  },
+  "sidebar": {
+    "signedInAs": "Signed in as",
+    "sections": {
+      "overview": "Overview",
+      "analytics": "Analytics",
+      "outputs": "Outputs",
+      "account": "Account"
+    },
+    "items": {
+      "overview": "Overview",
+      "events": "Events",
+      "funnel": "Funnel",
+      "survival": "Survival",
+      "windows": "Windows",
+      "exports": "Exports",
+      "settings": "Settings",
+      "profile": "Profile",
+      "logout": "Log out"
+    },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark"
+    }
+  }
+}

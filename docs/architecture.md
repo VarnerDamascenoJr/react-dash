@@ -90,11 +90,27 @@
   orchestrates the analytics overview: it loads the local fixture by default,
   calls the Sales analytics API on demand, persists non-secret filters, derives
   UI data through pure transformers and triggers browser-side exports.
+  Loading and non-secret settings persistence live in
+  `src/pages/home/hooks/useSalesAnalytics.ts`; the API key stays in hook memory.
+  `src/pages/home/hooks/useAnalyticsExports.ts` owns download actions and chart
+  references, building CSV rows only when requested. Home composes these hooks
+  with the presentational sections and memoized analytics transformers.
+- `src/pages/login/Login.tsx` composes the demo login page with MUI `Box`,
+  `Stack`, `Typography` and `Paper`. Its
+  `hooks/useLoginForm.ts` owns credentials, pending state, authentication feedback
+  codes and navigation. `components/LoginForm.tsx` renders the MUI fields and
+  feedback; `login.types.ts` holds its props and feedback contract. Credentials
+  stay in memory, duplicate pending submissions are ignored, and successful
+  sign-in restores the protected path, query and fragment through
+  `loginRedirect.ts`.
 
 ### Analytics module
 
-- [src/analytics/types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/types.ts:1)
+- [src/analytics/analytics.types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/analytics.types.ts:1)
   defines the `sales-analytics-export.v1` TypeScript contract.
+- The same context file groups
+  transport/loading contracts, prepared UI data and export records within
+  the analytics context. Public names are re-exported through its boundary.
 - [src/analytics/fixtures.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/fixtures.ts:1)
   exposes the versioned local fixture used for reproducible demos and fallback.
 - [src/analytics/transformers.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.ts:1)
@@ -107,8 +123,39 @@
 - [src/analytics/exporters.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.ts:1)
   handles JSON, CSV and chart PNG downloads in the browser.
 
+### Localization
+
+- `src/i18n` initializes bundled, typed translation catalogs for Portuguese
+  (`pt-BR`, default/fallback) and English (`en-US`). Namespaces cover Home,
+  the dashboard shell, login and the legacy List introduction.
+- A shared language selector updates the preference and document language.
+  Home formatters and Data Grid locale packs follow that selection.
+- API and export errors expose codes for UI translation. Hooks translate
+  feedback at render time, preserving loaded data and pending operation state
+  across language changes. See [localization.md](localization.md).
+
+### Type ownership
+
+- Authentication types live in `src/auth/auth.types.ts`; theme state and actions
+  live in `src/context/darkMode.types.ts`. Persisted analytics settings belong
+  to `src/config/salesApi.types.ts`.
+- Component props and state contracts belong to their context type file;
+  Home uses `src/pages/home/home.types.ts`. Legacy form, table and widget types
+  follow the same convention. i18next augmentation is isolated in
+  `src/i18n/i18n.types.ts`.
+- Chart data keys are checked against the provided series and expected field
+  type. See [type-organization.md](type-organization.md) for conventions.
+
 ### Reusable components
 
+- `src/components/common` groups shared presentation into `branding`,
+  `controls`, `feedback`, `layout`, `data-display` and `charts` contexts, each
+  with its own types and styles. Their props do not depend on Home types or
+  analytics payloads.
+- `src/utils` owns locale formatter caching, CSV serialization, JSON/CSV/Blob
+  downloads and safe optional preference storage. Analytics exporters use the
+  shared Blob downloader for PNGs; Sales-specific filenames and error codes
+  remain in analytics. See [reusability.md](reusability.md).
 - Widgets, chart, featured card, table and data grid are presentation-focused.
 - `Datatable` holds one local interactive behavior: removing a row from local state.
 
@@ -140,9 +187,9 @@
 
 - Changing the analytics export contract affects `src/analytics`, the Home
   dashboard components and their tests.
-- `Home` is currently the main orchestration hub for loading, transformation,
-  persistence and export actions; dedicated analytics routes or deeper
-  interactivity will likely require extracting that stateful orchestration.
+- `Home` composes page-local loading/settings and export hooks. Dedicated
+  analytics routes would require revisiting ownership of their state; hook
+  instances currently belong to the mounted Home page.
 - Auth behavior is not abstracted behind a service layer; swapping demo auth for real auth will affect context and login page.
 
 ## Asynchrony

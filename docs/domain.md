@@ -42,7 +42,7 @@ export.
 
 **Evidence**
 
-- [src/types.ts](/home/varner/aprendizagem/projetos/react-dash/src/types.ts:1)
+- [src/auth/auth.types.ts](/home/varner/aprendizagem/projetos/react-dash/src/auth/auth.types.ts:1)
 - [src/context/authContext.tsx](/home/varner/aprendizagem/projetos/react-dash/src/context/authContext.tsx:1)
 
 ### Theme mode
@@ -71,7 +71,7 @@ export.
 
 **Evidence**
 
-- [src/analytics/types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/types.ts:1)
+- [src/analytics/analytics.types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/analytics.types.ts:1)
 - [src/analytics/fixtures.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/fixtures.ts:1)
 - [src/analytics/api.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.ts:1)
 
@@ -130,7 +130,7 @@ cleanup, but they are not wired into the current analytics route tree.
 
 **Evidence**
 
-- `UserRow` type in [src/types.ts](/home/varner/aprendizagem/projetos/react-dash/src/types.ts:1)
+- `UserRow` type in [datatable.types.ts](/home/varner/aprendizagem/projetos/react-dash/src/components/datatable/datatable.types.ts:1)
 - mock rows in [src/datatablesource.tsx](/home/varner/aprendizagem/projetos/react-dash/src/datatablesource.tsx:1)
 
 ### Form-driven entity creation

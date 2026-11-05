@@ -1,88 +1,64 @@
+import type { AnalyticsControlsProps } from '../home.types';
 import { Box, Button, TextField } from '@mui/material';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
-import { homeCopy } from '../copy';
-
-interface AnalyticsControlsProps {
-  apiKey: string;
-  baseUrl: string;
-  end: string;
-  id?: string;
-  isLoading: boolean;
-  limit: number;
-  salesEventId: string;
-  start: string;
-  onApiKeyChange: (value: string) => void;
-  onBaseUrlChange: (value: string) => void;
-  onEndChange: (value: string) => void;
-  onLimitChange: (value: number) => void;
-  onLoadApi: () => void;
-  onSalesEventIdChange: (value: string) => void;
-  onStartChange: (value: string) => void;
-}
+import { useTranslation } from 'react-i18next';
 
 export default function AnalyticsControls({
   apiKey,
-  baseUrl,
-  end,
   id,
   isLoading,
-  limit,
-  salesEventId,
-  start,
+  settings: { baseUrl, end, limit, salesEventId, start },
   onApiKeyChange,
-  onBaseUrlChange,
-  onEndChange,
-  onLimitChange,
+  onSettingsChange,
   onLoadApi,
-  onSalesEventIdChange,
-  onStartChange,
 }: AnalyticsControlsProps) {
+  const { t } = useTranslation('home');
   return (
     <Box
-      aria-label="Configurar fonte de dados"
+      aria-label={t('controls.ariaLabel')}
       className="controlPanel"
       component="section"
       id={id}
     >
       <TextField
-        label={homeCopy.controls.baseUrl}
-        placeholder={homeCopy.placeholders.baseUrl}
+        label={t('controls.baseUrl')}
+        placeholder={t('placeholders.baseUrl')}
         size="small"
         value={baseUrl}
-        onChange={(event) => onBaseUrlChange(event.target.value)}
+        onChange={(event) => onSettingsChange({ baseUrl: event.target.value })}
       />
       <TextField
-        label={homeCopy.controls.salesEvent}
-        placeholder={homeCopy.placeholders.salesEvent}
+        label={t('controls.salesEvent')}
+        placeholder={t('placeholders.salesEvent')}
         size="small"
         value={salesEventId}
-        onChange={(event) => onSalesEventIdChange(event.target.value)}
+        onChange={(event) => onSettingsChange({ salesEventId: event.target.value })}
       />
       <TextField
-        label={homeCopy.controls.start}
-        placeholder={homeCopy.placeholders.start}
+        label={t('controls.start')}
+        placeholder={t('placeholders.start')}
         size="small"
         value={start}
-        onChange={(event) => onStartChange(event.target.value)}
+        onChange={(event) => onSettingsChange({ start: event.target.value })}
       />
       <TextField
-        label={homeCopy.controls.end}
-        placeholder={homeCopy.placeholders.end}
+        label={t('controls.end')}
+        placeholder={t('placeholders.end')}
         size="small"
         value={end}
-        onChange={(event) => onEndChange(event.target.value)}
+        onChange={(event) => onSettingsChange({ end: event.target.value })}
       />
       <TextField
-        label={homeCopy.controls.limit}
+        label={t('controls.limit')}
         inputProps={{ min: 1 }}
         size="small"
         type="number"
         value={limit}
-        onChange={(event) => onLimitChange(Number(event.target.value))}
+        onChange={(event) => onSettingsChange({ limit: Number(event.target.value) })}
       />
       <TextField
-        label={homeCopy.controls.apiKey}
-        placeholder={homeCopy.placeholders.apiKey}
+        label={t('controls.apiKey')}
+        placeholder={t('placeholders.apiKey')}
         size="small"
         type="password"
         value={apiKey}
@@ -95,7 +71,7 @@ export default function AnalyticsControls({
         variant="contained"
         onClick={onLoadApi}
       >
-        {isLoading ? homeCopy.controls.loading : homeCopy.controls.loadApi}
+        {isLoading ? t('controls.loading') : t('controls.loadApi')}
       </Button>
     </Box>
   );

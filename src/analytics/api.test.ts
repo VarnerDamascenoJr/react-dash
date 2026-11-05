@@ -55,6 +55,7 @@ describe('sales analytics API client', () => {
     ).rejects.toMatchObject({
       message: 'API key obrigatoria para carregar dados do Sales.',
       status: 401,
+      code: 'unauthorized',
     });
   });
 
@@ -82,6 +83,7 @@ describe('sales analytics API client', () => {
     expect(result.error).toMatchObject({
       message: 'A API key nao possui permissao para o export analitico.',
       status: 403,
+      code: 'forbidden',
     });
   });
 
@@ -95,6 +97,37 @@ describe('sales analytics API client', () => {
     expect(result.error).toMatchObject({
       message: 'A API local retornou resposta vazia para o export analitico.',
       status: 200,
+      code: 'emptyResponse',
     });
+  });
+
+  it.each([
+    [400, 'invalidFilters'],
+    [401, 'unauthorized'],
+    [403, 'forbidden'],
+    [500, 'requestFailed'],
+  ])('classifies HTTP %s while retaining server diagnostics', async (status, code) => {
+    const fetcher = vi.fn(async () => new Response(
+      JSON.stringify({ error: 'Server diagnostic' }), { status }
+    ));
+    const result = await loadSalesAnalyticsExport({}, { fetcher });
+    expect(result.source).toBe('fixture');
+    expect(result.error).toMatchObject({ status, code, message: 'Server diagnostic' });
+  });
+
+  it.each([
+    ['{', 'invalidJson'],
+    ['{}', 'invalidSchema'],
+  ])('classifies invalid successful responses for UI translation', async (body, code) => {
+    const fetcher = vi.fn(async () => new Response(body));
+    const result = await loadSalesAnalyticsExport({}, { fetcher });
+    expect(result.source).toBe('fixture');
+    expect(result.error?.code).toBe(code);
+  });
+
+  it('classifies network failures without depending on translated messages', async () => {
+    const fetcher = vi.fn(async () => { throw new TypeError('Failed to fetch'); });
+    const result = await loadSalesAnalyticsExport({}, { fetcher });
+    expect(result.error?.code).toBe('network');
   });
 });

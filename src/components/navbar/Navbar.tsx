@@ -3,12 +3,10 @@ import {
   Box,
   Button,
   Chip,
-  IconButton,
   InputAdornment,
   InputBase,
   Paper,
   Stack,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -16,14 +14,17 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import './navbar.scss';
+import LanguageSelector from '../common/controls/LanguageSelector';
+import TooltipIconButton from '../common/controls/TooltipIconButton';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { AuthContext } from '../../context/authContext';
-import { shellCopy } from '../layout/shellCopy';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
+  const { t } = useTranslation('shell');
   const { dispatch } = useContext(DarkModeContext);
   const { user, logout } = useContext(AuthContext);
 
@@ -32,17 +33,19 @@ const Navbar = () => {
       <Paper className="wrapper" elevation={0}>
         <Box className="heading">
           <Typography className="eyebrow" component="span" variant="overline">
-            {shellCopy.navbar.eyebrow}
+            {t('navbar.eyebrow')}
           </Typography>
           <Typography component="h1" variant="h4">
-            {shellCopy.navbar.title}
+            {t('navbar.title')}
           </Typography>
         </Box>
         <Stack className="items" direction="row">
+          <LanguageSelector />
           <Box className="search">
             <InputBase
+              inputProps={{ 'aria-label': t('navbar.searchLabel') }}
               fullWidth
-              placeholder={shellCopy.navbar.searchPlaceholder}
+              placeholder={t('navbar.searchPlaceholder')}
               startAdornment={
                 <InputAdornment position="start">
                   <SearchOutlinedIcon className="icon" />
@@ -53,33 +56,21 @@ const Navbar = () => {
           <Chip
             className="pill"
             icon={<CalendarMonthOutlinedIcon className="icon" />}
-            label={shellCopy.navbar.demoWindow}
+            label={t('navbar.demoWindow')}
           />
-          <Tooltip title={shellCopy.navbar.toggleTheme}>
-            <IconButton
-              aria-label={shellCopy.navbar.toggleTheme}
-              className="iconButton"
-              onClick={() => dispatch({ type: 'TOGGLE' })}
-            >
-              <DarkModeOutlinedIcon className="icon" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={shellCopy.navbar.notifications}>
-            <IconButton
-              aria-label={shellCopy.navbar.notifications}
-              className="iconButton"
-            >
-              <NotificationsNoneOutlinedIcon className="icon" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={shellCopy.navbar.messages}>
-            <IconButton
-              aria-label={shellCopy.navbar.messages}
-              className="iconButton"
-            >
-              <ChatBubbleOutlineOutlinedIcon className="icon" />
-            </IconButton>
-          </Tooltip>
+          <TooltipIconButton
+            label={t('navbar.toggleTheme')}
+            className="iconButton"
+            onClick={() => dispatch({ type: 'TOGGLE' })}
+          >
+            <DarkModeOutlinedIcon className="icon" />
+          </TooltipIconButton>
+          <TooltipIconButton label={t('navbar.notifications')} className="iconButton">
+            <NotificationsNoneOutlinedIcon className="icon" />
+          </TooltipIconButton>
+          <TooltipIconButton label={t('navbar.messages')} className="iconButton">
+            <ChatBubbleOutlineOutlinedIcon className="icon" />
+          </TooltipIconButton>
           <Paper className="profileCard" elevation={0}>
             <Avatar
               alt={user?.name}
@@ -98,7 +89,7 @@ const Navbar = () => {
             type="button"
             variant="outlined"
           >
-            {shellCopy.navbar.signOut}
+            {t('navbar.signOut')}
           </Button>
         </Stack>
       </Paper>

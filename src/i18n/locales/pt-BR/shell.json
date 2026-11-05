@@ -1,0 +1,43 @@
+{
+  "brand": {
+    "mark": "RD",
+    "name": "React Dash",
+    "subtitle": "Análise de vendas"
+  },
+  "language": "Idioma",
+  "navbar": {
+    "eyebrow": "Análise de vendas",
+    "title": "Central de operações",
+    "searchPlaceholder": "Buscar eventos, funil ou exportações",
+    "searchLabel": "Buscar no painel",
+    "demoWindow": "Demonstração local",
+    "toggleTheme": "Alternar tema",
+    "notifications": "Notificações",
+    "messages": "Mensagens",
+    "signOut": "Sair"
+  },
+  "sidebar": {
+    "signedInAs": "Conectado como",
+    "sections": {
+      "overview": "Visão geral",
+      "analytics": "Análises",
+      "outputs": "Resultados",
+      "account": "Conta"
+    },
+    "items": {
+      "overview": "Visão geral",
+      "events": "Eventos",
+      "funnel": "Funil",
+      "survival": "Sobrevivência",
+      "windows": "Janelas",
+      "exports": "Exportações",
+      "settings": "Configuração",
+      "profile": "Perfil",
+      "logout": "Encerrar sessão"
+    },
+    "theme": {
+      "light": "Claro",
+      "dark": "Escuro"
+    }
+  }
+}

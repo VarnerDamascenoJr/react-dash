@@ -1,0 +1,7 @@
+[[skills.config]]
+path = "../.agents/skills/react-dash-react-expert"
+enabled = true
+
+[[skills.config]]
+path = "../.agents/skills/react-front-test-runner"
+enabled = true

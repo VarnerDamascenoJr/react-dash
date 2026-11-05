@@ -1,0 +1,20 @@
+{
+  "subtitle": "Central de operações",
+  "eyebrow": "Entre para continuar",
+  "title": "Acompanhe os eventos de vendas em um só lugar.",
+  "description": "Explore indicadores, gráficos e exportações com uma conta de demonstração.",
+  "email": "E-mail",
+  "password": "Senha",
+  "authenticating": "Entrando…",
+  "submit": "Entrar no painel",
+  "invalidCredentials": "Use a conta de demonstração para acessar o painel.",
+  "authFailed": "Não foi possível entrar. Tente novamente.",
+  "demoAccess": "Acesso de demonstração",
+  "asideEyebrow": "Visão geral",
+  "asideTitle": "Os dados que importam para acompanhar suas operações.",
+  "features": {
+    "analytics": "Indicadores, funil e análise de sobrevivência.",
+    "demo": "Dados de demonstração disponíveis sem conexão com a API.",
+    "exports": "Exportação de dados e gráficos em JSON, CSV e PNG."
+  }
+}

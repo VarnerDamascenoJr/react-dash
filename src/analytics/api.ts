@@ -1,38 +1,28 @@
 import { salesApiBaseUrl } from '../config/salesApi';
 import { localSalesAnalyticsFixture } from './fixtures';
-import type { SalesAnalyticsDocument } from './types';
+import type {
+  SalesAnalyticsApiErrorCode,
+  SalesAnalyticsApiFailure,
+  SalesAnalyticsClientOptions,
+  SalesAnalyticsDocument,
+  SalesAnalyticsExportFilters,
+  SalesAnalyticsLoadOptions,
+  SalesAnalyticsLoadResult,
+} from './analytics.types';
 
-export interface SalesAnalyticsExportFilters {
-  salesEventId?: string;
-  start?: string;
-  end?: string;
-  limit?: number;
-}
-
-export interface SalesAnalyticsClientOptions {
-  apiKey?: string;
-  baseUrl?: string;
-  fetcher?: typeof fetch;
-}
-
-export interface SalesAnalyticsLoadOptions
-  extends SalesAnalyticsClientOptions {
-  fallbackDocument?: SalesAnalyticsDocument;
-}
-
-export interface SalesAnalyticsLoadResult {
-  document: SalesAnalyticsDocument;
-  source: 'api' | 'fixture';
-  error?: SalesAnalyticsApiError;
-}
-
-export class SalesAnalyticsApiError extends Error {
+export class SalesAnalyticsApiError extends Error implements SalesAnalyticsApiFailure {
   status?: number;
+  code: SalesAnalyticsApiErrorCode;
 
-  constructor(message: string, status?: number) {
+  constructor(
+    message: string,
+    status?: number,
+    code: SalesAnalyticsApiErrorCode = apiErrorCodeForStatus(status)
+  ) {
     super(message);
     this.name = 'SalesAnalyticsApiError';
     this.status = status;
+    this.code = code;
   }
 }
 
@@ -77,7 +67,9 @@ export async function fetchSalesAnalyticsExport(
   );
   if (!isSalesAnalyticsDocument(payload)) {
     throw new SalesAnalyticsApiError(
-      'A resposta da API nao usa o schema sales-analytics-export.v1.'
+      'A resposta da API nao usa o schema sales-analytics-export.v1.',
+      undefined,
+      'invalidSchema'
     );
   }
 
@@ -100,7 +92,7 @@ export async function loadSalesAnalyticsExport(
       error:
         error instanceof SalesAnalyticsApiError
           ? error
-          : new SalesAnalyticsApiError('Nao foi possivel carregar a API local.'),
+          : new SalesAnalyticsApiError('Nao foi possivel carregar a API local.', undefined, 'network'),
     };
   }
 }
@@ -159,13 +151,22 @@ async function readJsonResponse(
 ) {
   const text = await response.text();
   if (!text.trim()) {
-    throw new SalesAnalyticsApiError(emptyMessage, response.status);
+    throw new SalesAnalyticsApiError(emptyMessage, response.status, 'emptyResponse');
   }
 
   try {
     return JSON.parse(text) as unknown;
   } catch (_error) {
-    throw new SalesAnalyticsApiError(invalidJsonMessage, response.status);
+    throw new SalesAnalyticsApiError(invalidJsonMessage, response.status, 'invalidJson');
+  }
+}
+
+function apiErrorCodeForStatus(status?: number): SalesAnalyticsApiErrorCode {
+  switch (status) {
+    case 400: return 'invalidFilters';
+    case 401: return 'unauthorized';
+    case 403: return 'forbidden';
+    default: return 'requestFailed';
   }
 }
 
