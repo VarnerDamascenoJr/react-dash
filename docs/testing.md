@@ -92,6 +92,29 @@ The project follows current Playwright practices:
 - the browser matrix is intentionally scoped to Chromium desktop and mobile
   Chrome as a fast portfolio baseline.
 
+`REACT_DASH_BASE_URL` can point to an already running app; in that mode,
+Playwright does not start Vite. The default remains `http://127.0.0.1:5173`.
+
+### Optional Sales API checks
+
+The baseline command excludes tests tagged `@evidence`. It covers the shared
+evidence loading helper with an intercepted API response, including the request
+filters/header and clearing the in-memory key without persisting it.
+
+The real API test in `sales-api.spec.ts` skips unless `SALES_SUPPORT_API_KEY` is
+set. To use it, start and seed `sales-event-project` first:
+
+```bash
+SALES_SUPPORT_API_KEY=dev-support-key npm run test:e2e
+SALES_SUPPORT_API_KEY=dev-support-key npm run evidence:sales-api
+```
+
+`SALES_EVENT_ID` overrides the seeded event UUID. `EVIDENCE_OUTPUT_DIR` overrides
+the default `evidence/sales-api-dashboard` output directory. Evidence uses
+Portuguese labels and clears the API key before taking screenshots. The API
+integration and evidence specs disable traces and videos, which could otherwise
+retain credentials. PNG output under `evidence/` is ignored by Git.
+
 Install browsers when setting up a fresh machine:
 
 ```bash

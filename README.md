@@ -155,7 +155,13 @@ SALES_SUPPORT_API_KEY=dev-support-key npm run evidence:sales-api
 
 The evidence command writes PNGs to `evidence/sales-api-dashboard` by default,
 or to `EVIDENCE_OUTPUT_DIR` when provided. It clears the `API key` field before
-capturing screenshots.
+capturing screenshots and selects Portuguese for reproducible labels. Traces
+and videos are disabled for the API integration and evidence specs so they do
+not retain the API key. Generated evidence is ignored by Git.
+
+Without `SALES_SUPPORT_API_KEY`, the real API test is skipped. The normal E2E
+suite still checks the evidence loading flow with an intercepted fixture response
+and does not require a running Sales API.
 
 ## Languages
 
@@ -177,7 +183,6 @@ npm run typecheck
 npm run check:style-units
 npm run build
 npm run test:e2e
-SALES_SUPPORT_API_KEY=dev-support-key npm run evidence:sales-api
 git diff --check
 ```
 
