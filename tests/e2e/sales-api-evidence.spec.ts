@@ -10,6 +10,8 @@ import {
 const outputDir =
   process.env.EVIDENCE_OUTPUT_DIR || 'evidence/sales-api-dashboard';
 
+test.use({ trace: 'off', video: 'off' });
+
 test('captures local Sales API dashboard evidence @evidence', async ({ page }) => {
   const env = readSalesApiEnv();
   if (!env.supportApiKey) {

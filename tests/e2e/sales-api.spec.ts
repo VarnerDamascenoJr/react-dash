@@ -6,6 +6,9 @@ import {
   readSalesApiEnv,
 } from './salesApiFlow';
 
+// Real API keys must not be retained in network traces or videos.
+test.use({ trace: 'off', video: 'off' });
+
 test('loads analytics from the local Sales API', async ({ page }) => {
   const env = readSalesApiEnv();
   test.skip(
@@ -17,21 +20,21 @@ test('loads analytics from the local Sales API', async ({ page }) => {
   await clearApiKeyField(page);
 
   await expectKpiValue(page, 'Eventos coletados');
-  await expectKpiValue(page, 'Vendas concluidas');
-  await expectKpiValue(page, 'Tickets emitidos');
+  await expectKpiValue(page, 'Vendas concluídas');
+  await expectKpiValue(page, 'Ingressos emitidos');
   await expectKpiValue(page, 'Check-ins');
 
   await page.getByRole('link', { name: 'Eventos' }).click();
   await expect(page).toHaveURL(/#events$/);
   await expect(
-    page.getByRole('heading', { name: /tabela analitica/i })
+    page.getByRole('heading', { name: /tabela analítica/i })
   ).toBeVisible();
   await expect(page.getByRole('grid')).toBeVisible();
 
   await page.getByRole('link', { name: 'Funil' }).click();
   await expect(page).toHaveURL(/#funnel$/);
   await expect(
-    page.getByRole('heading', { name: /conversao com incerteza/i })
+    page.getByRole('heading', { name: /conversão com incerteza/i })
   ).toBeVisible();
 
   await expectNoPageHorizontalOverflow(page);

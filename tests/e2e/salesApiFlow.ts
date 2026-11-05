@@ -1,11 +1,7 @@
 import { expect, type Page } from '@playwright/test';
+import type { SalesApiEnv } from './salesApiFlow.types';
 
 export const defaultSalesEventId = '11111111-1111-1111-1111-111111111111';
-
-export interface SalesApiEnv {
-  salesEventId: string;
-  supportApiKey?: string;
-}
 
 export function readSalesApiEnv(): SalesApiEnv {
   return {
@@ -15,12 +11,11 @@ export function readSalesApiEnv(): SalesApiEnv {
 }
 
 export async function signInWithDemoAccount(page: Page) {
-  await page.goto('/');
-  if (/\/login$/.test(page.url())) {
-    await page.getByRole('button', { name: /enter dashboard/i }).click();
-  }
+  await page.goto('/login');
+  await page.getByRole('combobox', { name: /^(idioma|language)$/i }).selectOption('pt-BR');
+  await page.getByRole('button', { name: 'Entrar no painel', exact: true }).click();
   await expect(
-    page.getByRole('heading', { name: /coleta operacional pronta para analise/i })
+    page.getByRole('heading', { name: /visão operacional dos eventos de vendas/i })
   ).toBeVisible();
 }
 
@@ -30,21 +25,22 @@ export async function loadLocalSalesApi(page: Page, env: SalesApiEnv) {
   }
 
   await signInWithDemoAccount(page);
-  await page.getByLabel('Sales event').fill(env.salesEventId);
-  await page.getByLabel('API key').fill(env.supportApiKey);
+  await page.getByRole('link', { name: 'Configuração', exact: true }).click();
+  await page.getByLabel('Evento de vendas', { exact: true }).fill(env.salesEventId);
+  await page.getByLabel('Chave da API', { exact: true }).fill(env.supportApiKey);
   await page.getByRole('button', { name: /carregar api/i }).click();
 
-  await expect(page.getByText('API local', { exact: true })).toBeVisible({
+  await expect(page.getByText('API do Sales', { exact: true })).toBeVisible({
     timeout: 15_000,
   });
   await expect(
-    page.getByText('Dados carregados da API local do Sales.')
+    page.getByText('Dados carregados da API do Sales.', { exact: true })
   ).toBeVisible();
 }
 
 export async function clearApiKeyField(page: Page) {
-  await page.getByLabel('API key').fill('');
-  await expect(page.getByLabel('API key')).toHaveValue('');
+  await page.getByLabel('Chave da API', { exact: true }).fill('');
+  await expect(page.getByLabel('Chave da API', { exact: true })).toHaveValue('');
 }
 
 export async function expectNoPageHorizontalOverflow(page: Page) {
