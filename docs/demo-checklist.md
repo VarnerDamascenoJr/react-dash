@@ -26,6 +26,7 @@ npm ci
 npm test
 npm run typecheck
 npm run build
+npm run test:e2e
 git diff --check
 ```
 
@@ -52,7 +53,7 @@ http://localhost:5173
 ```
 
 3. Sign in with the demo credentials documented in `.env.example`.
-4. Confirm that the home page shows `Local fixture` as the source.
+4. Confirm that the home page shows `Dados de demonstração` as the source.
 5. Verify:
    - event, sales, revenue, ticket, and check-in KPIs;
    - events by window chart;
@@ -60,11 +61,11 @@ http://localhost:5173
    - funnel and survival blocks with an empty state when absent;
    - raw events table.
 6. Export:
-   - `Raw JSON`;
-   - `Events CSV`;
-   - `Windows CSV`;
-   - `Windows PNG`;
-   - `Types PNG`.
+   - `JSON completo`;
+   - `CSV de eventos`;
+   - `CSV de janelas`;
+   - `PNG de janelas`;
+   - `PNG de tipos de evento`.
 
 ## Local Sales API Demo
 
@@ -112,8 +113,23 @@ npm start
    - `Chave da API`: `dev-support-key` for the seeded local `sales-event-project`
      stack, or another key with the `SUPPORT` or `ADMIN` role.
 7. Click `Carregar API`.
-8. Confirm that the source changes to `Local API`.
+8. Confirm that the source changes to `API do Sales`.
 9. Repeat the JSON, CSV, and PNG exports.
+10. Run the local API E2E path:
+
+```bash
+SALES_SUPPORT_API_KEY=dev-support-key npm run test:e2e
+```
+
+11. Capture visual evidence:
+
+```bash
+SALES_SUPPORT_API_KEY=dev-support-key npm run evidence:sales-api
+```
+
+    The evidence command captures desktop full-page, events table, funnel,
+    dark-theme full-page, and mobile full-page PNGs. Use `EVIDENCE_OUTPUT_DIR`
+    to choose a different output directory.
 
 The dashboard may remember `URL base`, `Evento de vendas`, `Início`, `Fim`, and
 `Limite` in the browser. The `Chave da API` must not be persisted.
@@ -123,7 +139,7 @@ The dashboard may remember `URL base`, `Evento de vendas`, `Início`, `Fim`, and
 When the API does not exist, is down, or returns an error:
 
 - the dashboard must keep rendering the local fixture;
-- the source must remain on or return to `Local fixture`;
+- the source must remain on or return to `Dados de demonstração`;
 - the message must explain the failure in a readable way;
 - no screen should break.
 
@@ -134,8 +150,8 @@ During review or recording:
 - capture the home screen with KPIs and charts;
 - keep one exported JSON file;
 - keep both CSV files;
-- keep at least one chart PNG;
-- record whether the source used was `Local fixture` or `Local API`.
+- keep the generated evidence PNGs;
+- record whether the source used was `Dados de demonstração` or `API do Sales`.
 
 ## Done Criteria
 
