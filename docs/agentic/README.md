@@ -1,3 +1,4 @@
+
 # Agentic Workspace
 
 This directory contains project-specific guidance for AI agents. It is
