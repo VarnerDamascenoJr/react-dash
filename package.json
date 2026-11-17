@@ -32,6 +32,7 @@
     "test:e2e:ui": "playwright test --ui",
     "evidence:sales-api": "playwright test tests/e2e/sales-api-evidence.spec.ts --project=chromium --grep @evidence",
     "check:style-units": "node scripts/check-style-units.cjs",
+    "check:docs": "node scripts/check-doc-links.cjs",
     "rag:sources": "node scripts/lib-rag.cjs sources",
     "rag:fetch": "node scripts/lib-rag.cjs fetch",
     "rag:query": "node scripts/lib-rag.cjs query",
