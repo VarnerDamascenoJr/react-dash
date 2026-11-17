@@ -1,32 +1,30 @@
 # AGENTS.md
 
-Ponto de entrada agnostico para qualquer agente de IA trabalhando neste
-repositorio. Nao depende de Codex, Cursor, Claude, Copilot, Devin ou outra
-ferramenta especifica.
+Tool-agnostic entry point for any AI agent working in this repository.
+It does not depend on Codex, Cursor, Claude, Copilot, Devin or any other
+specific tool.
 
 ## Project Snapshot
 
-- SPA frontend-only com React 18, TypeScript, Vite, MUI, MUI Data Grid,
-  Recharts, Sass e Playwright.
-- Produto atual: dashboard analitico do Sales Event baseado no contrato
-  `sales-analytics-export.v1`.
-- Rota ativa principal: `/`, protegida por login demo client-side.
-- Rota publica: `/login`.
-- A Home carrega fixture local por padrao e pode buscar
-  `GET /analytics/export` no `sales-event-project`.
-- Nao ha backend, ORM, migrations ou persistencia server-side neste repositorio.
+- Frontend-only SPA using React 18, TypeScript, Vite, MUI, MUI Data Grid,
+  Recharts, Sass and Playwright.
+- Current product: Sales Event analytics dashboard based on the
+  `sales-analytics-export.v1` contract.
+- Main active route: `/`, protected by a client-side demo login.
+- Public route: `/login`.
+- Home loads a local fixture by default and can fetch data from
+  `GET /analytics/export` in `sales-event-project`.
+- This repository has no backend, ORM, migrations or server-side persistence.
 
 ## First Files To Read
 
-1. [README.md](/home/varner/aprendizagem/projetos/react-dash/README.md:1)
-2. [docs/agentic/README.md](/home/varner/aprendizagem/projetos/react-dash/docs/agentic/README.md:1)
-3. [docs/agentic/react-expert-skills.md](/home/varner/aprendizagem/projetos/react-dash/docs/agentic/react-expert-skills.md:1)
-4. [docs/agentic/graphify-development.md](/home/varner/aprendizagem/projetos/react-dash/docs/agentic/graphify-development.md:1)
-5. [docs/agentic/external-docs-rag.md](/home/varner/aprendizagem/projetos/react-dash/docs/agentic/external-docs-rag.md:1)
-6. [docs/analytics-dashboard-backlog.md](/home/varner/aprendizagem/projetos/react-dash/docs/analytics-dashboard-backlog.md:1)
-7. [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
-8. [src/analytics/index.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/index.ts:1)
-9. [playwright.config.ts](/home/varner/aprendizagem/projetos/react-dash/playwright.config.ts:1)
+1. [README.md](README.md)
+2. [docs/README.md](docs/README.md) to choose the documents relevant to the task.
+3. [docs/agentic/README.md](docs/agentic/README.md) for agent workflows.
+
+Read the relevant React expert mode, Graphify or external-docs workflow when
+the task calls for it. Consult the active backlog when planning work; archived
+plans are historical context, not current instructions.
 
 ## Work Safely
 
@@ -49,8 +47,8 @@ ferramenta especifica.
   - API client and fallback
   - pure transformers
   - JSON/CSV/PNG exporters
-- `src/pages/home/Home.tsx` is the main orchestration hub for loading,
-  persistence of non-secret filters, data derivation and exports.
+- `src/pages/home/Home.tsx` composes the loading/settings and export hooks,
+  memoized data transformations and presentational analytics sections.
 - Sidebar entries for Eventos, Funil, Sobrevivencia, Exportacoes and
   Configuracao are domain navigation labels, but only `/` is currently routed.
 - Legacy components for users/products/new/single still exist but are not wired
@@ -58,43 +56,27 @@ ferramenta especifica.
 
 ## Validation
 
-For code changes:
-
-```bash
-npm test
-npm run typecheck
-npm run build
-npm run test:e2e
-git diff --check
-```
-
-For documentation-only changes:
-
-```bash
-git diff --check
-```
-
-Known warnings:
-
-- `npm run build` may warn about a large bundle.
-- `npm test` can emit Recharts size warnings in JSDOM.
+Follow the [validation policy](docs/testing.md#validation-policy) for every
+change. It owns the required checks, additional checks by change type, failure
+reporting and known warnings. Skills and other documents refer to that policy
+instead of maintaining separate command lists.
 
 ## Agentic Operating Model
 
 - Codex-specific React expert skill lives in
-  [.agents/skills/react-dash-react-expert/SKILL.md](/home/varner/aprendizagem/projetos/react-dash/.agents/skills/react-dash-react-expert/SKILL.md:1).
-- Use `$react-dash-react-expert` for React work that touches routes,
+  [.agents/skills/react-dash-expert/SKILL.md](.agents/skills/react-dash-expert/SKILL.md).
+- Use `$react-dash-expert` for React work that touches routes,
   dashboard components, analytics views, tests, auth, API keys, exports or
   frontend configuration.
 - Frontend validation skill lives in
-  [.agents/skills/react-front-test-runner/SKILL.md](/home/varner/aprendizagem/projetos/react-dash/.agents/skills/react-front-test-runner/SKILL.md:1).
+  [.agents/skills/react-front-test-runner/SKILL.md](.agents/skills/react-front-test-runner/SKILL.md).
 - Use `$react-front-test-runner` after every React frontend implementation
   task before handing off.
 - React expert skills live in
-  [docs/agentic/react-expert-skills.md](/home/varner/aprendizagem/projetos/react-dash/docs/agentic/react-expert-skills.md:1).
+  [docs/agentic/react-expert-skills.md](docs/agentic/react-expert-skills.md).
 - Graphify development flow lives in
-  [docs/agentic/graphify-development.md](/home/varner/aprendizagem/projetos/react-dash/docs/agentic/graphify-development.md:1).
+  [docs/agentic/graphify-development.md](docs/agentic/graphify-development.md).
 - External documentation retrieval lives in
-  [docs/agentic/external-docs-rag.md](/home/varner/aprendizagem/projetos/react-dash/docs/agentic/external-docs-rag.md:1).
+  [docs/agentic/external-docs-rag.md](docs/agentic/external-docs-rag.md).
 - Use Graphify before broad refactors or contract-impact analysis, but verify
   conclusions in source before editing.
