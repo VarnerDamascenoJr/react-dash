@@ -12,19 +12,26 @@ conclusions in source files.
 
 ## Local Commands
 
-Run Graphify through the local wrapper from outside the project configuration:
+Graphify is optional tooling installed outside this repository; forks must
+provide their own local wrapper. If it is unavailable, inspect source directly
+and report that limitation. Do not install generated graph data into the app.
+
+With the wrapper installed at the path below, run these commands from the
+repository root. Quoted `$PWD` works across checkout locations, including paths
+with spaces:
 
 ```bash
-~/.codex/skills/graphify-local/scripts/graphify-local.sh index /home/varner/aprendizagem/projetos/react-dash
-~/.codex/skills/graphify-local/scripts/graphify-local.sh query /home/varner/aprendizagem/projetos/react-dash "What are the main dashboard entry points and dependency hubs?"
-~/.codex/skills/graphify-local/scripts/graphify-local.sh affected /home/varner/aprendizagem/projetos/react-dash "SalesAnalyticsDocument"
-~/.codex/skills/graphify-local/scripts/graphify-local.sh explain /home/varner/aprendizagem/projetos/react-dash "Home()"
-~/.codex/skills/graphify-local/scripts/graphify-local.sh update /home/varner/aprendizagem/projetos/react-dash
+~/.codex/skills/graphify-local/scripts/graphify-local.sh index "$PWD"
+~/.codex/skills/graphify-local/scripts/graphify-local.sh query "$PWD" "What are the main dashboard entry points and dependency hubs?"
+~/.codex/skills/graphify-local/scripts/graphify-local.sh affected "$PWD" "SalesAnalyticsDocument"
+~/.codex/skills/graphify-local/scripts/graphify-local.sh explain "$PWD" "Home()"
+~/.codex/skills/graphify-local/scripts/graphify-local.sh update "$PWD"
 ```
 
 ## Development Pipeline
 
-Use this pipeline for non-trivial changes:
+Use this pipeline for non-trivial code changes. Documentation-only maintenance
+does not need code graph extraction.
 
 1. **Graph pass before work**
    - Run `index` or `update`.
@@ -42,7 +49,7 @@ Use this pipeline for non-trivial changes:
    - Run `update`.
    - For contract or orchestration changes, query affected symbols again.
 5. **Validation**
-   - Run the relevant npm checks and `git diff --check`.
+   - Follow the [validation policy](../testing.md#validation-policy).
 
 ## React Expert Checkpoints
 
