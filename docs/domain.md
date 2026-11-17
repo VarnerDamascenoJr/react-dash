@@ -42,8 +42,8 @@ export.
 
 **Evidence**
 
-- [src/auth/auth.types.ts](/home/varner/aprendizagem/projetos/react-dash/src/auth/auth.types.ts:1)
-- [src/context/authContext.tsx](/home/varner/aprendizagem/projetos/react-dash/src/context/authContext.tsx:1)
+- [src/auth/auth.types.ts](../src/auth/auth.types.ts)
+- [src/context/authContext.tsx](../src/context/authContext.tsx)
 
 ### Theme mode
 
@@ -54,8 +54,8 @@ export.
 
 **Evidence**
 
-- [src/context/darkModeReducer.ts](/home/varner/aprendizagem/projetos/react-dash/src/context/darkModeReducer.ts:1)
-- [src/style/dark.scss](/home/varner/aprendizagem/projetos/react-dash/src/style/dark.scss:1)
+- [src/context/darkModeReducer.ts](../src/context/darkModeReducer.ts)
+- [src/style/dark.scss](../src/style/dark.scss)
 
 ### Sales analytics document
 
@@ -71,9 +71,9 @@ export.
 
 **Evidence**
 
-- [src/analytics/analytics.types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/analytics.types.ts:1)
-- [src/analytics/fixtures.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/fixtures.ts:1)
-- [src/analytics/api.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.ts:1)
+- [src/analytics/analytics.types.ts](../src/analytics/analytics.types.ts)
+- [src/analytics/fixtures.ts](../src/analytics/fixtures.ts)
+- [src/analytics/api.ts](../src/analytics/api.ts)
 
 ### Analytics KPIs
 
@@ -89,8 +89,8 @@ export.
 
 **Evidence**
 
-- [src/analytics/transformers.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.ts:1)
-- [src/pages/home/components/KpiGrid.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/KpiGrid.tsx:1)
+- [src/analytics/transformers.ts](../src/analytics/transformers.ts)
+- [src/pages/home/components/KpiGrid.tsx](../src/pages/home/components/KpiGrid.tsx)
 
 ### Analytics exports
 
@@ -104,8 +104,8 @@ export.
 
 **Evidence**
 
-- [src/analytics/exporters.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.ts:1)
-- [src/pages/home/components/ExportPanel.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/ExportPanel.tsx:1)
+- [src/analytics/exporters.ts](../src/analytics/exporters.ts)
+- [src/pages/home/components/ExportPanel.tsx](../src/pages/home/components/ExportPanel.tsx)
 
 ## Legacy Admin Concepts
 
@@ -130,8 +130,8 @@ cleanup, but they are not wired into the current analytics route tree.
 
 **Evidence**
 
-- `UserRow` type in [datatable.types.ts](/home/varner/aprendizagem/projetos/react-dash/src/components/datatable/datatable.types.ts:1)
-- mock rows in [src/datatablesource.tsx](/home/varner/aprendizagem/projetos/react-dash/src/datatablesource.tsx:1)
+- `UserRow` type in [datatable.types.ts](../src/components/datatable/datatable.types.ts)
+- mock rows in [src/datatablesource.tsx](../src/datatablesource.tsx)
 
 ### Form-driven entity creation
 
@@ -144,8 +144,8 @@ cleanup, but they are not wired into the current analytics route tree.
 
 **Evidence**
 
-- [src/formSource.ts](/home/varner/aprendizagem/projetos/react-dash/src/formSource.ts:1)
-- [src/pages/new/New.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.tsx:1)
+- [src/formSource.ts](../src/formSource.ts)
+- [src/pages/new/New.tsx](../src/pages/new/New.tsx)
 
 ### Legacy dashboard KPIs
 
@@ -160,7 +160,7 @@ cleanup, but they are not wired into the current analytics route tree.
 
 **Evidence**
 
-- [src/components/widgets/Widget.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/widgets/Widget.tsx:1)
+- [src/components/widgets/Widget.tsx](../src/components/widgets/Widget.tsx)
 
 **Confirmed limitation**
 
@@ -175,15 +175,15 @@ cleanup, but they are not wired into the current analytics route tree.
 
 **Evidence**
 
-- [src/components/chart/Chart.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/chart/Chart.tsx:1)
-- [src/pages/single/Single.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/single/Single.tsx:1)
+- [src/components/chart/Chart.tsx](../src/components/chart/Chart.tsx)
+- [src/pages/single/Single.tsx](../src/pages/single/Single.tsx)
 
 ## Observable Rules
 
 ### Rule 1: protected navigation requires an authenticated client session
 
 - Module: auth / routing
-- Evidence: [src/components/auth/ProtectedRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/ProtectedRoute.tsx:1)
+- Evidence: [src/components/auth/ProtectedRoute.tsx](../src/components/auth/ProtectedRoute.tsx)
 - Behavior:
   - if `isAuthenticated` is false, navigation is redirected to `/login`
 - Status: confirmed fact
@@ -191,7 +191,7 @@ cleanup, but they are not wired into the current analytics route tree.
 ### Rule 2: authenticated users should not remain on the login page
 
 - Module: auth / routing
-- Evidence: [src/components/auth/PublicOnlyRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/PublicOnlyRoute.tsx:1)
+- Evidence: [src/components/auth/PublicOnlyRoute.tsx](../src/components/auth/PublicOnlyRoute.tsx)
 - Behavior:
   - if `isAuthenticated` is true, navigation to `/login` redirects to `/`
 - Status: confirmed fact
@@ -199,17 +199,18 @@ cleanup, but they are not wired into the current analytics route tree.
 ### Rule 3: demo login requires a specific email/password pair
 
 - Module: auth
-- Evidence: [src/context/authContext.tsx](/home/varner/aprendizagem/projetos/react-dash/src/context/authContext.tsx:1), [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1)
+- Evidence: [src/context/authContext.tsx](../src/context/authContext.tsx), [src/config/auth.ts](../src/config/auth.ts)
 - Behavior:
   - login succeeds only when the normalized email matches the configured demo email and the password matches the configured demo password
 - Exception:
-  - failure throws a generic demo-access error
+  - invalid credentials throw `DemoAuthenticationError`, mapped by the login
+    form to translated feedback
 - Status: confirmed fact
 
 ### Rule 4: deleting a row in the users grid only affects local screen state
 
 - Module: datatable
-- Evidence: [src/components/datatable/Datatable.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/datatable/Datatable.tsx:1)
+- Evidence: [src/components/datatable/Datatable.tsx](../src/components/datatable/Datatable.tsx)
 - Behavior:
   - clicking Delete filters the local `data` array
 - Status: confirmed fact
@@ -217,7 +218,7 @@ cleanup, but they are not wired into the current analytics route tree.
 ### Rule 5: form fields are driven by metadata instead of hardcoded JSX fields
 
 - Module: new page / form metadata
-- Evidence: [src/formSource.ts](/home/varner/aprendizagem/projetos/react-dash/src/formSource.ts:1), [src/pages/new/New.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.tsx:1)
+- Evidence: [src/formSource.ts](../src/formSource.ts), [src/pages/new/New.tsx](../src/pages/new/New.tsx)
 - Behavior:
   - field rendering iterates over the `inputs` prop
 - Status: confirmed fact
@@ -225,20 +226,16 @@ cleanup, but they are not wired into the current analytics route tree.
 ### Rule 6: theme can be forced to light or dark from the sidebar and toggled from the navbar
 
 - Module: theme
-- Evidence: [src/components/sidebar/Sidebar.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/sidebar/Sidebar.tsx:1), [src/components/navbar/Navbar.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/navbar/Navbar.tsx:1)
+- Evidence: [src/components/sidebar/Sidebar.tsx](../src/components/sidebar/Sidebar.tsx), [src/components/navbar/Navbar.tsx](../src/components/navbar/Navbar.tsx)
 - Status: confirmed fact
 
-## Inferences That Should Not Be Overstated
+## Legacy Scope And Unknowns
 
-- The application may be intended to simulate CRM or commerce admin behavior.
-- “Users,” “products,” “orders,” and “transactions” appear to be illustrative rather than tied to a real domain contract.
-- The current role string `Operations Lead` suggests an operations dashboard, but no authorization matrix exists in code.
+The non-routed users/products/admin screens contain illustrative data, not a
+backend user or product lifecycle. Their legacy earnings and balance cards do
+not define the active dashboard's revenue metric. Current analytics KPIs are
+derived from the Sales export contract by the transformers described above.
 
-These are inferences, not confirmed business rules.
-
-## Unknowns
-
-- No source confirms how a real user should be created, updated or persisted.
-- No source confirms product lifecycle rules.
-- No source confirms financial calculations for earnings, balance or revenue.
-- No source confirms whether the current labels and cards match any real business KPI definition.
+Demo profile roles are display data; this frontend has no production
+authorization matrix. Real user lifecycle rules and backend authorization belong
+to the relevant backend, not these legacy components.

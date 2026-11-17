@@ -3,6 +3,24 @@
 These skills describe how an expert React agent should work in this project.
 They are tool-agnostic and can be used by any AI assistant.
 
+These are four work modes within the shared React guidance, not separate
+subagent definitions. Choose the smallest applicable mode and read only its
+relevant files. The Codex expert skill routes here; keep detailed rules in
+this document rather than copying them into tool-specific wrappers.
+
+## Shared Rules
+
+- Start with [AGENTS.md](../../AGENTS.md), the
+  [project README](../../README.md) and the relevant mode below.
+- Follow [coding conventions](../coding-conventions.md) for shared UI,
+  utilities and context-owned types. Keep product policy in its owning feature.
+- Follow the [validation policy](../testing.md#validation-policy) for every
+  change. For Codex frontend implementation, use `$react-front-test-runner`
+  before handoff; it executes that same policy.
+- [Graphify](graphify-development.md) supports non-trivial code analysis;
+  [external documentation retrieval](external-docs-rag.md) supports uncertain
+  library behavior. Routine edits do not require external research.
+
 ## React Dashboard Architect
 
 Use for changes to route structure, page composition, shell layout, dashboard
@@ -28,19 +46,10 @@ Expert rules:
   dedicated pages.
 - Avoid pushing analytics business logic into presentational components.
 - Keep interfaces, aliases and props in one `<context>.types.ts` file per
-  context; follow `docs/type-organization.md`.
+  context; follow [coding conventions](../coding-conventions.md).
 - Extract orchestration from `Home` only when it reduces real complexity.
 - Preserve protected route behavior and demo login flow.
 - Keep component props shaped around prepared view data, not raw API payloads.
-
-Validation:
-
-```bash
-npm test
-npm run typecheck
-npm run build
-npm run test:e2e
-```
 
 ## React Analytics UI Specialist
 
@@ -72,18 +81,9 @@ Expert rules:
 - Use stable dimensions for charts, controls and tables to reduce layout shift.
 - Use `rem` as the default frontend unit for new spacing, sizing, borders,
   radii and breakpoints; avoid introducing `px` unless a browser/library API
-  explicitly requires pixel values. Run `npm run check:style-units` when
-  changing frontend styles.
+  explicitly requires pixel values. Mark intentional exceptions with `px-ok`
+  and a short reason; validation is defined in the shared policy.
 - Prefer MUI controls for forms, buttons, panels and table surfaces.
-
-Validation:
-
-```bash
-npm test
-npm run typecheck
-npm run check:style-units
-npm run test:e2e
-```
 
 ## React Test Engineer
 
@@ -109,14 +109,6 @@ Expert rules:
 - Avoid requiring the Sales API for baseline E2E tests.
 - Prefer role, label and accessible-name selectors over fragile CSS selectors.
 
-Validation:
-
-```bash
-npm test
-npm run test:e2e
-git diff --check
-```
-
 ## React Security Boundary Reviewer
 
 Use when a change touches authentication, API keys, localStorage, environment
@@ -135,15 +127,7 @@ Expert rules:
 
 - Treat all `VITE_*` variables as public.
 - Do not put OpenAI, provider or model API keys in the React app.
-- Keep Sales API keys in memory only.
+- Keep Sales API keys in memory only; never persist them or bundle them with
+  the application.
 - Persist only non-secret filter/configuration values.
 - Keep downloads browser-side and generated from active dashboard data.
-
-Validation:
-
-```bash
-npm test
-npm run typecheck
-npm run test:e2e
-git diff --check
-```

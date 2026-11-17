@@ -1,116 +1,96 @@
-# Integrations
+# Integrations And Browser Storage
 
-## Overview
+The dashboard uses a versioned local fixture by default and can load the
+`sales-event-project` analytics API on demand. There is no backend, database,
+ORM or migration layer in this repository.
 
-## Confirmed external integrations
+## Sales Analytics API
 
-The project has an optional local HTTP integration with the
-`sales-event-project` analytics export API. The dashboard still works without
-that API by using a versioned local fixture.
-
-What it does integrate with are frontend libraries and browser/platform capabilities.
-
-## HTTP integrations
-
-### Sales analytics export API
-
-- Purpose: load operational analytics data from `sales-event-project`
-- Client module: [src/analytics/api.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.ts:1)
-- Configuration module: [src/config/salesApi.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/salesApi.ts:1)
-- Default frontend base URL: `/api`
-- Vite proxy target: `http://localhost:8080`
-- Endpoint path:
+- Client: [src/analytics/api.ts](../src/analytics/api.ts).
+- Configuration: [src/config/salesApi.ts](../src/config/salesApi.ts).
+- Loading and fallback UI: [useSalesAnalytics](../src/pages/home/hooks/useSalesAnalytics.ts).
+- Default frontend base URL: `/api`.
+- Local Vite proxy target: `http://localhost:8080`.
 
 ```text
 GET /analytics/export?salesEventId=&start=&end=&limit=
 ```
 
-- Authentication model:
-  - browser client sends `X-API-Key` when provided in the dashboard UI
-  - local seeded support key for development is `dev-support-key`
-  - API key values must not be committed to repo files
-  - API key values are not persisted in `localStorage`
-- Expected backend roles:
-  - `SUPPORT`
-  - `ADMIN`
-- Expected schema:
-  - `sales-analytics-export.v1`
-- Failure handling:
-  - invalid filters, missing API key, forbidden role and network failures become user-facing messages
-  - the dashboard falls back to `src/analytics/fixtures/sales-analytics-export.v1.json`
-  - invalid response schema is rejected before updating the document
+The client sends `Accept: application/json` and `X-API-Key` when a key is
+provided. The backend must allow an appropriate `SUPPORT` or `ADMIN` key and
+return the `sales-analytics-export.v1` schema. The response includes events,
+windows, funnels and survival data.
 
-## Browser/platform integrations
+Invalid filters, missing/forbidden keys, network failures and invalid response
+schemas become stable error codes translated by the UI. Failed loads return
+the local fixture without breaking the dashboard. See [flows](flows.md) for
+the request path and [the demo checklist](demo-checklist.md) for a live local
+stack run. Baseline browser tests intercept API requests and do not prove that
+a separate Sales deployment is healthy.
 
-### `localStorage`
+Real keys must stay outside tracked files and the React bundle. Enter a key
+in the dashboard for the current session. The documented seeded local demo
+key is an example for that development stack, not a production credential.
 
-- Purpose: persist demo authenticated user session and non-secret analytics
-  source filters
-- Modules:
-  - [src/context/authContext.tsx](/home/varner/aprendizagem/projetos/react-dash/src/context/authContext.tsx:1)
-  - [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
-- Protocol/API: browser Web Storage API
-- Authentication model: not applicable
-- Failure handling:
-  - analytics filters fall back to in-memory defaults if storage is unavailable
-  - demo auth may require a fresh login if storage is unavailable
-- Impact if unavailable:
-  - login persistence would fail or become unreliable
-  - analytics `Base URL`, `Sales event`, `Start`, `End` and `Limite` would
-    reset to defaults between page loads
+## Browser Persistence
 
-### `URL.createObjectURL`
+All persistence uses browser `localStorage`; it is not a trusted server session
+or a database. These keys have different owners and failure behavior:
 
-- Purpose: preview uploaded file on the “new” page and download generated
-  JSON/CSV/PNG exports
-- Module: [src/pages/new/New.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.tsx:1)
-  and [src/analytics/exporters.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.ts:1)
-- Protocol/API: browser File/Object URL API
-- Failure handling:
-  - upload preview has no explicit try/catch
-  - chart PNG export surfaces an error message when an SVG/canvas step fails
-- Impact if unavailable:
-  - image preview and browser-side export downloads would not function
+| Key | Stored value | Owner |
+| --- | --- | --- |
+| `react-dash.auth.user` | Serialized demo user: name, role, email and avatar | [authContext.tsx](../src/context/authContext.tsx) |
+| `react-dash.analytics.settings` | Non-secret `baseUrl`, `salesEventId`, `start`, `end` and `limit` | [salesApi.ts](../src/config/salesApi.ts) |
+| `react-dash.language` | Selected language code | [preferences.ts](../src/i18n/preferences.ts) |
 
-## UI library integrations
+Analytics settings and language preferences use
+[safe storage helpers](../src/utils/storage.ts). Missing, malformed or blocked
+preference storage falls back to defaults; language changes can still work in
+memory. Analytics limits are normalized to positive integers.
 
-### MUI Core
+Authentication currently accesses `localStorage` and parses its JSON directly.
+Malformed session JSON or blocked storage can therefore disrupt authentication
+initialization or login/logout. Stored users are client-controlled, so this demo
+mechanism does not establish production authorization.
 
-- Purpose: reusable material UI components, especially table primitives
-- Modules:
-  - [src/components/table/Table.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/table/Table.tsx:1)
-- Impact if broken:
-  - transaction table rendering fails or degrades
+API keys, passwords and analytics documents are not persisted by these flows.
+API keys remain in the mounted loading hook and are cleared when that state is
+recreated. Loaded documents, loading state and export feedback stay in memory.
+Theme state is held in React Context rather than persisted by the theme reducer.
 
-### MUI Data Grid
+## Dates, Language And Exports
 
-- Purpose: tabular grid rendering for analytics events and legacy list
-  components
-- Module:
-  - [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
-  - [src/components/datatable/Datatable.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/datatable/Datatable.tsx:1)
-- Impact if broken:
-  - analytics event exploration fails or degrades
+[Localization](localization.md) owns translation catalogs and locale selection.
+Shared `Intl` formatters display dates in the browser timezone and keep amounts
+in BRL; switching language changes formatting without converting currency.
+Stored date filters are request bounds, not a separate date database.
 
-### Recharts
+Browser downloads use Blob/object URLs through
+[utils/download.ts](../src/utils/download.ts). Analytics-specific filenames and
+PNG error codes remain in [exporters.ts](../src/analytics/exporters.ts). PNG
+exports also depend on SVG/image loading and canvas support. Export failures
+become user-facing feedback. JSON and CSV keep the data contract field names.
 
-- Purpose: chart rendering
-- Module:
-  - [src/components/chart/Chart.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/chart/Chart.tsx:1)
-- Error behavior observed:
-  - tests emit a width/height warning in JSDOM
-- Impact if broken:
-  - dashboard visualization sections fail
+The legacy New page also creates object URLs for image previews. Its form and
+the legacy user grid have no backend persistence: deleting a row changes only
+component state and does not survive a reload.
 
-### `react-circular-progressbar`
+## UI Libraries
 
-- Purpose: circular KPI summary
-- Module:
-  - [src/components/featured/Feature.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/featured/Feature.tsx:1)
+| Library | Active use |
+| --- | --- |
+| MUI Core | Login, navigation, panels, forms and other shared controls |
+| MUI Data Grid | Analytics events table; also used by the legacy user grid |
+| Recharts | Shared analytics charts and the legacy revenue chart |
+| i18next / react-i18next | Bundled, typed translation resources and language switching |
+| `react-circular-progressbar` | Legacy featured summary card |
 
-## Environment-backed configuration
+Recharts depends on real container dimensions; JSDOM warnings and bundle-size
+warnings are covered in [testing](testing.md#known-warnings).
 
-### Confirmed variable names
+## Environment Configuration
+
+The browser-visible configuration variables are:
 
 - `VITE_DEMO_LOGIN_EMAIL`
 - `VITE_DEMO_LOGIN_PASSWORD`
@@ -119,29 +99,12 @@ GET /analytics/export?salesEventId=&start=&end=&limit=
 - `VITE_DEMO_USER_AVATAR`
 - `VITE_SALES_API_BASE_URL`
 
-### Source
+Definitions live in [auth.ts](../src/config/auth.ts),
+[salesApi.ts](../src/config/salesApi.ts) and
+[vite-env.d.ts](../src/vite-env.d.ts). See [.env.example](../.env.example) and
+the [project README](../README.md) for local setup. All `VITE_*` values ship
+to the browser; they are unsuitable for private provider or production secrets.
 
-- [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1)
-- [src/config/salesApi.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/salesApi.ts:1)
-- [src/vite-env.d.ts](/home/varner/aprendizagem/projetos/react-dash/src/vite-env.d.ts:1)
-
-### Purpose
-
-- Configure demo login identity, demo profile display and Sales API base URL.
-
-### Important note
-
-- These are environment variables for demo behavior, not evidence of a production secret-management strategy.
-- Documentation and agent guidance should refer to variable names, not example values.
-
-## Confirmed non-integrations
-
-- No HTTP client library usage was identified.
-- No GraphQL or gRPC API integration was identified.
-- No message broker or queue integration was identified.
-- No observability vendor integration was identified.
-- No payment, email, notification or storage service SDK usage was identified.
-
-## Unknowns
-
-- The repository does not document how these variables are supplied outside local development.
+The app uses browser `fetch`, with no GraphQL/gRPC client, message broker,
+observability vendor SDK or payment/email service SDK. Deployment-specific
+configuration and hosting are not defined here.

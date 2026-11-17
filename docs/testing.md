@@ -1,5 +1,58 @@
 # Testing
 
+## Validation Policy
+
+This is the authoritative validation policy for developers and AI assistants.
+Other documents and local skills refer here instead of defining a separate
+baseline. Required checks depend on the change:
+
+### Documentation And Agent Guidance Only
+
+```bash
+npm run check:docs
+git diff --check
+```
+
+Check changed Markdown links and references to moved documents. When modifying
+a skill, validate its frontmatter and confirm its referenced documents exist.
+Application test suites are not required when only documentation or agent
+instructions change.
+
+### Code, Tests Or Application Configuration
+
+Run the full existing baseline for every code change, including refactors:
+
+```bash
+npm run lint
+npm test
+npm run typecheck
+npm run check:docs
+npm run build
+npm run test:e2e
+git diff --check
+```
+
+Build and E2E checks are required for all code changes, not only selected UI
+surfaces. Focused tests are useful during development but do not replace this
+baseline before handoff.
+
+Additional checks:
+
+- For frontend styles, layout, Sass/CSS, MUI sizing or responsive changes, run
+  `npm run check:style-units`.
+- For localization changes, also run `npm run lint` and
+  `npm run check:style-units`, preserving the localization workflow's checks.
+- Before opening a PR or presenting the demo, run the full baseline and
+  `npm run check:style-units`, even when style changes were not part of the task.
+- A live Sales API change also needs the relevant integration smoke from the
+  [demo checklist](demo-checklist.md); intercepted browser requests do not
+  validate a running backend.
+
+If a required command fails, investigate and fix an in-scope cause. If a check
+cannot run because of an environment limit, report the command and reason;
+do not describe the result as passing. At handoff, list commands actually run,
+their outcomes, and any known warnings separately from failures.
+
 ## Strategy
 
 The project uses two complementary test layers:
@@ -13,6 +66,11 @@ The baseline E2E path must stay deterministic and use the local fixture. The
 Sales API can be covered by separate integration smoke checks, but ordinary E2E
 tests should not require external services.
 
+Add or update regression tests for behavior changed by implementation work.
+Use Vitest for pure logic, API-client behavior and component assertions; use
+Playwright for route guards, auth, exports and other browser-dependent flows.
+Prefer role, label and accessible-name selectors over CSS selectors.
+
 ## Tooling
 
 ### Confirmed
@@ -23,24 +81,44 @@ tests should not require external services.
 - Rendering utilities: `@testing-library/react`
 - Browser E2E runner: Playwright
 - E2E local server: Playwright `webServer` starts Vite automatically
+- Documentation links: `npm run check:docs`, with regression coverage in
+  [check-doc-links.test.js](../scripts/check-doc-links.test.js) included by Vitest
 
-### Evidence
+## Continuous Integration
 
-- [package.json](/home/varner/aprendizagem/projetos/react-dash/package.json:1)
-- [vite.config.js](/home/varner/aprendizagem/projetos/react-dash/vite.config.js:1)
-- [playwright.config.ts](/home/varner/aprendizagem/projetos/react-dash/playwright.config.ts:1)
-- [src/setupTests.ts](/home/varner/aprendizagem/projetos/react-dash/src/setupTests.ts:1)
+[GitHub Actions](../.github/workflows/ci.yml) runs on pull requests and pushes
+to `main`, using Node.js 22. It installs dependencies, then runs lint, type
+checking, unit/tooling tests, documentation links, style units, diff whitespace,
+the production build and desktop/mobile Playwright tests. Checkout fetches full
+Git history so the style check can compare against `origin/main`.
+
+CI installs the managed Chromium browser and its Linux system dependencies
+with `npm run test:e2e:install -- --with-deps`. Browser tests run with one
+worker for predictable resource use, with retries and reporting controlled by
+the existing Playwright configuration. On failure, available browser reports,
+traces and screenshots are uploaded with seven-day retention.
+
+This follows [Playwright's CI installation guidance](https://playwright.dev/docs/ci#github-actions).
+Local execution of the same checks verifies the commands; a hosted workflow
+run is required to verify the GitHub runner environment itself.
+
+## Configuration Evidence
+
+- [package.json](../package.json)
+- [vite.config.js](../vite.config.js)
+- [playwright.config.ts](../playwright.config.ts)
+- [src/setupTests.ts](../src/setupTests.ts)
 
 ## Test Organization
 
 ### Confirmed files
 
-- [src/App.test.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.test.tsx:1)
-- [src/analytics/api.test.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.test.ts:1)
-- [src/analytics/exporters.test.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.test.ts:1)
-- [src/analytics/transformers.test.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.test.ts:1)
-- [src/pages/new/New.test.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.test.tsx:1)
-- [tests/e2e/analytics-dashboard.spec.ts](/home/varner/aprendizagem/projetos/react-dash/tests/e2e/analytics-dashboard.spec.ts:1)
+- [src/App.test.tsx](../src/App.test.tsx)
+- [src/analytics/api.test.ts](../src/analytics/api.test.ts)
+- [src/analytics/exporters.test.ts](../src/analytics/exporters.test.ts)
+- [src/analytics/transformers.test.ts](../src/analytics/transformers.test.ts)
+- [src/pages/new/New.test.tsx](../src/pages/new/New.test.tsx)
+- [tests/e2e/analytics-dashboard.spec.ts](../tests/e2e/analytics-dashboard.spec.ts)
 
 ### Pattern
 
@@ -72,11 +150,19 @@ tests should not require external services.
 - Browser-level theme switching from the navbar action and sidebar segmented
   controls.
 
-### Recommended next targets
+### API, Exports And Mobile Coverage
 
-- API-load failure state in browser.
-- Export download behavior in browser.
-- Mobile dashboard smoke viewport.
+- [analytics-dashboard.spec.ts](../tests/e2e/analytics-dashboard.spec.ts) already
+  covers successful intercepted API loads, JSON/CSV/PNG downloads, failure
+  fallback, non-secret settings restoration and API-key clearing after reload.
+- [localization.spec.ts](../tests/e2e/localization.spec.ts) checks translated
+  feedback and downloads while preserving data and current filters.
+- Playwright runs the suite against desktop Chromium and mobile Chrome device
+  profiles; dashboard checks include horizontal-overflow assertions.
+
+These tests use local fixtures and intercepted API responses. A real-stack
+Sales rehearsal and repeatable screenshot capture remain separate follow-ups
+in the [active backlog](analytics-dashboard-backlog.md).
 
 ## Playwright Configuration
 
@@ -115,27 +201,39 @@ Portuguese labels and clears the API key before taking screenshots. The API
 integration and evidence specs disable traces and videos, which could otherwise
 retain credentials. PNG output under `evidence/` is ignored by Git.
 
-Install browsers when setting up a fresh machine:
+## Browser Setup
+
+From the repository root on a fresh machine:
 
 ```bash
-npx playwright install
-```
-
-For the configured baseline only:
-
-```bash
+npm ci
 npm run test:e2e:install
+npm run test:e2e
 ```
 
-## Commands
+The install script downloads the Chromium version managed by the installed
+Playwright package, covering both configured device profiles. Rerun it after
+a Playwright version update; do not pin a personal browser-cache executable.
+
+If a separate browser storage location is needed, set `PLAYWRIGHT_BROWSERS_PATH`
+consistently for both installation and test execution, for example:
 
 ```bash
-npm test
-npm run check:style-units
-npm run test:e2e
+PLAYWRIGHT_BROWSERS_PATH="$HOME/.cache/react-dash-playwright" npm run test:e2e:install
+PLAYWRIGHT_BROWSERS_PATH="$HOME/.cache/react-dash-playwright" npm run test:e2e
+```
+
+Outside CI, `reuseExistingServer` allows an existing Vite server at the configured
+`http://127.0.0.1:5173` URL. Otherwise Playwright starts it automatically; in CI
+server reuse is disabled. Close an unrelated process on that port before running.
+
+## Interactive Checks
+
+Use the [validation policy](#validation-policy) for required checks. To inspect
+browser tests interactively:
+
+```bash
 npm run test:e2e:ui
-npm run typecheck
-npm run build
 ```
 
 ## Frontend Style Units

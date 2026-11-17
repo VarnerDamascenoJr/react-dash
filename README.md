@@ -64,6 +64,12 @@ Validates that new frontend lines in `src` do not introduce `px` units. New
 styles should use `rem` by default; explicit exceptions can use the `px-ok`
 marker when a browser API or library requires pixels.
 
+### `npm run check:docs`
+
+Checks local inline Markdown links and heading fragments in the project
+README, `AGENTS.md`, `docs/` and repository skills. It runs without network
+requests and rejects absolute checkout paths and missing local targets.
+
 ### `npm run preview`
 
 Serves the generated build locally for a quick validation pass.
@@ -175,16 +181,9 @@ See [docs/localization.md](docs/localization.md) for catalog maintenance and tes
 
 ## Validation
 
-Before opening a PR or using the demo in a portfolio:
-
-```bash
-npm test
-npm run typecheck
-npm run check:style-units
-npm run build
-npm run test:e2e
-git diff --check
-```
+Follow the [validation policy](docs/testing.md#validation-policy) for code,
+documentation and release/demo checks. It defines the required commands and
+additional checks by change type.
 
 ## Structure
 
@@ -199,10 +198,12 @@ git diff --check
 - `src/analytics`: types, fixture, client, transformers, and exporters for the
   `sales-analytics-export.v1` contract
 - `src/analytics/analytics.types.ts`: analytics interfaces and aliases
-- `docs/type-organization.md`: type ownership and interface/alias conventions
-- `docs/reusability.md`: shared component/function inventory and reuse boundaries
-- `docs/analytics-dashboard-backlog.md`: backlog and product contract for
-  turning the app into the Sales Event analytics dashboard
+- [docs/README.md](docs/README.md): documentation index and topic ownership
+- [docs/architecture.md](docs/architecture.md): architecture and module map
+- [docs/coding-conventions.md](docs/coding-conventions.md): shared code, type
+  ownership and interface/alias conventions
+- [docs/analytics-dashboard-backlog.md](docs/analytics-dashboard-backlog.md):
+  active follow-ups, with the original implementation plan preserved in the archive
 - `docs/demo-checklist.md`: smoke checklist for the local demo and portfolio
 - `docs/agentic`: agent-agnostic capabilities, React expert skills, and the
   local Graphify flow
@@ -210,6 +211,7 @@ git diff --check
 ## Suggested Next Steps
 
 - Follow `docs/demo-checklist.md` before recording or presenting the demo.
-- Implement the `GET /analytics/export` endpoint in `sales-event-project` to
-  replace the fallback with real data.
+- Verify the live `GET /analytics/export` integration with the local Sales
+  stack; follow the [active backlog](docs/analytics-dashboard-backlog.md) for
+  remaining work and cross-repository verification.
 - Keep the local fixture as a reproducible path for tests and handoff.

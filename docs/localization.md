@@ -62,7 +62,8 @@ including its Datatable, remains outside this localization scope.
   locale formatting and feedback changes without repeating API calls/downloads.
 - `npm run test:e2e`: login and dashboard language switching, restoration after
   reload, official grid translations, API fallback, exports and mobile overflow.
-- Also run lint, typecheck, style units, build and `git diff --check`.
+The [validation policy](testing.md#validation-policy) defines all required
+commands, including the additional lint and style checks for localization.
 
 ## Official References
 

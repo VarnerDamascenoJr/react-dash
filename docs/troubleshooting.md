@@ -18,9 +18,9 @@ client-state or API availability limitations rather than server bugs.
 
 **Inspect**
 
-- [src/components/auth/ProtectedRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/ProtectedRoute.tsx:1)
-- [src/context/authContext.tsx](/home/varner/aprendizagem/projetos/react-dash/src/context/authContext.tsx:1)
-- [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1)
+- [src/components/auth/ProtectedRoute.tsx](../src/components/auth/ProtectedRoute.tsx)
+- [src/context/authContext.tsx](../src/context/authContext.tsx)
+- [src/config/auth.ts](../src/config/auth.ts)
 
 **Likely causes**
 
@@ -36,7 +36,7 @@ client-state or API availability limitations rather than server bugs.
 
 **Inspect**
 
-- [src/components/auth/PublicOnlyRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/PublicOnlyRoute.tsx:1)
+- [src/components/auth/PublicOnlyRoute.tsx](../src/components/auth/PublicOnlyRoute.tsx)
 
 ### Delete in users grid does not persist
 
@@ -46,7 +46,7 @@ client-state or API availability limitations rather than server bugs.
 
 **Inspect**
 
-- [src/components/datatable/Datatable.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/datatable/Datatable.tsx:1)
+- [src/components/datatable/Datatable.tsx](../src/components/datatable/Datatable.tsx)
 
 ### Form submit does nothing
 
@@ -56,7 +56,7 @@ client-state or API availability limitations rather than server bugs.
 
 **Inspect**
 
-- [src/pages/new/New.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.tsx:1)
+- [src/pages/new/New.tsx](../src/pages/new/New.tsx)
 
 **Important detail**
 
@@ -68,10 +68,11 @@ client-state or API availability limitations rather than server bugs.
 
 - Recharts renders inside JSDOM without real layout dimensions.
 
-**Evidence**
+**Inspect**
 
-- Warning observed during `npm test`
-- `ResizeObserver` is mocked in [src/setupTests.ts](/home/varner/aprendizagem/projetos/react-dash/src/setupTests.ts:1), but container sizing remains artificial
+- [Known test warnings](testing.md#known-warnings)
+- `ResizeObserver` is mocked in [src/setupTests.ts](../src/setupTests.ts), but
+  container sizing remains artificial
 
 ### Build warns about large chunks
 
@@ -79,9 +80,8 @@ client-state or API availability limitations rather than server bugs.
 
 - Vite build emits a large bundle warning.
 
-**Observed during analysis**
-
-- JS output exceeded the default 500 kB warning threshold after minification.
+See [known warnings](testing.md#known-warnings). Check the current build output
+before assuming an earlier bundle-size observation still applies.
 
 **Likely contributing factors**
 
@@ -93,12 +93,12 @@ client-state or API availability limitations rather than server bugs.
 ## Operational unknowns
 
 - Deployment process is not documented in repository files.
-- No CI pipeline is present, so local verification is especially important.
+- [CI](../.github/workflows/ci.yml) runs the automated checks described in
+  [testing](testing.md#continuous-integration). Inspect failed-job logs and
+  browser failure artifacts, and reproduce the relevant checks locally.
 
-## Safe validation commands
+## Validation
 
-- `npm run typecheck`
-- `npm run build`
-- `npm test`
-
-These commands were executed during analysis and are non-destructive in the current repository context.
+Follow the [validation policy](testing.md#validation-policy) for required
+checks. Report commands actually run for the current task; historical analysis
+notes do not establish that the current checkout passes.

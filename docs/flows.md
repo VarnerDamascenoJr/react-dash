@@ -12,13 +12,14 @@ fixture when that API is unavailable.
 
 ### Confirmed entry point
 
-- [src/pages/login/Login.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/login/Login.tsx:1)
+- [src/pages/login/Login.tsx](../src/pages/login/Login.tsx)
 
 ### Confirmed execution path
 
 1. User opens `/login`.
-2. Form state is initialized with demo credentials from [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1).
-3. On submit, `handleSubmit` calls `AuthContext.login`.
+2. Form state is initialized with demo credentials from [src/config/auth.ts](../src/config/auth.ts).
+3. `useLoginForm.handleSubmit` checks native form validity, blocks duplicate
+   pending submissions and calls `AuthContext.login`.
 4. `AuthContext.login`:
    - normalizes email
    - waits 400 ms
@@ -26,9 +27,9 @@ fixture when that API is unavailable.
 5. On success:
    - writes `demoUser` to `localStorage`
    - updates React auth state
-6. Login page redirects to:
-   - `location.state.from.pathname` when available
-   - otherwise `/`
+6. `getLoginRedirect` restores a valid protected pathname, query and fragment
+   from route state. Malformed destinations, external paths and login loops
+   fall back to `/`.
 7. Protected routes become accessible.
 
 ### Confirmed initialization behavior
@@ -42,8 +43,11 @@ fixture when that API is unavailable.
 
 ### Error handling
 
-- Failed login throws an error with message `Use the demo account to access the dashboard.`
-- Login page catches the error and renders the message.
+- Invalid demo credentials throw `DemoAuthenticationError`.
+- The form hook stores `invalidCredentials` or `authFailed` feedback codes;
+  the UI translates them in the active language and allows retry after failure.
+- Auth storage is still accessed directly; see the limitations in
+  [browser persistence](integrations.md#browser-persistence).
 
 ### Persistence
 
@@ -69,18 +73,20 @@ flowchart TD
 
 ### Files involved
 
-- [src/pages/login/Login.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/login/Login.tsx:1)
-- [src/context/authContext.tsx](/home/varner/aprendizagem/projetos/react-dash/src/context/authContext.tsx:1)
-- [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1)
-- [src/components/auth/ProtectedRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/ProtectedRoute.tsx:1)
-- [src/components/auth/PublicOnlyRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/PublicOnlyRoute.tsx:1)
+- [src/pages/login/Login.tsx](../src/pages/login/Login.tsx)
+- [useLoginForm.ts](../src/pages/login/hooks/useLoginForm.ts)
+- [loginRedirect.ts](../src/pages/login/loginRedirect.ts)
+- [src/context/authContext.tsx](../src/context/authContext.tsx)
+- [src/config/auth.ts](../src/config/auth.ts)
+- [src/components/auth/ProtectedRoute.tsx](../src/components/auth/ProtectedRoute.tsx)
+- [src/components/auth/PublicOnlyRoute.tsx](../src/components/auth/PublicOnlyRoute.tsx)
 
 ## Flow 2: route protection and shell rendering
 
 ### Confirmed entry point
 
-- [src/App.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.tsx:1)
-- [src/routes/AppRoutes.tsx](/home/varner/aprendizagem/projetos/react-dash/src/routes/AppRoutes.tsx:1)
+- [src/App.tsx](../src/App.tsx)
+- [src/routes/AppRoutes.tsx](../src/routes/AppRoutes.tsx)
 
 ### Confirmed execution path
 
@@ -121,54 +127,54 @@ flowchart TD
 
 ### Files involved
 
-- [src/App.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.tsx:1)
-- [src/routes/AppRoutes.tsx](/home/varner/aprendizagem/projetos/react-dash/src/routes/AppRoutes.tsx:1)
-- [src/components/auth/ProtectedRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/ProtectedRoute.tsx:1)
-- [src/components/auth/PublicOnlyRoute.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/auth/PublicOnlyRoute.tsx:1)
-- [src/components/layout/DashboardLayout.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/layout/DashboardLayout.tsx:1)
+- [src/App.tsx](../src/App.tsx)
+- [src/routes/AppRoutes.tsx](../src/routes/AppRoutes.tsx)
+- [src/components/auth/ProtectedRoute.tsx](../src/components/auth/ProtectedRoute.tsx)
+- [src/components/auth/PublicOnlyRoute.tsx](../src/components/auth/PublicOnlyRoute.tsx)
+- [src/components/layout/DashboardLayout.tsx](../src/components/layout/DashboardLayout.tsx)
 
 ## Flow 3: analytics fixture/API loading and fallback
 
 ### Confirmed entry point
 
-- [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
+- [src/pages/home/Home.tsx](../src/pages/home/Home.tsx)
 
 ### Confirmed execution path
 
-1. `Home` initializes `document` with
-   `localSalesAnalyticsFixture`.
-2. `Home` loads persisted non-secret settings through
-   [src/config/salesApi.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/salesApi.ts:1):
+1. `Home` composes `useSalesAnalytics`, which initializes the loaded document
+   with `localSalesAnalyticsFixture`.
+2. The hook loads persisted non-secret settings through
+   [src/config/salesApi.ts](../src/config/salesApi.ts):
    - `baseUrl`
    - `salesEventId`
    - `start`
    - `end`
    - `limit`
-3. The API key field is kept only in component state.
-4. When the user clicks `Carregar API`, `handleLoadApi` calls
+3. The API key field is kept only in hook state.
+4. When the user clicks the API load action, the hook's `loadApi` calls
    `loadSalesAnalyticsExport`.
 5. `loadSalesAnalyticsExport` calls `fetchSalesAnalyticsExport`.
 6. `fetchSalesAnalyticsExport`:
    - builds `GET /analytics/export?salesEventId=&start=&end=&limit=`
    - sends `Accept: application/json`
    - sends `X-API-Key` when the user provided one
-   - rejects non-2xx responses with friendly status-specific messages
+   - rejects non-2xx responses with status-specific error codes
    - rejects payloads that do not use `schemaVersion:
      sales-analytics-export.v1`
 7. On success:
-   - `Home` replaces the current document with the API payload
+   - the hook replaces the current document with the API payload
    - source becomes `api`
    - the header shows API-local status text
 8. On failure:
    - `loadSalesAnalyticsExport` returns the local fixture
    - source becomes `fixture`
-   - `Home` renders the fallback/error message
+   - the hook maps the error code to translated feedback rendered by Home
 
 ### Persistence
 
-- Browser `localStorage`, key: `react-dash.analytics.settings`
-- Persisted values are non-secret filters only.
-- API key values are not persisted.
+The hook saves non-secret filter changes through `salesApi.ts`; API keys remain
+in memory. See [browser persistence](integrations.md#browser-persistence) for
+keys, fields and failure behavior.
 
 ### Error handling
 
@@ -207,29 +213,28 @@ flowchart TD
 
 ### Files involved
 
-- [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
-- [src/analytics/api.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.ts:1)
-- [src/analytics/fixtures.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/fixtures.ts:1)
-- [src/config/salesApi.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/salesApi.ts:1)
-- [vite.config.js](/home/varner/aprendizagem/projetos/react-dash/vite.config.js:1)
+- [src/pages/home/Home.tsx](../src/pages/home/Home.tsx)
+- [useSalesAnalytics.ts](../src/pages/home/hooks/useSalesAnalytics.ts)
+- [src/analytics/api.ts](../src/analytics/api.ts)
+- [src/analytics/fixtures.ts](../src/analytics/fixtures.ts)
+- [src/config/salesApi.ts](../src/config/salesApi.ts)
+- [vite.config.js](../vite.config.js)
 
 ## Flow 4: analytics transformation and rendering
 
 ### Confirmed entry point
 
-- [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
+- [src/pages/home/Home.tsx](../src/pages/home/Home.tsx)
 
 ### Confirmed execution path
 
 1. `Home` receives either the local fixture or API document.
 2. Pure transformers in
-   [src/analytics/transformers.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.ts:1)
+   [src/analytics/transformers.ts](../src/analytics/transformers.ts)
    derive:
    - KPI values
    - default `5m` time-series points
    - event table rows
-   - event CSV rows
-   - window CSV rows
    - funnel rows
    - survival summary rows
 3. `Home` passes prepared data to page-level components:
@@ -238,7 +243,8 @@ flowchart TD
    - `InsightPanels`
    - `EventsTable`
    - `ExportPanel`
-4. Empty or missing funnel/survival blocks render empty states rather than
+4. CSV rows are built on demand by the export hook rather than on every render.
+5. Empty or missing funnel/survival blocks render empty states rather than
    throwing.
 
 ### Error handling
@@ -248,17 +254,17 @@ flowchart TD
 
 ### Files involved
 
-- [src/analytics/transformers.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.ts:1)
-- [src/pages/home/components/KpiGrid.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/KpiGrid.tsx:1)
-- [src/pages/home/components/AnalyticsCharts.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/AnalyticsCharts.tsx:1)
-- [src/pages/home/components/InsightPanels.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/InsightPanels.tsx:1)
-- [src/pages/home/components/EventsTable.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/EventsTable.tsx:1)
+- [src/analytics/transformers.ts](../src/analytics/transformers.ts)
+- [src/pages/home/components/KpiGrid.tsx](../src/pages/home/components/KpiGrid.tsx)
+- [src/pages/home/components/AnalyticsCharts.tsx](../src/pages/home/components/AnalyticsCharts.tsx)
+- [src/pages/home/components/InsightPanels.tsx](../src/pages/home/components/InsightPanels.tsx)
+- [src/pages/home/components/EventsTable.tsx](../src/pages/home/components/EventsTable.tsx)
 
 ## Flow 5: browser-side analytics exports
 
 ### Confirmed entry point
 
-- [src/pages/home/components/ExportPanel.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/ExportPanel.tsx:1)
+- [src/pages/home/components/ExportPanel.tsx](../src/pages/home/components/ExportPanel.tsx)
 
 ### Confirmed execution path
 
@@ -268,8 +274,10 @@ flowchart TD
    - windows CSV
    - events-by-window PNG
    - event-types PNG
-2. JSON export serializes the active document.
-3. CSV exports serialize rows prepared by analytics transformers.
+2. `useAnalyticsExports` supplies download actions, chart references and
+   translated success/error feedback. JSON export serializes the active document.
+3. CSV exports build rows on demand with analytics transformers and download
+   them through shared utilities.
 4. PNG export finds the visible chart SVG, renders it to a canvas and downloads
    an image blob.
 5. File names are built from the active document `generatedAt` date and a
@@ -283,15 +291,17 @@ flowchart TD
 
 ### Files involved
 
-- [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
-- [src/pages/home/components/ExportPanel.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/components/ExportPanel.tsx:1)
-- [src/analytics/exporters.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.ts:1)
+- [src/pages/home/Home.tsx](../src/pages/home/Home.tsx)
+- [src/pages/home/components/ExportPanel.tsx](../src/pages/home/components/ExportPanel.tsx)
+- [useAnalyticsExports.ts](../src/pages/home/hooks/useAnalyticsExports.ts)
+- [utils/download.ts](../src/utils/download.ts)
+- [src/analytics/exporters.ts](../src/analytics/exporters.ts)
 
 ## Flow 6: users grid local delete behavior
 
 ### Confirmed entry point
 
-- [src/components/datatable/Datatable.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/datatable/Datatable.tsx:1)
+- [src/components/datatable/Datatable.tsx](../src/components/datatable/Datatable.tsx)
 
 ### Confirmed execution path
 
@@ -322,14 +332,14 @@ flowchart TD
 
 ### Files involved
 
-- [src/components/datatable/Datatable.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/datatable/Datatable.tsx:1)
-- [src/datatablesource.tsx](/home/varner/aprendizagem/projetos/react-dash/src/datatablesource.tsx:1)
+- [src/components/datatable/Datatable.tsx](../src/components/datatable/Datatable.tsx)
+- [src/datatablesource.tsx](../src/datatablesource.tsx)
 
 ## Flow 7: metadata-driven form rendering with image preview
 
 ### Confirmed entry point
 
-- [src/pages/new/New.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.tsx:1)
+- [src/pages/new/New.tsx](../src/pages/new/New.tsx)
 
 This is currently a legacy component and is not wired into the active
 analytics route tree.
@@ -358,8 +368,8 @@ analytics route tree.
 
 ### Files involved
 
-- [src/pages/new/New.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/new/New.tsx:1)
-- [src/formSource.ts](/home/varner/aprendizagem/projetos/react-dash/src/formSource.ts:1)
+- [src/pages/new/New.tsx](../src/pages/new/New.tsx)
+- [src/formSource.ts](../src/formSource.ts)
 
 ## Flow 8: theme switching
 
@@ -374,12 +384,12 @@ analytics route tree.
 1. UI dispatches `LIGHT`, `DARK` or `TOGGLE`.
 2. `darkModeReducer` returns new `darkMode` state.
 3. `App` applies `app dark` or `app` root class.
-4. CSS variables and themed selectors from [src/style/dark.scss](/home/varner/aprendizagem/projetos/react-dash/src/style/dark.scss:1) affect rendering.
+4. CSS variables and themed selectors from [src/style/dark.scss](../src/style/dark.scss) affect rendering.
 
 ### Files involved
 
-- [src/components/sidebar/Sidebar.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/sidebar/Sidebar.tsx:1)
-- [src/components/navbar/Navbar.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/navbar/Navbar.tsx:1)
-- [src/context/darkModeContext.tsx](/home/varner/aprendizagem/projetos/react-dash/src/context/darkModeContext.tsx:1)
-- [src/context/darkModeReducer.ts](/home/varner/aprendizagem/projetos/react-dash/src/context/darkModeReducer.ts:1)
-- [src/style/dark.scss](/home/varner/aprendizagem/projetos/react-dash/src/style/dark.scss:1)
+- [src/components/sidebar/Sidebar.tsx](../src/components/sidebar/Sidebar.tsx)
+- [src/components/navbar/Navbar.tsx](../src/components/navbar/Navbar.tsx)
+- [src/context/darkModeContext.tsx](../src/context/darkModeContext.tsx)
+- [src/context/darkModeReducer.ts](../src/context/darkModeReducer.ts)
+- [src/style/dark.scss](../src/style/dark.scss)

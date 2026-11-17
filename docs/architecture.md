@@ -12,16 +12,16 @@
 - Test runner: Vitest.
 - Styling: Sass plus component/page SCSS files.
 - Component libraries: MUI, MUI Data Grid, Recharts, `react-circular-progressbar`.
-- Package manager in use: npm, confirmed by [package-lock.json](/home/varner/aprendizagem/projetos/react-dash/package-lock.json:1).
+- Package manager in use: npm, confirmed by [package-lock.json](../package-lock.json).
 - Application type: client-side SPA dashboard.
 
 ### Confirmed configuration sources
 
-- [package.json](/home/varner/aprendizagem/projetos/react-dash/package.json:1)
-- [tsconfig.json](/home/varner/aprendizagem/projetos/react-dash/tsconfig.json:1)
-- [vite.config.js](/home/varner/aprendizagem/projetos/react-dash/vite.config.js:1)
-- [src/main.tsx](/home/varner/aprendizagem/projetos/react-dash/src/main.tsx:1)
-- [src/App.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.tsx:1)
+- [package.json](../package.json)
+- [tsconfig.json](../tsconfig.json)
+- [vite.config.js](../vite.config.js)
+- [src/main.tsx](../src/main.tsx)
+- [src/App.tsx](../src/App.tsx)
 
 ## Architectural Style
 
@@ -45,7 +45,7 @@
 
 ### Bootstrapping
 
-- [src/main.tsx](/home/varner/aprendizagem/projetos/react-dash/src/main.tsx:1) mounts the React tree.
+- [src/main.tsx](../src/main.tsx) mounts the React tree.
 - Providers are composed in this order:
   1. `AuthContextProvider`
   2. `DarkModeContextProvider`
@@ -53,8 +53,8 @@
 
 ### Routing
 
-- [src/App.tsx](/home/varner/aprendizagem/projetos/react-dash/src/App.tsx:1) mounts the browser router.
-- [src/routes/AppRoutes.tsx](/home/varner/aprendizagem/projetos/react-dash/src/routes/AppRoutes.tsx:1) contains the public/private route tree.
+- [src/App.tsx](../src/App.tsx) mounts the browser router.
+- [src/routes/AppRoutes.tsx](../src/routes/AppRoutes.tsx) contains the public/private route tree.
 - Public route:
   - `/login`
 - Protected routes:
@@ -62,14 +62,47 @@
 
 ### Layout composition
 
-- [src/components/layout/DashboardLayout.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/layout/DashboardLayout.tsx:1) provides the authenticated shell.
+- [src/components/layout/DashboardLayout.tsx](../src/components/layout/DashboardLayout.tsx) provides the authenticated shell.
 - Shared layout parts:
-  - [src/components/sidebar/Sidebar.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/sidebar/Sidebar.tsx:1)
-  - [src/components/navbar/Navbar.tsx](/home/varner/aprendizagem/projetos/react-dash/src/components/navbar/Navbar.tsx:1)
+  - [src/components/sidebar/Sidebar.tsx](../src/components/sidebar/Sidebar.tsx)
+  - [src/components/navbar/Navbar.tsx](../src/components/navbar/Navbar.tsx)
 
 ### Non-routed source still present
 
-- [src/pages/users/Users.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/users/Users.tsx:1) exists as a placeholder component but is not referenced by the route tree in `App.tsx`.
+- [src/pages/users/Users.tsx](../src/pages/users/Users.tsx) exists as a placeholder component but is not referenced by `src/routes/AppRoutes.tsx`.
+
+## Module Map
+
+Paths in this table are relative to the repository root.
+
+| Location | Responsibility |
+| --- | --- |
+| `index.html`, `src/main.tsx`, `src/App.tsx` | HTML entry, provider bootstrap, theme shell and browser router |
+| `src/routes/AppRoutes.tsx` | Public login and protected dashboard route tree |
+| `src/context/`, `src/auth/` | Authentication and theme state, actions and contracts |
+| `src/config/` | Demo identity, API defaults and persisted non-secret analytics settings |
+| `src/pages/home/` | Analytics overview, page-local loading/export hooks, formatting and sections |
+| `src/pages/login/` | Sign-in page, form, feedback and return-destination handling |
+| `src/analytics/` | Export contract, fixture, HTTP client, pure transformers and exporters |
+| `src/i18n/` | Bundled translations, language preferences and typed resource registration |
+| `src/components/common/` | Shared branding, controls, feedback, layout, data display and charts |
+| `src/components/auth/`, `src/components/layout/` | Route guards and authenticated shell |
+| `src/components/sidebar/`, `src/components/navbar/` | Navigation, language and theme actions; `SidebarNavSection` renders sidebar groups |
+| `src/utils/` | Locale formatters, CSV serialization, browser downloads and safe optional storage |
+| `src/pages/list/`, `new/`, `single/`, `users/` | Legacy screens outside the active route tree |
+| `src/components/widgets/`, `featured/`, `chart/`, `datatable/`, `table/` | Legacy KPI/progress cards, charts, user grid and transaction table |
+| `src/datatablesource.tsx`, `src/formSource.ts` | Legacy mock rows and form field metadata |
+| `src/setupTests.ts`, `src/vite-env.d.ts` | JSDOM setup and frontend environment declarations |
+| `tests/e2e/`, `playwright.config.ts` | Browser scenarios and desktop/mobile test configuration |
+| `.github/workflows/ci.yml` | GitHub Actions validation on pull requests and pushes to main; see the testing policy |
+| `package.json`, `package-lock.json`, `tsconfig.json`, `vite.config.js` | Scripts, dependencies, compiler, Vite and Vitest configuration |
+| `.env.example` | Supported local environment variables |
+| `scripts/lib-rag.cjs`, `docs/agentic/external-doc-sources.json` | Documentation retrieval helper and its approved source map |
+
+For shared component and type ownership, see
+[coding conventions](coding-conventions.md). For task-specific execution paths,
+see [flows](flows.md). Active UI work starts in `src/pages/home/` and
+`src/analytics/`; legacy user/product data is not the analytics source.
 
 ## Responsibility Split
 
@@ -86,7 +119,7 @@
 ### Pages
 
 - Pages are responsible for arranging sections and selecting reusable components.
-- [src/pages/home/Home.tsx](/home/varner/aprendizagem/projetos/react-dash/src/pages/home/Home.tsx:1)
+- [src/pages/home/Home.tsx](../src/pages/home/Home.tsx)
   orchestrates the analytics overview: it loads the local fixture by default,
   calls the Sales analytics API on demand, persists non-secret filters, derives
   UI data through pure transformers and triggers browser-side exports.
@@ -106,21 +139,21 @@
 
 ### Analytics module
 
-- [src/analytics/analytics.types.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/analytics.types.ts:1)
+- [src/analytics/analytics.types.ts](../src/analytics/analytics.types.ts)
   defines the `sales-analytics-export.v1` TypeScript contract.
 - The same context file groups
   transport/loading contracts, prepared UI data and export records within
   the analytics context. Public names are re-exported through its boundary.
-- [src/analytics/fixtures.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/fixtures.ts:1)
+- [src/analytics/fixtures.ts](../src/analytics/fixtures.ts)
   exposes the versioned local fixture used for reproducible demos and fallback.
-- [src/analytics/transformers.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/transformers.ts:1)
+- [src/analytics/transformers.ts](../src/analytics/transformers.ts)
   converts the document into KPIs, chart series, table rows, funnel rows,
   survival summaries and CSV rows.
-- [src/analytics/api.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/api.ts:1)
+- [src/analytics/api.ts](../src/analytics/api.ts)
   builds `GET /analytics/export` requests, sends `X-API-Key` when provided,
   validates the response schema and falls back to the fixture through
   `loadSalesAnalyticsExport`.
-- [src/analytics/exporters.ts](/home/varner/aprendizagem/projetos/react-dash/src/analytics/exporters.ts:1)
+- [src/analytics/exporters.ts](../src/analytics/exporters.ts)
   handles JSON, CSV and chart PNG downloads in the browser.
 
 ### Localization
@@ -144,7 +177,7 @@
   follow the same convention. i18next augmentation is isolated in
   `src/i18n/i18n.types.ts`.
 - Chart data keys are checked against the provided series and expected field
-  type. See [type-organization.md](type-organization.md) for conventions.
+  type. See [coding-conventions.md](coding-conventions.md) for conventions.
 
 ### Reusable components
 
@@ -155,7 +188,7 @@
 - `src/utils` owns locale formatter caching, CSV serialization, JSON/CSV/Blob
   downloads and safe optional preference storage. Analytics exporters use the
   shared Blob downloader for PNGs; Sales-specific filenames and error codes
-  remain in analytics. See [reusability.md](reusability.md).
+  remain in analytics. See [coding-conventions.md](coding-conventions.md).
 - Widgets, chart, featured card, table and data grid are presentation-focused.
 - `Datatable` holds one local interactive behavior: removing a row from local state.
 
@@ -175,13 +208,13 @@
 ### Confirmed coupling
 
 - Route definitions are centralized in `src/routes/AppRoutes.tsx`.
-- Demo authentication is coupled to environment-backed values in [src/config/auth.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/auth.ts:1).
+- Demo authentication is coupled to environment-backed values in [src/config/auth.ts](../src/config/auth.ts).
 - The active overview display data is coupled to the
   `sales-analytics-export.v1` document shape; legacy user/product mock arrays
   still exist in non-routed components.
 - Analytics source configuration is coupled to environment-backed defaults and
-  browser storage in [src/config/salesApi.ts](/home/varner/aprendizagem/projetos/react-dash/src/config/salesApi.ts:1).
-- Theme state is coupled to CSS variable overrides in [src/style/dark.scss](/home/varner/aprendizagem/projetos/react-dash/src/style/dark.scss:1).
+  browser storage in [src/config/salesApi.ts](../src/config/salesApi.ts).
+- Theme state is coupled to CSS variable overrides in [src/style/dark.scss](../src/style/dark.scss).
 
 ### Risks from current coupling
 
@@ -206,12 +239,19 @@
 
 ## Cloud / Infrastructure
 
+### Continuous Integration
+
+[GitHub Actions](../.github/workflows/ci.yml) runs the automated frontend and
+documentation checks on pull requests and pushes to `main`. See
+[continuous integration](testing.md#continuous-integration) for the commands,
+browser setup and failure reports. Follow the
+[validation policy](testing.md#validation-policy) during local development.
+
 ### Confirmed absence
 
 - No Dockerfile.
 - No docker-compose file.
 - No Terraform, CloudFormation or Serverless configuration.
-- No CI/CD workflow files were identified in tracked project files.
 
 ### Unknown
 
