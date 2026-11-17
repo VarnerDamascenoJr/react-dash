@@ -18,25 +18,15 @@ analytics dataset:
 
 ## Pre-check
 
-In `react-dash`:
+In `react-dash`, inspect the working tree with `git status --short --branch`.
+Install dependencies and the managed browser using the
+[browser setup](testing.md#browser-setup), then run the release/demo checks in
+the [validation policy](testing.md#validation-policy). Avoid mixing demo
+preparation with unrelated local edits.
 
-```bash
-git status --short --branch
-npm ci
-npm test
-npm run typecheck
-npm run build
-npm run test:e2e
-git diff --check
-```
-
-Expected result:
-
-- clean working tree before the demo;
-- tests passing;
-- typecheck passing;
-- build passing;
-- only the known large bundle warning may appear during the build.
+Expected result: tests, type checking, style checks, build and diff checks pass.
+Report known warnings separately. See [testing](testing.md#known-warnings) for
+chart-dimension and bundle-size warnings.
 
 ## Fixture Demo
 
@@ -53,7 +43,8 @@ http://localhost:5173
 ```
 
 3. Sign in with the demo credentials documented in `.env.example`.
-4. Confirm that the home page shows `Dados de demonstração` as the source.
+4. Confirm that the source is `Dados de demonstração` in Portuguese or
+   `Demo data` in English.
 5. Verify:
    - event, sales, revenue, ticket, and check-in KPIs;
    - events by window chart;
@@ -61,11 +52,11 @@ http://localhost:5173
    - funnel and survival blocks with an empty state when absent;
    - raw events table.
 6. Export:
-   - `JSON completo`;
-   - `CSV de eventos`;
-   - `CSV de janelas`;
-   - `PNG de janelas`;
-   - `PNG de tipos de evento`.
+   - `JSON completo` / `Full JSON`;
+   - `CSV de eventos` / `Events CSV`;
+   - `CSV de janelas` / `Windows CSV`;
+   - `PNG de janelas` / `Windows PNG`;
+   - `PNG de tipos de evento` / `Event types PNG`.
 
 ## Local Sales API Demo
 
@@ -113,7 +104,8 @@ npm start
    - `Chave da API`: `dev-support-key` for the seeded local `sales-event-project`
      stack, or another key with the `SUPPORT` or `ADMIN` role.
 7. Click `Carregar API`.
-8. Confirm that the source changes to `API do Sales`.
+8. Confirm that the source changes to `API do Sales` in Portuguese or
+   `Sales API` in English.
 9. Repeat the JSON, CSV, and PNG exports.
 10. Run the local API E2E path:
 
@@ -139,7 +131,7 @@ The dashboard may remember `URL base`, `Evento de vendas`, `Início`, `Fim`, and
 When the API does not exist, is down, or returns an error:
 
 - the dashboard must keep rendering the local fixture;
-- the source must remain on or return to `Dados de demonstração`;
+- the source must remain on or return to the demo-data label;
 - the message must explain the failure in a readable way;
 - no screen should break.
 
@@ -150,8 +142,8 @@ During review or recording:
 - capture the home screen with KPIs and charts;
 - keep one exported JSON file;
 - keep both CSV files;
-- keep the generated evidence PNGs;
-- record whether the source used was `Dados de demonstração` or `API do Sales`.
+- keep generated evidence PNGs and at least one exported chart PNG;
+- record whether the source used was demo data or the Sales API.
 
 ## Done Criteria
 
