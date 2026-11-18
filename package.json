@@ -36,7 +36,8 @@
     "rag:sources": "node scripts/lib-rag.cjs sources",
     "rag:fetch": "node scripts/lib-rag.cjs fetch",
     "rag:query": "node scripts/lib-rag.cjs query",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e:clean": "node scripts/test-e2e-clean.cjs"
   },
   "browserslist": {
     "production": [
