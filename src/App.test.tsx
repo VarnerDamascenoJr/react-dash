@@ -1,9 +1,14 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
 import App from './App';
 import { DarkModeContextProvider } from './context/darkModeContext';
 import { AuthContextProvider } from './context/authContext';
 import { demoUser } from './config/auth';
 import { salesAnalyticsSettingsStorageKey } from './config/salesApi';
+
+// JSDOM cannot measure responsive charts; browser tests cover their rendering and exports.
+vi.mock('./components/common/charts/TimeSeriesAreaChart', () => ({ default: () => null }));
+vi.mock('./components/common/charts/VerticalDistributionBarChart', () => ({ default: () => null }));
 
 beforeEach(() => {
   localStorage.setItem(
