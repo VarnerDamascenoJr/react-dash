@@ -40,11 +40,19 @@ test('loads the protected analytics dashboard with fixture data', async ({ page 
 });
 
 test('loads API data and downloads the active JSON, CSVs and charts', async ({ page }) => {
+  const timestamps = [
+    '2026-10-17T10:00:00Z',
+    '2026-10-17T12:00:00+02:00',
+    '2026-10-17T11:30:00Z',
+    '2026-10-17T10:30:00+02:00',
+  ];
   const apiDocument = {
     ...fixture,
     generatedAt: '2026-10-17T12:00:00Z',
     source: { ...fixture.source, service: 'sales-refactor-test' },
-    events: fixture.events.map((event) => ({ ...event, saleId: 'active-api-sale' })),
+    events: fixture.events.map((event, index) => ({
+      ...event, saleId: 'active-api-sale', occurredAt: timestamps[index],
+    })),
   };
   await page.route('**/analytics/export?**', async (route) => {
     const request = route.request();
@@ -61,6 +69,20 @@ test('loads API data and downloads the active JSON, CSVs and charts', async ({ p
 
   await expect(page.getByText('API do Sales', { exact: true })).toBeVisible();
   await expect(page.getByText(/sales-refactor-test — gerado em/)).toBeVisible();
+  await page.getByRole('link', { name: 'Eventos' }).click();
+  const grid = page.getByRole('grid');
+  const eventCells = grid.locator('[role="cell"][data-field="eventType"]');
+  await expect(eventCells).toHaveText([
+    'email.sent', 'sale.created', 'payment.processed', 'checkin.completed',
+  ]);
+  const dateHeader = grid.getByRole('columnheader', { name: /data e hora/i });
+  await expect(dateHeader).toHaveAttribute('aria-sort', 'descending');
+  await dateHeader.click();
+  await dateHeader.click();
+  await expect(dateHeader).toHaveAttribute('aria-sort', 'ascending');
+  await expect(eventCells).toHaveText([
+    'checkin.completed', 'sale.created', 'payment.processed', 'email.sent',
+  ]);
   await page.getByRole('link', { name: 'Exportações' }).click();
 
   const json = await downloadFile(page, /json completo/i);
@@ -69,6 +91,8 @@ test('loads API data and downloads the active JSON, CSVs and charts', async ({ p
   const events = await downloadFile(page, /csv de eventos/i);
   expect(events.name).toBe('sales-events-2026-10-17-events.csv');
   expect(events.content.toString()).toContain('active-api-sale');
+  expect(events.content.toString().trim().split('\n').slice(1).map((line) => line.split(',')[0]))
+    .toEqual(timestamps);
   const windows = await downloadFile(page, /csv de janelas/i);
   expect(windows.name).toBe('sales-events-2026-10-17-windows.csv');
   expect(windows.content.toString()).toContain('windowSize,windowStart');
