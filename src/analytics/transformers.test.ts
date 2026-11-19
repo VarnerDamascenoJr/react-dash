@@ -45,6 +45,12 @@ describe('analytics transformers', () => {
     const csvRows = buildEventCsvRows(localSalesAnalyticsFixture);
 
     expect(rows).toHaveLength(4);
+    expect(rows.map((row) => row.occurredAt)).toEqual(
+      localSalesAnalyticsFixture.events.map((event) => event.occurredAt)
+    );
+    expect(csvRows.map((row) => row.occurredAt)).toEqual(
+      localSalesAnalyticsFixture.events.map((event) => event.occurredAt)
+    );
     expect(rows[1]).toMatchObject({
       eventType: 'payment.processed',
       saleId: 'sale-001',
