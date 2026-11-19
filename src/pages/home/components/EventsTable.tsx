@@ -17,6 +17,13 @@ export default function EventsTable({ id, rows }: EventsTableProps) {
       field: 'occurredAt',
       headerName: t('panels.eventsTable.columns.occurredAt'),
       valueFormatter: ({ value }) => formatDateTime(String(value)),
+      sortComparator: (left: string, right: string) => {
+        const leftTime = Date.parse(left);
+        const rightTime = Date.parse(right);
+        const leftValue = Number.isNaN(leftTime) ? -Infinity : leftTime;
+        const rightValue = Number.isNaN(rightTime) ? -Infinity : rightTime;
+        return leftValue === rightValue ? 0 : leftValue < rightValue ? -1 : 1;
+      },
       flex: 1.3,
       minWidth: 180,
     },
@@ -80,6 +87,9 @@ export default function EventsTable({ id, rows }: EventsTableProps) {
           pageSizeOptions={[5, 10, 25]}
           rows={rows}
           initialState={{
+            sorting: {
+              sortModel: [{ field: 'occurredAt', sort: 'desc' }],
+            },
             pagination: {
               paginationModel: { pageSize: 5 },
             },
