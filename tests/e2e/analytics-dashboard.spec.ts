@@ -126,6 +126,30 @@ test('shows API fallback and preserves non-secret filters after reloading', asyn
   await expect(page.getByLabel('Chave da API', { exact: true })).toHaveValue('');
 });
 
+test('falls back to demo data when the API returns an empty successful response', async ({ page }) => {
+  let requests = 0;
+  await page.route('**/analytics/export?**', (route) => {
+    requests += 1;
+    return requests === 1
+      ? route.fulfill({ json: { ...fixture, source: { ...fixture.source, service: 'live-api-test' } } })
+      : route.fulfill({ status: 200, contentType: 'application/json', body: '' });
+  });
+  await page.goto('/login');
+  await page.getByRole('button', { name: /entrar no painel/i }).click();
+  await page.getByRole('link', { name: 'Configuração' }).click();
+  await page.getByLabel('Chave da API', { exact: true }).fill('session-only-key');
+  const loadButton = page.getByRole('button', { name: 'Carregar API', exact: true });
+  await loadButton.click();
+  await expect(page.getByText('API do Sales', { exact: true })).toBeVisible();
+  await expect(page.getByText(/live-api-test — gerado em/)).toBeVisible();
+
+  await loadButton.click();
+  await expect(page.getByText('Dados de demonstração', { exact: true })).toBeVisible();
+  await expect(page.getByText('A API retornou uma resposta vazia. Exibindo dados de demonstração.')).toBeVisible();
+  await expect(page.getByText(/live-api-test — gerado em/)).toHaveCount(0);
+  await expect(loadButton).toBeEnabled();
+});
+
 async function downloadFile(page: Page, button: RegExp) {
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: button }).click();
